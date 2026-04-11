@@ -95,7 +95,7 @@ nvidia-open-dkms nvidia-settings libva-nvidia-driver
 ### 🌐 Apps
 ```
 firefox google-chrome visual-studio-code-bin
-pavucontrol dolphin
+pavucontrol nautilus
 ```
 
 ---
