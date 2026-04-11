@@ -1,0 +1,16 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Catppuccin Mocha
+ **/
+
+* {
+    background:     #181825FF;   /* mantle */
+    background-alt: #1e1e2eFF;   /* base */
+    foreground:     #cdd6f4FF;   /* text */
+    selected:       #cba6f7FF;   /* mauve — matches waybar accent */
+    active:         #a6e3a1FF;   /* green */
+    urgent:         #f38ba8FF;   /* red */
+}

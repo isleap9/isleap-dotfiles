@@ -1,5 +1,5 @@
 # 🌸 isleap's dotfiles
-A Hyprland rice with a custom One Dark-based palette, centered island Waybar, and a clean minimal aesthetic.
+A Hyprland rice with a dynamic theme switcher supporting One Dark and Catppuccin Mocha, centered island Waybar, and a clean minimal aesthetic.
 
 ---
 
@@ -21,7 +21,7 @@ A Hyprland rice with a custom One Dark-based palette, centered island Waybar, an
 | **Notifications** | Swaync |
 | **File Manager** | Dolphin |
 | **Wallpaper** | Waypaper + awww |
-| **Theming** | One Dark (custom) |
+| **Theming** | One Dark / Catppuccin Mocha (switchable) |
 | **Cursor** | Bibata-Modern-Ice |
 | **GPU** | NVIDIA (nvidia-open-dkms) |
 
@@ -101,15 +101,17 @@ pavucontrol dolphin
 ---
 
 ## 🎨 Theming
-This rice uses a **custom One Dark-based palette** applied statically across all components:
+
+This rice uses a **dynamic theme switcher** that updates all components simultaneously:
 - Waybar
 - Swaync
 - Rofi
 - Hyprland borders
 - Kitty terminal
-- Wlogout
 
-Colors are defined in `swaync/colors.css` and referenced across configs. To switch themes, swap the `colors-active.css` symlink in `~/.config/swaync/` to a different file in `themes-colors/`.
+Available themes: **One Dark** and **Catppuccin Mocha**
+
+Each app reads colors from a shared `active` symlink inside its own themes folder. Switching themes repoints all symlinks and reloads each app automatically.
 
 ---
 
@@ -117,11 +119,12 @@ Colors are defined in `swaync/colors.css` and referenced across configs. To swit
 | Keybind | Action |
 |---|---|
 | `Super + A` | Open app launcher (Rofi) |
-| `Super + Shift +  W` | Open wallpaper selector (Rofi) |
+| `Super + Shift + W` | Open wallpaper selector (Rofi) |
 | `Super + N` | Toggle notification center (Swaync) |
 | `Super + T` | Open terminal (Kitty) |
 | `Super + E` | Open file manager (Dolphin) |
 | `Super + Shift + S` | Screenshot region |
+| `Super + Shift + T` | Open theme switcher |
 
 ---
 
@@ -139,25 +142,41 @@ git clone git@github.com:isleap9/isleap-dotfiles.git ~/dotfiles
 cp -r ~/dotfiles/hypr ~/.config/
 cp -r ~/dotfiles/waybar ~/.config/
 cp -r ~/dotfiles/rofi ~/.config/
+cp -r ~/dotfiles/kitty ~/.config/
 cp -r ~/dotfiles/swaync ~/.config/
 cp -r ~/dotfiles/wlogout ~/.config/
 ```
 
-4. Make wallpaper script executable:
+4. Create theme symlinks (defaults to One Dark):
 ```bash
+ln -sf ~/.config/waybar/themes/onedark.css ~/.config/waybar/themes/active.css
+ln -sf ~/.config/rofi/colors/isleaponedark.rasi ~/.config/rofi/colors/active.rasi
+ln -sf ~/.config/swaync/themes-colors/onedark.css ~/.config/swaync/themes-colors/active.css
+ln -sf ~/.config/kitty/themes/onedark.conf ~/.config/kitty/themes/active.conf
+```
+
+5. Make scripts executable:
+```bash
+chmod +x ~/.config/waybar/scripts/theme-switcher.sh
 chmod +x ~/.config/rofi/wallpaper-pick.sh
 ```
 
-5. Log into Hyprland.
+6. Log into Hyprland.
 
 ---
 
 ## 📁 Structure
 ```
 dotfiles/
-├── hypr/          # Hyprland config + keybinds + scripts
-├── waybar/        # Waybar config + styles
-├── rofi/          # Rofi launcher + themes
-├── swaync/        # Swaync notification center + color themes
-├── wlogout/       # Wlogout logout screen
+├── hypr/                        # Hyprland config + keybinds + modules
+│   └── modules/themes/          # Border color themes (onedark.conf, catppuccin-mocha.conf)
+├── waybar/                      # Waybar config + styles
+│   └── themes/                  # Color themes (onedark.css, catppuccin-mocha.css)
+├── rofi/                        # Rofi launcher + styles
+│   └── colors/                  # Color themes (.rasi files)
+├── kitty/                       # Kitty terminal config
+│   └── themes/                  # Color themes (onedark.conf, catppuccin-mocha.conf)
+├── swaync/                      # Swaync notification center
+│   └── themes-colors/           # Color themes (onedark.css, catppuccin-mocha.css)
+└── wlogout/                     # Wlogout logout screen
 ```

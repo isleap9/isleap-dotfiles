@@ -6,7 +6,7 @@
  * Wallpaper Picker
  **/
 
-@import "~/.config/rofi/colors/isleaponedark.rasi"
+@import "~/.config/rofi/colors/active.rasi"
 @import "~/.config/rofi/shared/fonts.rasi"
 
 configuration {

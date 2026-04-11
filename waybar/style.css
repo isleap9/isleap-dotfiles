@@ -1,4 +1,4 @@
-@import "colors.css";
+@import "themes/active.css";
 
 * {
     all: unset;
@@ -24,6 +24,7 @@ tooltip {
 }
 
 .modules-right {
+    font-size: 16;
     font-weight: 900;
     background-color: @bg1;
     color: @fg1;
@@ -33,6 +34,7 @@ tooltip {
 }
 
 #custom-arch {
+    font-size: 20;
     background-color: @bg1;
     color: @fg1;
     padding: 4px 18px;
@@ -89,7 +91,7 @@ tooltip {
 }
 
 #workspaces button.active {
-    background-color: @fg1;
+    background-color: @accent;
     color: @bg1;
     min-width: 1.5rem;
     font-weight: 500;

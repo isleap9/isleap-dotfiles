@@ -4,7 +4,7 @@
 @define-color bg3           #45475a;   /* surface1 */
 @define-color bg4           #585b70;   /* surface2 */
 @define-color fg1           #cdd6f4;   /* text */
-@define-color fg2           #6c7086;   /* overlay0 */
+@define-color fg2           #6c7086;   /* overlay0 — muted/inactive */
 @define-color surface       #7f849c;   /* overlay1 */
 @define-color red           #f38ba8;   /* red */
 @define-color orange        #fab387;   /* peach */
@@ -19,4 +19,4 @@
 @define-color gray2         #9399b2;   /* overlay2 */
 @define-color special-blue  #89b4fa;   /* blue */
 @define-color special-white #cdd6f4;   /* text */
-@define-color accent        #cba6f7;   /* mauve */
+@define-color accent #cba6f7;   /* mauve */

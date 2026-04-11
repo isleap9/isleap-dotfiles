@@ -1,7 +1,7 @@
 @define-color text            @fg1;
 @define-color background-alt  @bg1;
 @define-color background      @bg0;
-@define-color selected        @bg4;
+@define-color selected        @accent;
 @define-color hover           alpha(@surface, .4);
 @define-color urgent          @red;
 
