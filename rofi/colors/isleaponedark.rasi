@@ -1,0 +1,16 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ * 
+ * Colors
+ **/
+
+* {
+    background:     #21252B;
+    background-alt: #282C34;
+    foreground:     #FFFFFF;
+    selected:       #ABB2BF;
+    active:         #61AFEF;
+    urgent:         #B23636FF;
+}

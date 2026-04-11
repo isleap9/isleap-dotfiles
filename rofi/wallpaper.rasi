@@ -1,0 +1,117 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Wallpaper Picker
+ **/
+
+@import "~/.config/rofi/colors/isleaponedark.rasi"
+@import "~/.config/rofi/shared/fonts.rasi"
+
+configuration {
+    show-icons: true;
+}
+
+* {
+    background-color:   @background;
+    text-color:         @foreground;
+    border-color:       #838484;
+}
+
+window {
+    width:              1200px;
+    height:             800px;
+    border:             2px solid;
+    border-radius:      12px;
+    border-color:       #838484;
+    background-color:   @background;
+}
+
+mainbox {
+    spacing:            10px;
+    padding:            20px;
+    background-color:   transparent;
+}
+
+inputbar {
+    spacing:            10px;
+    padding:            15px;
+    border-radius:      12px;
+    background-color:   @background-alt;
+    text-color:         @foreground;
+    children:           [ "prompt", "entry" ];
+}
+
+prompt, entry {
+    background-color:   transparent;
+    text-color:         @foreground;
+}
+
+entry {
+    placeholder:        "Type to filter...";
+    placeholder-color:  @selected;
+}
+
+listview {
+    columns:            4;
+    lines:              2;
+    cycle:              true;
+    dynamic:            true;
+    scrollbar:          false;
+    layout:             vertical;
+    fixed-height:       true;
+    fixed-columns:      true;
+    spacing:            8px;
+    border:             0px;
+    background-color:   transparent;
+}
+
+element {
+    orientation:        vertical;
+    spacing:            0px;
+    padding:            8px;
+    border-radius:      8px;
+    background-color:   transparent;
+    cursor:             pointer;
+}
+
+element normal.normal {
+    background-color:   transparent;
+}
+
+element selected.normal {
+    background-color:   @selected;
+    border:             2px solid;
+    border-color:       #838484;
+    border-radius:      8px;
+}
+
+element alternate.normal {
+    background-color:   transparent;
+}
+
+element-icon {
+    size:               160px;
+    background-color:   transparent;
+    cursor:             inherit;
+}
+
+element-text {
+    horizontal-align:   0.5;
+    vertical-align:     0.5;
+    margin:             6px 0 0 0;
+    font:               "Google Sans Display 10";
+    text-color:         @foreground;
+    background-color:   transparent;
+    cursor:             inherit;
+}
+
+error-message {
+    padding:            15px;
+    border:             2px solid;
+    border-radius:      12px;
+    border-color:       @selected;
+    background-color:   @background;
+    text-color:         @foreground;
+}

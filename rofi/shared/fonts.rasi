@@ -1,0 +1,11 @@
+/**
+ *
+ * Author : Aditya Shakya (adi1090x)
+ * Github : @adi1090x
+ * 
+ * Fonts
+ *
+ **/
+* {
+    font: "Google Sans Display 12, JetBrainsMono Nerd Font Propo 12";
+}

@@ -1,0 +1,6 @@
+    background-color: @bg1;
+    color: @fg1;
+    padding: 4px 18px;
+    border-radius: 99px;
+    transition: all 300ms ease-in-out;
+    margin-right: 30px;

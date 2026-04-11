@@ -1,0 +1,279 @@
+#!/usr/bin/env bash
+echo "Wallpaper: $1" >> /tmp/wallpaper.log
+awww img "$1"
+# Update rofi wallpaper - crop to portrait
+magick "$1" -resize x600 ~/.config/rofi/images/a.png
+sed -i "s|url(\".*\", .*)|url(\"$HOME/.config/rofi/images/a.png\", height)|" ~/.config/rofi/style-1.rasi
+wal -i "$1" -n -q
+# Generate waybar colors.css from pywal
+source ~/.cache/wal/colors.sh
+cat > ~/.config/waybar/colors.css << EOF
+@define-color bg0 $color0;
+@define-color bg1 $color0;
+@define-color bg2 $color1;
+@define-color bg3 $color2;
+@define-color bg4 $color3;
+@define-color surface $color8;
+@define-color fg $foreground;
+@define-color red $color1;
+@define-color orange $color3;
+@define-color yellow $color4;
+@define-color green $color2;
+@define-color aqua $color6;
+@define-color blue $color4;
+@define-color purple $color5;
+@define-color gray0 $color7;
+@define-color gray1 $color8;
+@define-color gray2 $color8;
+EOF
+# Update Hyprland borders
+source ~/.cache/wal/colors.sh
+hyprctl keyword general:col.active_border "rgb(${color2//#/})"
+hyprctl keyword general:col.inactive_border "rgb(${color0//#/})"
+# Update rofi colors
+cat > ~/.config/rofi/colors/pywal.rasi << EOF
+* {
+    background:     ${background}FF;
+    background-alt: ${color0}FF;
+    foreground:     ${foreground}FF;
+    selected:       ${color2}FF;
+    active:         ${color3}FF;
+    urgent:         ${color1}FF;
+}
+EOF
+# Update swaync colors
+cat > ~/.config/swaync/colors.css << EOF
+@define-color bg0 ${color0};
+@define-color bg1 ${color8};
+@define-color bg2 ${color1};
+@define-color bg3 ${color2};
+@define-color bg4 ${color3};
+@define-color fg ${foreground};
+@define-color red ${color1};
+@define-color orange ${color3};
+@define-color yellow ${color4};
+@define-color green ${color2};
+@define-color aqua ${color6};
+@define-color blue ${color4};
+@define-color purple ${color5};
+@define-color gray0 ${color7};
+@define-color gray1 ${color8};
+@define-color gray2 ${color8};
+EOF
+pkill swaync; sleep 0.5 && swaync &
+# Update wlogout colors
+cat > ~/.config/wlogout/style.css << EOF
+* {
+    background-image: none;
+    box-shadow: none;
+}
+window {
+    background-color: rgba(0,0,0,0.5);
+}
+button {
+    border-radius: 12px;
+    border-color: ${color0};
+    text-decoration-color: ${foreground};
+    color: ${foreground};
+    background-color: ${color0};
+    border-style: solid;
+    border-width: 1px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25%;
+}
+button:focus, button:active, button:hover {
+    background-color: ${color2};
+    outline-style: none;
+}
+#lock {
+    background-image: image(url("/usr/share/wlogout/icons/lock.png"), url("/usr/local/share/wlogout/icons/lock.png"));
+}
+#logout {
+    background-image: image(url("/usr/share/wlogout/icons/logout.png"), url("/usr/local/share/wlogout/icons/logout.png"));
+}
+#suspend {
+    background-image: image(url("/usr/share/wlogout/icons/suspend.png"), url("/usr/local/share/wlogout/icons/suspend.png"));
+}
+#hibernate {
+    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"), url("/usr/local/share/wlogout/icons/hibernate.png"));
+}
+#shutdown {
+    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"), url("/usr/local/share/wlogout/icons/shutdown.png"));
+}
+#reboot {
+    background-image: image(url("/usr/share/wlogout/icons/reboot.png"), url("/usr/local/share/wlogout/icons/reboot.png"));
+}
+EOF
+# Update starship colors
+source ~/.cache/wal/colors.sh
+sed -i "s/color_bg1 = \".*\"/color_bg1 = \"${color1}\"/" ~/.config/starship.toml
+sed -i "s/color_bg2 = \".*\"/color_bg2 = \"${color2}\"/" ~/.config/starship.toml
+sed -i "s/color_bg3 = \".*\"/color_bg3 = \"${color3}\"/" ~/.config/starship.toml
+sed -i "s/color_bg4 = \".*\"/color_bg4 = \"${color4}\"/" ~/.config/starship.toml
+sed -i "s/color_bg5 = \".*\"/color_bg5 = \"${color0}\"/" ~/.config/starship.toml
+sed -i "s/color_blue = \".*\"/color_blue = \"${color4}\"/" ~/.config/starship.toml
+sed -i "s/color_gray = \".*\"/color_gray = \"${color8}\"/" ~/.config/starship.toml
+sed -i "s/color_red = \".*\"/color_red = \"${color1}\"/" ~/.config/starship.toml
+sed -i "s/color_white = \".*\"/color_white = \"${foreground}\"/" ~/.config/starship.toml
+# Update qt6ct colors
+mkdir -p ~/.config/qt6ct/colors
+cat > ~/.config/qt6ct/colors/pywal.conf << EOF
+[ColorScheme]
+active_colors=#ff${foreground//#/}, #ff${color0//#/}, #ff${color8//#/}, #ff${color8//#/}, #ff${color7//#/}, #ff${color8//#/}, #ff${foreground//#/}, #ff${foreground//#/}, #ff${foreground//#/}, #ff${color0//#/}, #ff${color0//#/}, #ff${color8//#/}, #ff${color2//#/}, #ff${foreground//#/}, #ff${color2//#/}, #ff${color0//#/}, #ff${foreground//#/}, #ff${color0//#/}, #ff${color1//#/}, #ff${color8//#/}, #ff${color0//#/}
+inactive_colors=#ff${foreground//#/}, #ff${color0//#/}, #ff${color8//#/}, #ff${color8//#/}, #ff${color7//#/}, #ff${color8//#/}, #ff${foreground//#/}, #ff${foreground//#/}, #ff${foreground//#/}, #ff${color0//#/}, #ff${color0//#/}, #ff${color8//#/}, #ff${color2//#/}, #ff${foreground//#/}, #ff${color2//#/}, #ff${color0//#/}, #ff${foreground//#/}, #ff${color0//#/}, #ff${color1//#/}, #ff${color8//#/}, #ff${color0//#/}
+disabled_colors=#ff${color7//#/}, #ff${color0//#/}, #ff${color8//#/}, #ff${color8//#/}, #ff${color7//#/}, #ff${color8//#/}, #ff${color7//#/}, #ff${color7//#/}, #ff${color7//#/}, #ff${color0//#/}, #ff${color0//#/}, #ff${color8//#/}, #ff${color2//#/}, #ff${color7//#/}, #ff${color2//#/}, #ff${color0//#/}, #ff${color7//#/}, #ff${color0//#/}, #ff${color1//#/}, #ff${color8//#/}, #ff${color0//#/}
+EOF
+# Apply qt6ct color scheme
+sed -i "s|^color_scheme_path=.*|color_scheme_path=$HOME/.config/qt6ct/colors/pywal.conf|" ~/.config/qt6ct/qt6ct.conf
+sed -i "s|^custom_palette=.*|custom_palette=true|" ~/.config/qt6ct/qt6ct.conf
+
+# Update KDE color scheme from pywal
+mkdir -p ~/.local/share/color-schemes
+python3 << PYEOF
+import os
+
+def hex_to_rgb(h):
+    h = h.strip().lstrip('#')
+    return ','.join(str(int(h[i:i+2], 16)) for i in (0, 2, 4))
+
+# Read colors from pywal
+colors = {}
+with open(os.path.expanduser('~/.cache/wal/colors.sh')) as f:
+    for line in f:
+        line = line.strip()
+        if line.startswith('color') or line.startswith('foreground') or line.startswith('background'):
+            parts = line.split("='")
+            if len(parts) == 2:
+                key = parts[0]
+                val = parts[1].rstrip("'")
+                colors[key] = val
+
+fg = hex_to_rgb(colors.get('foreground', '#ffffff'))
+bg = hex_to_rgb(colors.get('color0', '#000000'))
+c0 = hex_to_rgb(colors.get('color0', '#000000'))
+c1 = hex_to_rgb(colors.get('color1', '#ff0000'))
+c2 = hex_to_rgb(colors.get('color2', '#00ff00'))
+c3 = hex_to_rgb(colors.get('color3', '#ffff00'))
+c4 = hex_to_rgb(colors.get('color4', '#0000ff'))
+c5 = hex_to_rgb(colors.get('color5', '#ff00ff'))
+c7 = hex_to_rgb(colors.get('color7', '#aaaaaa'))
+c8 = hex_to_rgb(colors.get('color8', '#555555'))
+
+content = f"""[ColorEffects:Disabled]
+Color=56,56,56
+ColorAmount=0
+ColorEffect=0
+ContrastAmount=0.65
+ContrastEffect=1
+IntensityAmount=0.1
+IntensityEffect=2
+
+[ColorEffects:Inactive]
+ChangeSelectionColor=true
+Color=112,111,110
+ColorAmount=0.025
+ColorEffect=2
+ContrastAmount=0.1
+ContrastEffect=2
+Enable=false
+IntensityAmount=0
+IntensityEffect=0
+
+[Colors:Button]
+BackgroundAlternate={c1}
+BackgroundNormal={c0}
+DecorationFocus={c2}
+DecorationHover={c3}
+ForegroundActive={c2}
+ForegroundInactive={c7}
+ForegroundLink={c4}
+ForegroundNegative={c1}
+ForegroundNeutral={c3}
+ForegroundNormal={fg}
+ForegroundPositive={c2}
+ForegroundVisited={c5}
+
+[Colors:Selection]
+BackgroundAlternate={c2}
+BackgroundNormal={c2}
+DecorationFocus={c2}
+DecorationHover={c3}
+ForegroundActive={fg}
+ForegroundInactive={c7}
+ForegroundLink={c4}
+ForegroundNegative={c1}
+ForegroundNeutral={c3}
+ForegroundNormal={fg}
+ForegroundPositive={c2}
+ForegroundVisited={c5}
+
+[Colors:Tooltip]
+BackgroundAlternate={c0}
+BackgroundNormal={c0}
+DecorationFocus={c2}
+DecorationHover={c3}
+ForegroundActive={c2}
+ForegroundInactive={c7}
+ForegroundLink={c4}
+ForegroundNegative={c1}
+ForegroundNeutral={c3}
+ForegroundNormal={fg}
+ForegroundPositive={c2}
+ForegroundVisited={c5}
+
+[Colors:View]
+BackgroundAlternate={c0}
+BackgroundNormal={c0}
+DecorationFocus={c2}
+DecorationHover={c3}
+ForegroundActive={c2}
+ForegroundInactive={c7}
+ForegroundLink={c4}
+ForegroundNegative={c1}
+ForegroundNeutral={c3}
+ForegroundNormal={fg}
+ForegroundPositive={c2}
+ForegroundVisited={c5}
+
+[Colors:Window]
+BackgroundAlternate={c0}
+BackgroundNormal={c0}
+DecorationFocus={c2}
+DecorationHover={c3}
+ForegroundActive={c2}
+ForegroundInactive={c7}
+ForegroundLink={c4}
+ForegroundNegative={c1}
+ForegroundNeutral={c3}
+ForegroundNormal={fg}
+ForegroundPositive={c2}
+ForegroundVisited={c5}
+
+[General]
+ColorScheme=pywal
+Name=pywal
+shadeSortColumn=true
+
+[KDE]
+contrast=4
+
+[WM]
+activeBackground={c0}
+activeBlend={c2}
+activeForeground={fg}
+inactiveBackground={c0}
+inactiveBlend={c0}
+inactiveForeground={c7}
+"""
+
+with open(os.path.expanduser('~/.local/share/color-schemes/pywal.colors'), 'w') as f:
+    f.write(content)
+
+print("KDE color scheme written successfully")
+PYEOF
+
+plasma-apply-colorscheme BreezeClassic && sleep 0.3 && plasma-apply-colorscheme pywal
+
+sleep 0.3
+pkill waybar && waybar &
