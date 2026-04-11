@@ -117,7 +117,7 @@ Colors are defined in `swaync/colors.css` and referenced across configs. To swit
 | Keybind | Action |
 |---|---|
 | `Super + A` | Open app launcher (Rofi) |
-| `Super + W` | Open wallpaper selector (Waypaper) |
+| `Super + Shift +  W` | Open wallpaper selector (Rofi) |
 | `Super + N` | Toggle notification center (Swaync) |
 | `Super + T` | Open terminal (Kitty) |
 | `Super + E` | Open file manager (Dolphin) |
