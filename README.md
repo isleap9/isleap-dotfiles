@@ -6,9 +6,6 @@ A Hyprland rice with a custom One Dark-based palette, centered island Waybar, an
 ## 📸 Preview
 ![Desktop](screenshots/1.png)
 ![Desktop2](screenshots/2.png)
-![Desktop3](screenshots/3.png)
-![Desktop4](screenshots/4.png)
-![Desktop5](screenshots/5.png)
 
 ---
 
