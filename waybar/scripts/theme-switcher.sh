@@ -5,12 +5,14 @@ WAYBAR_THEMES="$HOME/.config/waybar/themes"
 ROFI_COLORS="$HOME/.config/rofi/colors"
 SWAYNC_THEMES="$HOME/.config/swaync/themes-colors"
 KITTY_THEMES="$HOME/.config/kitty/themes"
+WLOGOUT_THEMES="$HOME/.config/wlogout/themes"
 
 # Symlink targets
 WAYBAR_ACTIVE="$WAYBAR_THEMES/active.css"
 ROFI_ACTIVE="$ROFI_COLORS/active.rasi"
 SWAYNC_ACTIVE="$SWAYNC_THEMES/active.css"
 KITTY_ACTIVE="$KITTY_THEMES/active.conf"
+WLOGOUT_ACTIVE="$HOME/.config/wlogout/style.css"
 
 # Map display names → theme files
 declare -A WAYBAR_THEME=(
@@ -31,6 +33,11 @@ declare -A SWAYNC_THEME=(
 declare -A KITTY_THEME=(
     ["  One Dark"]="onedark.conf"
     ["  Catppuccin Mocha"]="catppuccin-mocha.conf"
+)
+
+declare -A WLOGOUT_THEME=(
+    ["  One Dark"]="onedark.css"
+    ["  Catppuccin Mocha"]="catppuccin-mocha.css"
 )
 
 # Hyprland border colors per theme
@@ -62,6 +69,7 @@ WAYBAR_FILE="${WAYBAR_THEME[$CHOICE]}"
 ROFI_FILE="${ROFI_THEME[$CHOICE]}"
 SWAYNC_FILE="${SWAYNC_THEME[$CHOICE]}"
 KITTY_FILE="${KITTY_THEME[$CHOICE]}"
+WLOGOUT_FILE="${WLOGOUT_THEME[$CHOICE]}"
 
 # Validate files exist
 if [ ! -f "$WAYBAR_THEMES/$WAYBAR_FILE" ]; then
@@ -84,11 +92,17 @@ if [ ! -f "$KITTY_THEMES/$KITTY_FILE" ]; then
     exit 1
 fi
 
+if [ ! -f "$WLOGOUT_THEMES/$WLOGOUT_FILE" ]; then
+    notify-send "Theme Switcher" "Wlogout theme not found: $WLOGOUT_FILE" --icon=dialog-error
+    exit 1
+fi
+
 # Swap symlinks
 ln -sf "$WAYBAR_THEMES/$WAYBAR_FILE" "$WAYBAR_ACTIVE"
 ln -sf "$ROFI_COLORS/$ROFI_FILE" "$ROFI_ACTIVE"
 ln -sf "$SWAYNC_THEMES/$SWAYNC_FILE" "$SWAYNC_ACTIVE"
 ln -sf "$KITTY_THEMES/$KITTY_FILE" "$KITTY_ACTIVE"
+ln -sf "$WLOGOUT_THEMES/$WLOGOUT_FILE" "$WLOGOUT_ACTIVE"
 
 # Apply hyprland border colors instantly
 hyprctl keyword general:col.active_border "${HYPR_ACTIVE_BORDER[$CHOICE]}"
@@ -102,9 +116,6 @@ swaync-client --reload-css &disown
 
 # Reload kitty
 pkill -USR1 kitty
-
-# Notify
-notify-send "Theme Switcher" "Switched to $CHOICE" --icon=preferences-desktop-theme
 
 # Notify
 notify-send "Theme Switcher" "Switched to $CHOICE" --icon=preferences-desktop-theme
