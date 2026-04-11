@@ -6,6 +6,9 @@ A Hyprland rice with a custom One Dark-based palette, centered island Waybar, an
 ## 📸 Preview
 ![Desktop](screenshots/1.png)
 ![Desktop2](screenshots/2.png)
+![Desktop3](screenshots/3.png)
+![Desktop4](screenshots/4.png)
+![Desktop5](screenshots/5.png)
 
 ---
 
@@ -95,7 +98,7 @@ nvidia-open-dkms nvidia-settings libva-nvidia-driver
 ### 🌐 Apps
 ```
 firefox google-chrome visual-studio-code-bin
-pavucontrol nautilus
+pavucontrol dolphin
 ```
 
 ---
@@ -145,7 +148,7 @@ cp -r ~/dotfiles/wlogout ~/.config/
 
 4. Make wallpaper script executable:
 ```bash
-chmod +x ~/.config/hypr/scripts/wallpaper.sh
+chmod +x ~/.config/rofi/wallpaper-pick.sh
 ```
 
 5. Log into Hyprland.
