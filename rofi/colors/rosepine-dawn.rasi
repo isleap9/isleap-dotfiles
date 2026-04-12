@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Rosé Pine Dawn
+ **/
+* {
+    background:     #fffaf3FF;   /* surface */
+    background-alt: #f2e9e1FF;    /* base */
+    foreground:     #575279FF;   /* text */
+    selected:       #907aa9FF;   /* iris — matches waybar accent */
+    active:         #56949fFF;   /* foam */
+    urgent:         #b4637aFF;   /* love */
+}

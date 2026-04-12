@@ -18,37 +18,58 @@ WLOGOUT_ACTIVE="$HOME/.config/wlogout/style.css"
 declare -A WAYBAR_THEME=(
     ["  One Dark"]="onedark.css"
     ["  Catppuccin Mocha"]="catppuccin-mocha.css"
+    ["  Gruvbox Dark"]="gruvbox.css"
+    ["  Rosé Pine Moon"]="rosepine-moon.css" 
+    ["  Rosé Pine Dawn"]="rosepine-dawn.css" 
 )
 
 declare -A ROFI_THEME=(
     ["  One Dark"]="isleaponedark.rasi"
     ["  Catppuccin Mocha"]="catppuccin-mocha.rasi"
+    ["  Gruvbox Dark"]="gruvbox.rasi"
+    ["  Rosé Pine Moon"]="rosepine-moon.rasi"
+    ["  Rosé Pine Dawn"]="rosepine-dawn.rasi"
 )
 
 declare -A SWAYNC_THEME=(
     ["  One Dark"]="onedark.css"
     ["  Catppuccin Mocha"]="catppuccin-mocha.css"
+    ["  Gruvbox Dark"]="gruvbox.css"
+    ["  Rosé Pine Moon"]="rosepine-moon.css" 
+    ["  Rosé Pine Dawn"]="rosepine-dawn.css" 
 )
 
 declare -A KITTY_THEME=(
     ["  One Dark"]="onedark.conf"
     ["  Catppuccin Mocha"]="catppuccin-mocha.conf"
+    ["  Gruvbox Dark"]="gruvbox.conf"
+    ["  Rosé Pine Moon"]="rosepine-moon.conf"
+    ["  Rosé Pine Dawn"]="rosepine-dawn.conf" 
 )
 
 declare -A WLOGOUT_THEME=(
     ["  One Dark"]="onedark.css"
     ["  Catppuccin Mocha"]="catppuccin-mocha.css"
+    ["  Gruvbox Dark"]="gruvbox.css"
+    ["  Rosé Pine Moon"]="rosepine-moon.css" 
+    ["  Rosé Pine Dawn"]="rosepine-dawn.css" 
 )
 
 # Hyprland border colors per theme
 declare -A HYPR_ACTIVE_BORDER=(
     ["  One Dark"]="rgb(61AFEF)"
     ["  Catppuccin Mocha"]="rgb(cba6f7)"
+    ["  Gruvbox Dark"]="rgb(fabd2f)"
+    ["  Rosé Pine Moon"]="rgb(c4a7e7)" 
+    ["  Rosé Pine Dawn"]="rgb(907aa9)"
 )
 
 declare -A HYPR_INACTIVE_BORDER=(
     ["  One Dark"]="rgb(282C34)"
     ["  Catppuccin Mocha"]="rgb(1e1e2e)"
+    ["  Gruvbox Dark"]="rgb(282828)"
+    ["  Rosé Pine Moon"]="rgb(232136)"
+    ["  Rosé Pine Dawn"]="rgb(dfdad9)"
 )
 
 # Build menu

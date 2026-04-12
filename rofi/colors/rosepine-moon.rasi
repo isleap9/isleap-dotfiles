@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Rosé Pine Moon
+ **/
+* {
+    background:     #2a273fFF;   /* surface */
+    background-alt: #232136FF;   /* base */
+    foreground:     #e0def4FF;   /* text */
+    selected:       #c4a7e7FF;   /* iris — matches waybar accent */
+    active:         #9ccfd8FF;   /* foam */
+    urgent:         #eb6f92FF;   /* love */
+}

@@ -1,16 +1,15 @@
 /**
  *
- * Author : Aditya Shakya (adi1090x)
- * Github : @adi1090x
- * 
- * Colors
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Gruvbox Dark
  **/
-
 * {
-    background:     #282828FF;
-    background-alt: #353535FF;
-    foreground:     #EBDBB2FF;
-    selected:       #83A598FF;
-    active:         #B8BB26FF;
-    urgent:         #FB4934FF;
+    background:     #3c3836FF;   /* bg1 */
+    background-alt: #282828FF;   /* bg0 */
+    foreground:     #ebdbb2FF;   /* fg1 */
+    selected:       #fabd2fFF;   /* bright yellow — matches waybar accent */
+    active:         #b8bb26FF;   /* bright green */
+    urgent:         #fb4934FF;   /* bright red */
 }

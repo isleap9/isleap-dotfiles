@@ -1,0 +1,22 @@
+@define-color bg0           #232136;   /* base */
+@define-color bg1           #2a273f;   /* surface */
+@define-color bg2           #393552;   /* overlay */
+@define-color bg3           #44415a;   /* muted */
+@define-color bg4           #56526e;   /* subtle */
+@define-color fg1           #e0def4;   /* text */
+@define-color fg2           #6e6a86;   /* muted — inactive */
+@define-color surface       #908caa;   /* subtle */
+@define-color red           #eb6f92;   /* love */
+@define-color orange        #ea9a97;   /* rose */
+@define-color yellow        #f6c177;   /* gold */
+@define-color green         #3e8fb0;   /* pine */
+@define-color cyan          #9ccfd8;   /* foam */
+@define-color aqua          #9ccfd8;   /* foam */
+@define-color blue          #3e8fb0;   /* pine */
+@define-color purple        #c4a7e7;   /* iris */
+@define-color gray0         #6e6a86;   /* muted */
+@define-color gray1         #908caa;   /* subtle */
+@define-color gray2         #e0def4;   /* text */
+@define-color special-blue  #3e8fb0;   /* pine */
+@define-color special-white #e0def4;   /* text */
+@define-color accent        #c4a7e7;   /* iris */
