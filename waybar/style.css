@@ -24,7 +24,6 @@ tooltip {
 }
 
 .modules-right {
-    font-size: 16;
     font-weight: 900;
     background-color: @bg1;
     color: @fg1;

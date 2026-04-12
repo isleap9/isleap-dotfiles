@@ -16,6 +16,7 @@ button {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 25%;
+    margin: 8px;
 }
 button:focus, button:active, button:hover {
     background-color: #528bff;
