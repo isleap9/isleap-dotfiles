@@ -24,12 +24,7 @@ tooltip {
 }
 
 .modules-right {
-    font-weight: 900;
-    background-color: @bg1;
-    color: @fg1;
-    padding: 4px 18px;
-    border-radius: 99px;
-    margin-right: 30px;
+
 }
 
 #custom-arch {
@@ -101,16 +96,45 @@ window#waybar {
     background: transparent;
 }
 
-#temperature.critical {
-    background-color: @red;
-
+#tray {
+    font-weight: 900;
+    background-color: @bg1;
+    color: @fg1;
+    padding: 4px 18px;
+    border-radius: 99px;
 }
 
-#tray {
+#language {
+    font-weight: 900;
     background-color: @bg1;
+    color: @fg1;
+    padding: 4px 18px;
     border-radius: 99px;
-    padding: 2px 8px;
-    margin: 3px 0;
+}
+
+#pulseaudio {
+    font-weight: 900;
+    background-color: @bg1;
+    color: @fg1;
+    padding: 4px 18px;
+    border-radius: 99px;
+}
+
+#network {
+    font-weight: 900;
+    background-color: @bg1;
+    color: @fg1;
+    padding: 4px 18px;
+    border-radius: 99px;
+}
+
+#custom-power {
+    font-weight: 900;
+    background-color: @bg1;
+    color: @fg1;
+    padding: 4px 18px;
+    border-radius: 99px;
+    margin-right: 30px;
 }
 
 menu {

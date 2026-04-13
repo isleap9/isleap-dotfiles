@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Monokai Pro Classic
+ **/
+* {
+    background:     #1e1f1cFF;   /* background dark */
+    background-alt: #272822FF;   /* background */
+    foreground:     #f8f8f2FF;   /* foreground */
+    selected:       #f92672FF;   /* pink accent */
+    active:         #a6e22eFF;   /* green */
+    urgent:         #f92672FF;   /* red */
+}

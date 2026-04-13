@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Cyberdream
+ **/
+* {
+    background:     #1e2124FF;
+    background-alt: #16181aFF;
+    foreground:     #ffffffff;
+    selected:       #df80ffFF;   /* neon purple */
+    active:         #5eff6cFF;   /* neon green */
+    urgent:         #ff6e6eFF;   /* neon red */
+}

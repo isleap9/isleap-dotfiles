@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * E-Ink Minimal
+ **/
+* {
+    background:     #e8e8e8FF;
+    background-alt: #d0d0d0FF;
+    foreground:     #1a1a1aFF;
+    selected:       #1a1a1aFF;
+    active:         #555555FF;
+    urgent:         #cc3333FF;
+}

@@ -16,7 +16,7 @@ configuration {
 * {
     background-color:   @background;
     text-color:         @foreground;
-    border-color:       #838484;
+    border-color:       @selected;
 }
 
 window {
@@ -24,7 +24,7 @@ window {
     height:             800px;
     border:             2px solid;
     border-radius:      12px;
-    border-color:       #838484;
+    border-color:       @selected;
     background-color:   @background;
 }
 
@@ -83,8 +83,9 @@ element normal.normal {
 element selected.normal {
     background-color:   @selected;
     border:             2px solid;
-    border-color:       #838484;
+    border-color:       @selected;
     border-radius:      8px;
+    text-color:         @background;
 }
 
 element alternate.normal {
@@ -102,7 +103,7 @@ element-text {
     vertical-align:     0.5;
     margin:             6px 0 0 0;
     font:               "Google Sans Display 10";
-    text-color:         @foreground;
+    text-color:         inherit;
     background-color:   transparent;
     cursor:             inherit;
 }

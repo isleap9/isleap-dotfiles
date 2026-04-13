@@ -1,0 +1,22 @@
+@define-color bg0           #272822;   /* background */
+@define-color bg1           #1e1f1c;   /* background dark */
+@define-color bg2           #2d2e27;   /* surface */
+@define-color bg3           #383830;   /* surface bright */
+@define-color bg4           #49483e;   /* overlay */
+@define-color fg1           #f8f8f2;   /* foreground */
+@define-color fg2           #75715e;   /* comment — muted */
+@define-color surface       #908b7d;   /* subtle */
+@define-color red           #f92672;   /* red/pink */
+@define-color orange        #fd971f;   /* orange */
+@define-color yellow        #e6db74;   /* yellow */
+@define-color green         #a6e22e;   /* green */
+@define-color cyan          #66d9e8;   /* cyan */
+@define-color aqua          #66d9e8;   /* cyan */
+@define-color blue          #66d9e8;   /* cyan (monokai uses cyan as blue) */
+@define-color purple        #ae81ff;   /* purple */
+@define-color gray0         #75715e;   /* comment */
+@define-color gray1         #908b7d;   /* subtle */
+@define-color gray2         #c0bfae;   /* fg dark */
+@define-color special-blue  #66d9e8;   /* cyan */
+@define-color special-white #f8f8f2;   /* foreground */
+@define-color accent        #f92672;   /* pink accent */

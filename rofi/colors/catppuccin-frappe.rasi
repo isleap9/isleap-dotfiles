@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Catppuccin Frappe
+ **/
+* {
+    background:     #292c3cFF;   /* mantle */
+    background-alt: #303446FF;   /* base */
+    foreground:     #c6d0f5FF;   /* text */
+    selected:       #ca9ee6FF;   /* mauve */
+    active:         #a6d189FF;   /* green */
+    urgent:         #e78284FF;   /* red */
+}

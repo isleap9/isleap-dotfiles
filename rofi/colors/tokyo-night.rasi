@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Tokyo Night
+ **/
+* {
+    background:     #16161eFF;   /* background dark */
+    background-alt: #1a1b26FF;   /* background */
+    foreground:     #c0caf5FF;   /* foreground */
+    selected:       #7aa2f7FF;   /* blue accent */
+    active:         #9ece6aFF;   /* green */
+    urgent:         #f7768eFF;   /* red */
+}

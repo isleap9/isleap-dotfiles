@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Catppuccin Latte
+ **/
+* {
+    background:     #e6e9efFF;   /* mantle */
+    background-alt: #ccd0daFF;   /* surface0 */
+    foreground:     #4c4f69FF;   /* text */
+    selected:       #8839efFF;   /* mauve */
+    active:         #40a02bFF;   /* green */
+    urgent:         #d20f39FF;   /* red */
+}

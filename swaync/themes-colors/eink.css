@@ -1,0 +1,22 @@
+@define-color bg0           #d0c8c0;   /* panel base */
+@define-color bg1           #d8d0c8;   /* card surface */
+@define-color bg2           #c0b8b0;   /* overlay */
+@define-color bg3           #b0b0b0;   /* darker gray */
+@define-color bg4           #909090;   /* muted gray */
+@define-color fg1           #1a1a1a;   /* near black */
+@define-color fg2           #707070;   /* muted text */
+@define-color surface       #808080;   /* surface gray */
+@define-color red           #cc3333;   /* muted red */
+@define-color orange        #cc6633;   /* muted orange */
+@define-color yellow        #888800;   /* muted yellow */
+@define-color green         #336633;   /* muted green */
+@define-color cyan          #336666;   /* muted cyan */
+@define-color aqua          #336666;   /* muted aqua */
+@define-color blue          #334466;   /* muted blue */
+@define-color purple        #553366;   /* muted purple */
+@define-color gray0         #707070;
+@define-color gray1         #909090;
+@define-color gray2         #b0b0b0;
+@define-color special-blue  #334466;
+@define-color special-white #1a1a1a;
+@define-color accent        #1a1a1a;

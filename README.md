@@ -6,7 +6,10 @@ A Hyprland rice with a dynamic theme switcher supporting One Dark and Catppuccin
 ## 📸 Preview
 ![Desktop](screenshots/1.png)
 ![Desktop2](screenshots/2.png)
-
+![Desktop2](screenshots/3.png)
+![Desktop2](screenshots/4.png)
+![Desktop2](screenshots/5.png)
+![Desktop2](screenshots/6.png)
 ---
 
 ## 🖥️ System Info
@@ -20,7 +23,7 @@ A Hyprland rice with a dynamic theme switcher supporting One Dark and Catppuccin
 | **Launcher** | Rofi |
 | **Notifications** | Swaync |
 | **File Manager** | Dolphin |
-| **Wallpaper** | Waypaper + awww |
+| **Wallpaper** | awww |
 | **Theming** | One Dark / Catppuccin Mocha (switchable) |
 | **Cursor** | Bibata-Modern-Ice |
 | **GPU** | NVIDIA (nvidia-open-dkms) |
