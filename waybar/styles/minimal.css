@@ -7,13 +7,13 @@
 
 tooltip {
     background-color: @bg1;
-    color: @fg;
+    color: @fg1;
     border-radius: 12px;
 }
  
 .modules-center {
     background-color: @bg1;
-    color: @fg;
+    color: @fg1;
     padding: 4px 18px;
     border-radius: 99px;
      transition: all 300ms ease-in-out;
@@ -63,6 +63,10 @@ tooltip {
 
 window#waybar {
     background: transparent;
+}
+
+#mpris {
+    font-weight: 900;
 }
 
 #tray {
