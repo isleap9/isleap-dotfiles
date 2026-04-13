@@ -144,6 +144,48 @@ declare -A HYPR_INACTIVE_BORDER=(
     ["  Catppuccin Latte"]="rgb(eff1f5)" 
 )
 
+declare -A CAL_MONTHS=(
+    ["  One Dark"]="#61AFEF"
+    ["  Catppuccin Mocha"]="#cba6f7"
+    ["  Gruvbox Dark"]="#fabd2f"
+    ["  Rosé Pine Moon"]="#c4a7e7"
+    ["  Rosé Pine Dawn"]="#907aa9"
+    ["  E-Ink"]="#333333"
+    ["  Tokyo Night"]="#7aa2f7"
+    ["  Monokai Pro"]="#f92672"
+    ["  Cyberdream"]="#df80ff"
+    ["  Catppuccin Frappe"]="#ca9ee6"
+    ["  Catppuccin Latte"]="#8839ef"
+)
+
+declare -A CAL_DAYS=(
+    ["  One Dark"]="#abb2bf"
+    ["  Catppuccin Mocha"]="#cdd6f4"
+    ["  Gruvbox Dark"]="#ebdbb2"
+    ["  Rosé Pine Moon"]="#e0def4"
+    ["  Rosé Pine Dawn"]="#575279"
+    ["  E-Ink"]="#333333"
+    ["  Tokyo Night"]="#c0caf5"
+    ["  Monokai Pro"]="#fcfcfa"
+    ["  Cyberdream"]="#ffffff"
+    ["  Catppuccin Frappe"]="#c6d0f5"
+    ["  Catppuccin Latte"]="#4c4f69"
+)
+
+declare -A CAL_WEEKDAYS=(
+    ["  One Dark"]="#e5c07b"
+    ["  Catppuccin Mocha"]="#f9e2af"
+    ["  Gruvbox Dark"]="#fabd2f"
+    ["  Rosé Pine Moon"]="#f6c177"
+    ["  Rosé Pine Dawn"]="#ea9d34"
+    ["  E-Ink"]="#333333"
+    ["  Tokyo Night"]="#e0af68"
+    ["  Monokai Pro"]="#ffd866"
+    ["  Cyberdream"]="#f6f600"
+    ["  Catppuccin Frappe"]="#e5c890"
+    ["  Catppuccin Latte"]="#df8e1d"
+)
+
 # Build menu
 MENU=$(printf '%s\n' "${!WAYBAR_THEME[@]}" | sort)
 
@@ -203,6 +245,15 @@ ln -sf "$SWAYNC_THEMES/$SWAYNC_FILE" "$SWAYNC_ACTIVE"
 ln -sf "$KITTY_THEMES/$KITTY_FILE" "$KITTY_ACTIVE"
 ln -sf "$WLOGOUT_THEMES/$WLOGOUT_FILE" "$WLOGOUT_ACTIVE"
 ln -sf "$HYPR_THEMES/$HYPR_FILE" "$HYPR_ACTIVE"
+
+# Update calendar colors
+for CONFIG in \
+    "$HOME/.config/waybar/configs/default.jsonc" \
+    "$HOME/.config/waybar/configs/default2.jsonc"; do
+    sed -i "s|\"months\": \"<span color='[^']*'>|\"months\": \"<span color='${CAL_MONTHS[$CHOICE]}'>|g" "$CONFIG"
+    sed -i "s|\"days\": \"<span color='[^']*'>|\"days\": \"<span color='${CAL_DAYS[$CHOICE]}'>|g" "$CONFIG"
+    sed -i "s|\"weekdays\": \"<span color='[^']*'>|\"weekdays\": \"<span color='${CAL_WEEKDAYS[$CHOICE]}'>|g" "$CONFIG"
+done
 
 # Apply hyprland border colors instantly (runtime)
 hyprctl keyword general:col.active_border "${HYPR_ACTIVE_BORDER[$CHOICE]}"

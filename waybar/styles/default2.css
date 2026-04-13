@@ -6,9 +6,10 @@
 }
 
 tooltip {
-    background-color: @bg0;
+    background-color: @bg1;
     color: @fg1;
     border-radius: 12px;
+    margin: 0px 2px;
 }
  
 .modules-left {
@@ -166,7 +167,7 @@ menuitem:hover {
 }
 
 menuitem:hover label {
-    color: @special-white;
+    color: @fg1;
 }
 
 #custom-weather.severe {
