@@ -1,5 +1,5 @@
 # 🌸 isleap's dotfiles
-A Hyprland rice with a dynamic theme switcher supporting One Dark and Catppuccin Mocha, centered island Waybar, and a clean minimal aesthetic.
+A Hyprland rice with a dynamic theme switcher supporting multiple themes, centered island Waybar, and a clean minimal aesthetic.
 
 ---
 
@@ -10,6 +10,7 @@ A Hyprland rice with a dynamic theme switcher supporting One Dark and Catppuccin
 ![Desktop2](screenshots/4.png)
 ![Desktop2](screenshots/5.png)
 ![Desktop2](screenshots/6.png)
+
 ---
 
 ## 🖥️ System Info
@@ -24,7 +25,8 @@ A Hyprland rice with a dynamic theme switcher supporting One Dark and Catppuccin
 | **Notifications** | Swaync |
 | **File Manager** | Dolphin |
 | **Wallpaper** | awww |
-| **Theming** | One Dark / Catppuccin Mocha (switchable) |
+| **Idle Daemon** | Hypridle |
+| **Lock Screen** | Hyprlock (BlazinLock) |
 | **Cursor** | Bibata-Modern-Ice |
 | **GPU** | NVIDIA (nvidia-open-dkms) |
 
@@ -34,7 +36,7 @@ A Hyprland rice with a dynamic theme switcher supporting One Dark and Catppuccin
 
 ### 🪟 Hyprland & WM
 ```
-hyprland polkit-kde-agent hyprshot
+hyprland hypridle hyprlock polkit-gnome hyprshot
 ```
 
 ### 📊 Bar & Notifications
@@ -44,7 +46,7 @@ waybar swaync
 
 ### 🖼️ Wallpaper
 ```
-awww waypaper
+awww
 ```
 
 ### 🚀 App Launcher
@@ -86,7 +88,7 @@ bibata-cursor-theme
 
 ### 🛠️ Utilities
 ```
-wl-clip-persist wlogout nwg-look nwg-displays
+wl-clip-persist wlogout nwg-look nwg-displays brightnessctl
 starship fastfetch htop nano git wget
 ```
 
@@ -111,8 +113,24 @@ This rice uses a **dynamic theme switcher** that updates all components simultan
 - Rofi
 - Hyprland borders
 - Kitty terminal
+- Wlogout
+- Dolphin (via KDE color schemes)
 
-Available themes: **One Dark** and **Catppuccin Mocha**
+### Available Themes
+
+| Theme | Type |
+|---|---|
+| **One Dark** | Dark |
+| **Catppuccin Mocha** | Dark |
+| **Catppuccin Frappé** | Dark |
+| **Catppuccin Latte** | Light |
+| **Gruvbox Dark** | Dark |
+| **Rosé Pine Moon** | Dark |
+| **Rosé Pine Dawn** | Light |
+| **Tokyo Night** | Dark |
+| **Monokai Pro** | Dark |
+| **Cyberdream** | Dark |
+| **E-Ink** | Light |
 
 Each app reads colors from a shared `active` symlink inside its own themes folder. Switching themes repoints all symlinks and reloads each app automatically.
 
@@ -126,6 +144,7 @@ Each app reads colors from a shared `active` symlink inside its own themes folde
 | `Super + N` | Toggle notification center (Swaync) |
 | `Super + T` | Open terminal (Kitty) |
 | `Super + E` | Open file manager (Dolphin) |
+| `Super + L` | Lock screen (BlazinLock) |
 | `Super + Shift + S` | Screenshot region |
 | `Super + Shift + T` | Open theme switcher |
 
@@ -150,21 +169,30 @@ cp -r ~/dotfiles/swaync ~/.config/
 cp -r ~/dotfiles/wlogout ~/.config/
 ```
 
-4. Create theme symlinks (defaults to One Dark):
+4. Copy KDE color schemes:
+```bash
+mkdir -p ~/.local/share/color-schemes
+cp ~/dotfiles/color-schemes/*.colors ~/.local/share/color-schemes/
+```
+
+5. Create theme symlinks (defaults to One Dark):
 ```bash
 ln -sf ~/.config/waybar/themes/onedark.css ~/.config/waybar/themes/active.css
 ln -sf ~/.config/rofi/colors/isleaponedark.rasi ~/.config/rofi/colors/active.rasi
 ln -sf ~/.config/swaync/themes-colors/onedark.css ~/.config/swaync/themes-colors/active.css
 ln -sf ~/.config/kitty/themes/onedark.conf ~/.config/kitty/themes/active.conf
+ln -sf ~/.config/wlogout/themes/onedark.css ~/.config/wlogout/style.css
+ln -sf ~/.config/hypr/modules/themes/onedark.conf ~/.config/hypr/modules/active.conf
 ```
 
-5. Make scripts executable:
+6. Make scripts executable:
 ```bash
 chmod +x ~/.config/waybar/scripts/theme-switcher.sh
-chmod +x ~/.config/rofi/wallpaper-pick.sh
+chmod +x ~/.config/waybar/scripts/launch.sh
+chmod +x ~/.config/rofi/wallpaper-picker.sh
 ```
 
-6. Log into Hyprland.
+7. Log into Hyprland.
 
 ---
 
@@ -172,14 +200,18 @@ chmod +x ~/.config/rofi/wallpaper-pick.sh
 ```
 dotfiles/
 ├── hypr/                        # Hyprland config + keybinds + modules
-│   └── modules/themes/          # Border color themes (onedark.conf, catppuccin-mocha.conf)
+│   └── modules/
+│       └── themes/              # Border color themes per theme
 ├── waybar/                      # Waybar config + styles
-│   └── themes/                  # Color themes (onedark.css, catppuccin-mocha.css)
+│   ├── themes/                  # Color themes (.css files)
+│   └── scripts/                 # launch.sh, theme-switcher.sh, weather, etc.
 ├── rofi/                        # Rofi launcher + styles
 │   └── colors/                  # Color themes (.rasi files)
 ├── kitty/                       # Kitty terminal config
-│   └── themes/                  # Color themes (onedark.conf, catppuccin-mocha.conf)
+│   └── themes/                  # Color themes (.conf files)
 ├── swaync/                      # Swaync notification center
-│   └── themes-colors/           # Color themes (onedark.css, catppuccin-mocha.css)
-└── wlogout/                     # Wlogout logout screen
+│   └── themes-colors/           # Color themes (.css files)
+├── wlogout/                     # Wlogout logout screen
+│   └── themes/                  # Color themes (.css files)
+└── color-schemes/               # KDE color schemes for Dolphin (.colors files)
 ```
