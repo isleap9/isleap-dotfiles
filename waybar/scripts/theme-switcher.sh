@@ -213,7 +213,9 @@ hyprctl keyword general:col.inactive_border "${HYPR_INACTIVE_BORDER[$CHOICE]}"
 plasma-apply-colorscheme "${KDE_THEME[$CHOICE]}"
 
 # Reload waybar
-pkill waybar && waybar &disown
+LAYOUT=$(cat "$HOME/.config/waybar/current-layout" 2>/dev/null || echo "default")
+pkill waybar
+waybar --config "$HOME/.config/waybar/configs/${LAYOUT}.jsonc" --style "$HOME/.config/waybar/styles/${LAYOUT}.css" &disown
 
 # Reload swaync
 swaync-client --reload-css &disown

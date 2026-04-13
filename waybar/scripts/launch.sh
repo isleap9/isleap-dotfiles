@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-pkill waybar
-pkil swaync
+LAYOUT=$(cat "$HOME/.config/waybar/current-layout" 2>/dev/null || echo "default")
 
-waybar &
+pkill waybar
+pkill swaync
+waybar --config "$HOME/.config/waybar/configs/${LAYOUT}.jsonc" --style "$HOME/.config/waybar/styles/${LAYOUT}.css" &
 swaync &

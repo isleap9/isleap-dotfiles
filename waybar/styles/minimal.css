@@ -1,0 +1,143 @@
+@import "/home/isleap/.config/waybar/themes/active.css";
+
+* {
+    all: unset;
+    font-family: "Google Sans Display", "JetBrainsMono Nerd font Propo", "Rubik", "Noto Sans CJK JP", "Noto sans CJK KR";
+}
+
+tooltip {
+    background-color: @bg1;
+    color: @fg;
+    border-radius: 12px;
+}
+ 
+.modules-center {
+    background-color: @bg1;
+    color: @fg;
+    padding: 4px 18px;
+    border-radius: 99px;
+     transition: all 300ms ease-in-out;
+}
+
+#custom-arch {
+    font-size: 20px;
+}
+
+#custom-weather {
+    font-weight: 900;
+}
+
+#clock {
+    font-weight: 900;
+}
+
+#workspaces {
+    min-width: 100px;
+    background-color: @bg2;
+    font-size: 0.95rem;
+    padding: 2px 3px;
+    margin: 3px 0;
+    border-radius: 99px;
+}
+
+#workspaces button {
+    background-color: @bg3;
+    padding: 0px 5px;
+    border-radius: 99px;
+    margin: 0 2px;
+    transition: all 300ms ease-in-out;
+    min-width: 7px;
+}
+
+#workspaces button.empty {
+    color: @fg1
+}
+
+#workspaces button.active {
+    background-color: @accent;
+    color: @bg1;
+    min-width: 1.5rem;
+    font-weight: 500;
+    transition: none;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+#tray {
+    font-weight: 900;
+    background-color: @bg0;
+    border-radius: 99px;
+    padding: 2px 8px;
+    margin: 3px 0;
+}
+
+#language {
+    font-weight: 900;
+}
+
+#pulseaudio {
+    font-weight: 900;
+}
+
+#custom-power {
+    font-size: 15px;
+    font-weight: 900;
+}
+
+menu {
+    font-weight: 900;
+    background-color: @bg1;
+    color: @fg1;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+menuitem {
+    font-weight: 900;
+    background-color: @bg1;
+    color: @fg1;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+menuitem label {
+    color: @fg1;
+}
+
+menuitem:hover {
+    background-color: @bg3;
+}
+
+menuitem:hover label {
+    color: @special-white;
+}
+
+#custom-weather.severe {
+    color: #eb937d;
+}
+
+#custom-weather.sunnyDay {
+    color: #c2ca76;
+}
+
+#custom-weather.clearNight {
+    color: #2b2b2a;
+}
+
+#custom-weather.cloudyFoggyDay, #custom-weather.cloudyFoggyNight {
+    color: #c2ddda;
+}
+
+#custom-weather.rainyDay, #custom-weather.rainyNight {
+    color: #5aaca5;
+}
+
+#custom-weather.snowyIcyDay, #custom-weather.snowyIcyNight {
+    color: #d6e7e5;
+}
+
+#custom-weather.default {
+    color: #dbd9d8;
+}
