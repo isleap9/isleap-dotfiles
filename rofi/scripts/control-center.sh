@@ -29,7 +29,7 @@ case "$CHOICE" in
     *"Rofi Layout")        bash "$SCRIPTS/rofi-layout.sh" ;;
     *"Theme Switcher")     bash "$HOME/.config/waybar/scripts/theme-switcher.sh" ;;
     *"Wallpaper Switcher") bash "$SCRIPTS/wallpaper-picker.sh" ;;
-    *"Clipboard")          cliphist list | rofi -dmenu -display-columns 2 -p "Clipboard" -theme "$ROFI_THEME" | cliphist decode | wl-copy ;;
+    *"Clipboard")          bash "$SCRIPTS/clipboard.sh" ;;
     *"Capture")            bash "$SCRIPTS/capture.sh" ;;
     *"Emoji")              bash "$SCRIPTS/emoji.sh" ;;
     *"Cheatsheet")         bash "$SCRIPTS/cheatsheet.sh" ;;

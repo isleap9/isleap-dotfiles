@@ -6,6 +6,7 @@ WAYBAR_STYLES="$HOME/.config/waybar/styles"
 LAYOUT_FILE="$HOME/.config/waybar/current-layout"
 
 CHOICE=$(printf '%s\n' \
+	"󰁍  Back" \
     "  Default" \
     "  Default 2" \
     "  Minimal" \
@@ -16,6 +17,7 @@ CHOICE=$(printf '%s\n' \
         -theme "$ROFI_THEME")
 
 case "$CHOICE" in
+	*"Back")      bash "$HOME/.config/rofi/scripts/control-center.sh" ;;
     *"Default")   echo "default"  > "$LAYOUT_FILE" ;;
     *"Default 2") echo "default2" > "$LAYOUT_FILE" ;;
     *"Minimal")   echo "minimal"  > "$LAYOUT_FILE" ;;
