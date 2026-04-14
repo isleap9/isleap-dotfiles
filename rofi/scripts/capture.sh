@@ -16,8 +16,6 @@ CHOICE=$(printf '%s\n' \
 
 [ -z "$CHOICE" ] && exit 0
 
-notify-send "Debug" "Choice: $CHOICE"
-
 case "$CHOICE" in
 	*"Back")       bash "$HOME/.config/rofi/scripts/control-center.sh" ;;
     *"Region")     sleep 0.2; hyprshot -m region --output-folder "$SCREENSHOTS" ;;
