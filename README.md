@@ -141,7 +141,7 @@ Each app reads colors from a shared `active` symlink inside its own themes folde
 |---|---|
 | `Super + A` | Open app launcher (Rofi) |
 | `Super + Shift + W` | Open wallpaper selector (Rofi) |
-| `Super + Shift + E` | Open Global Menu (Rofi) |
+| `Super + Shift + E` | Open global menu (Rofi) |
 | `Super + N` | Toggle notification center (Swaync) |
 | `Super + T` | Open terminal (Kitty) |
 | `Super + E` | Open file manager (Dolphin) |
