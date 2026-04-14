@@ -24,7 +24,11 @@ tooltip {
 }
 
 .modules-right {
-
+    background-color: @bg1;
+    color: @fg1;
+    padding: 4px 18px;
+    border-radius: 99px;
+    margin-right: 30;
 }
 
 #custom-arch {
@@ -106,35 +110,18 @@ window#waybar {
 
 #language {
     font-weight: 900;
-    background-color: @bg1;
-    color: @fg1;
-    padding: 4px 18px;
-    border-radius: 99px;
 }
 
 #pulseaudio {
     font-weight: 900;
-    background-color: @bg1;
-    color: @fg1;
-    padding: 4px 18px;
-    border-radius: 99px;
 }
 
 #network {
     font-weight: 900;
-    background-color: @bg1;
-    color: @fg1;
-    padding: 4px 18px;
-    border-radius: 99px;
 }
 
 #custom-power {
-    font-weight: 900;
-    background-color: @bg1;
-    color: @fg1;
-    padding: 4px 18px;
-    border-radius: 99px;
-    margin-right: 30px;
+    font-size: 15px;
 }
 
 menu {

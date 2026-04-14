@@ -16,7 +16,7 @@ tooltip {
     color: @fg1;
     padding: 4px 18px;
     border-radius: 99px;
-     transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
 }
 
 #custom-arch {
@@ -33,7 +33,7 @@ tooltip {
 
 #workspaces {
     min-width: 100px;
-    background-color: @bg2;
+    background-color: @bg3;
     font-size: 0.95rem;
     padding: 2px 3px;
     margin: 3px 0;
@@ -41,7 +41,7 @@ tooltip {
 }
 
 #workspaces button {
-    background-color: @bg3;
+    background-color: @fg2;
     padding: 0px 5px;
     border-radius: 99px;
     margin: 0 2px;
@@ -71,7 +71,7 @@ window#waybar {
 
 #tray {
     font-weight: 900;
-    background-color: @bg0;
+    background-color: @bg1;
     border-radius: 99px;
     padding: 2px 8px;
     margin: 3px 0;
