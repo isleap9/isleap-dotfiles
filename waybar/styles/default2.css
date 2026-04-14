@@ -64,7 +64,7 @@ tooltip {
 }
 
 #workspaces {
-    padding: 2px 3px;
+    padding: 3px 4px;
     border-radius: 99px;
     margin: 3px 0px;
     background-color: @bg1;
@@ -73,7 +73,7 @@ tooltip {
 
 #workspaces button {
     border-radius: 99px;
-    margin: 0px 2px;
+    margin: 0px 4px;
     color: transparent;
     background-color: @bg3;
     transition: all 0.3s ease-in-out;
@@ -92,9 +92,9 @@ tooltip {
 #workspaces button.active {
     background-color: @accent;
     color: @bg1;
-    min-width: 40px;
+    min-width: 55px;
     min-height: 18px;
-    padding: 8px 12px;
+    padding: 8px 16px;
 }
 
 #workspaces button:hover {
