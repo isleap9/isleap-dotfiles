@@ -9,7 +9,6 @@ tooltip {
     background-color: @bg1;
     color: @fg1;
     border-radius: 12px;
-    margin: 0px 2px;
 }
  
 .modules-left {
@@ -19,7 +18,6 @@ tooltip {
 .modules-center {
     background-color: @bg1;
     color: @fg1;
-    
     border-radius: 99px;
     transition: all 300ms ease-in-out;
 }
@@ -33,7 +31,7 @@ tooltip {
     background-color: @bg1;
     color: @fg1;
     padding: 4px 18px;
-    border-radius: 99px;
+    border-radius: 50px;
     margin-left: 30px;
 }
 
@@ -67,6 +65,7 @@ tooltip {
     padding: 3px 4px;
     border-radius: 99px;
     margin: 3px 0px;
+    font-size: 0.95rem;
     background-color: @bg1;
     transition: background-color 0.2s ease-in-out;
 }
@@ -79,7 +78,7 @@ tooltip {
     transition: all 0.3s ease-in-out;
     min-width: 16px;
     min-height: 16px;
-    padding: 8px 10px;
+    padding: 5px 6px;
 }
 
 #workspaces button.empty {
@@ -92,9 +91,9 @@ tooltip {
 #workspaces button.active {
     background-color: @accent;
     color: @bg1;
-    min-width: 55px;
+    min-width: 40px;
     min-height: 18px;
-    padding: 8px 16px;
+    padding: 5px 16px;
 }
 
 #workspaces button:hover {

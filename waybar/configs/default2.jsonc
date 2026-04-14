@@ -118,7 +118,7 @@
         "format-it": "IT"
     },
     "pulseaudio": {
-        "format": "{volume}%  {icon}",
+        "format": "{icon}  {volume}%",
         "format-bluetooth": "{volume}%  󰂯",
         "format-muted": "Muted  ",
         "format-icons": {
