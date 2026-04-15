@@ -100,7 +100,7 @@ nvidia-open-dkms nvidia-settings libva-nvidia-driver
 ### 🌐 Apps
 ```
 firefox google-chrome visual-studio-code-bin
-pavucontrol dolphin
+pavucontrol dolphin rofimoji
 ```
 
 ---
@@ -168,6 +168,7 @@ cp -r ~/dotfiles/rofi ~/.config/
 cp -r ~/dotfiles/kitty ~/.config/
 cp -r ~/dotfiles/swaync ~/.config/
 cp -r ~/dotfiles/wlogout ~/.config/
+cp -r ~/dotfiles/cliphist ~/.config/
 ```
 
 4. Copy KDE color schemes:

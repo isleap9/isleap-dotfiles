@@ -6,7 +6,7 @@ LAYOUT_FILE="$HOME/.config/rofi/current-layout"
 CHOICE=$(printf '%s\n' \
 	"󰁍  Back" \
     "  Default" \
-    "  Showcase" \
+    "  Minimal" \
     | rofi -dmenu \
         -p "Rofi Layout" \
         -i \
@@ -17,8 +17,8 @@ CHOICE=$(printf '%s\n' \
 
 case "$CHOICE" in
 	*"Back")     bash "$HOME/.config/rofi/scripts/control-center.sh" ;;
-    *"Default")  echo "style-2" > "$LAYOUT_FILE" ;;
-    *"Showcase") echo "type-6"  > "$LAYOUT_FILE" ;;
+    *"Minimal")  echo "style-2" > "$LAYOUT_FILE" ;;
+    *"Default") echo "type-6"  > "$LAYOUT_FILE" ;;
 esac
 
 notify-send "Rofi Layout" "Switched to $CHOICE" --icon=preferences-desktop-theme

@@ -29,6 +29,7 @@ declare -A WAYBAR_THEME=(
     ["  Cyberdream"]="cyberdream.css"
     ["  Catppuccin Frappe"]="catppuccin-frappe.css"
     ["  Catppuccin Latte"]="catppuccin-latte.css"
+    ["  Ever Forest Dark"]="everforest-dark.css" 
 )
 
 declare -A ROFI_THEME=(
