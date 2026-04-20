@@ -1,0 +1,33 @@
+[config]
+reload_apps = false
+set_wallpaper = false
+
+[templates.waybar]
+input_path  = "~/.config/matugen/templates/waybar-colors.css"
+output_path = "~/.config/waybar/themes/dynamic.css"
+
+[templates.kitty]
+input_path  = "~/.config/matugen/templates/kitty-colors.conf"
+output_path = "~/.config/kitty/themes/dynamic.conf"
+
+[templates.swaync]
+input_path  = "~/.config/matugen/templates/swaync-colors.css"
+output_path = "~/.config/swaync/themes-colors/dynamic.css"
+
+[templates.wlogout]
+input_path  = "~/.config/matugen/templates/wlogout-colors.css"
+output_path = "~/.config/wlogout/themes/dynamic.css"
+
+[templates.hypr]
+input_path  = "~/.config/matugen/templates/hypr-colors.conf"
+output_path = "~/.config/hypr/modules/themes/dynamic.conf"
+
+[templates.rofi]
+input_path  = "~/.config/matugen/templates/rofi-colors.rasi"
+output_path = "~/.config/rofi/colors/dynamic.rasi"
+
+[templates.kde]
+input_path  = "~/.config/matugen/templates/kde-colors.colors"
+output_path = "~/.local/share/color-schemes/Dynamic.colors"
+
+

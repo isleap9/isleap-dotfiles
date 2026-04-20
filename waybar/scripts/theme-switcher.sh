@@ -29,7 +29,6 @@ declare -A WAYBAR_THEME=(
     ["  Cyberdream"]="cyberdream.css"
     ["  Catppuccin Frappe"]="catppuccin-frappe.css"
     ["  Catppuccin Latte"]="catppuccin-latte.css"
-    ["  Ever Forest Dark"]="everforest-dark.css" 
 )
 
 declare -A ROFI_THEME=(
@@ -57,7 +56,7 @@ declare -A SWAYNC_THEME=(
     ["  Monokai Pro"]="monokai-pro.css" 
     ["  Cyberdream"]="cyberdream.css"
     ["  Catppuccin Frappe"]="catppuccin-frappe.css"
-    ["  Catppuccin Latte"]="catppuccin-latte.css"
+    ["  Catppuccin Latte"]="catppuccin-latte.css" 
 )
 
 declare -A KITTY_THEME=(
@@ -188,7 +187,7 @@ declare -A CAL_WEEKDAYS=(
 )
 
 # Build menu
-MENU=$(printf '%s\n' "${!WAYBAR_THEME[@]}" | sort)
+MENU=$(printf '%s\n' "󰁍  Back to Control Center" "${!WAYBAR_THEME[@]}" | sort)
 
 # Show rofi prompt
 CHOICE=$(echo "$MENU" | rofi -dmenu \
@@ -199,6 +198,12 @@ CHOICE=$(echo "$MENU" | rofi -dmenu \
 
 # Exit if nothing selected
 [ -z "$CHOICE" ] && exit 0
+
+# Handle back button
+if [[ "$CHOICE" == *"Back to Control Center"* ]]; then
+    bash "$HOME/.config/rofi/scripts/control-center.sh"
+    exit 0
+fi
 
 # Get selected files
 WAYBAR_FILE="${WAYBAR_THEME[$CHOICE]}"

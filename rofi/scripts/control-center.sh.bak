@@ -9,7 +9,6 @@ MENU=$(printf '%s\n' \
     "󰀻  Waybar Layout" \
     "  Rofi Layout" \
     "󰧨  Theme Switcher" \
-    "󰔎  Dynamic Theme" \
     "󰸉  Wallpaper Switcher" \
     "  Clipboard" \
     "  Capture" \
@@ -29,7 +28,6 @@ case "$CHOICE" in
     *"Waybar Layout")      bash "$SCRIPTS/waybar-layout.sh" ;;
     *"Rofi Layout")        bash "$SCRIPTS/rofi-layout.sh" ;;
     *"Theme Switcher")     bash "$HOME/.config/waybar/scripts/theme-switcher.sh" ;;
-    *"Dynamic Theme")      bash "$HOME/.config/rofi/scripts/dynamic-theme-menu.sh" ;;
     *"Wallpaper Switcher") bash "$SCRIPTS/wallpaper-picker.sh" ;;
     *"Clipboard")          bash "$SCRIPTS/clipboard.sh" ;;
     *"Capture")            bash "$SCRIPTS/capture.sh" ;;

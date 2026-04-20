@@ -47,13 +47,8 @@ if [ "$chosen" = "🎲 Random Wallpaper" ]; then
     chosen="${names[$RANDOM % ${#names[@]}]}"
 fi
 
-
-# Apply wallpaper + extract dynamic theme colors
-if [[ -f "$HOME/.cache/dynamic-theme-enabled" ]]; then
-    ~/.config/hypr/scripts/wallpaper-dynamic.sh "$WALLPAPER_DIR/$chosen"
-else
-    awww img "$WALLPAPER_DIR/$chosen" \
-        --transition-type fade \
-        --transition-duration 2 \
-        --transition-fps 60
-fi
+# Set wallpaper
+awww img "$WALLPAPER_DIR/$chosen" \
+    --transition-type fade \
+    --transition-duration 2 \
+    --transition-fps 60
