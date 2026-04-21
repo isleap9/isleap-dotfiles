@@ -10,7 +10,11 @@ A Hyprland rice with a dynamic theme switcher supporting 11 static themes and a 
 ![Desktop2](screenshots/4.png)
 ![Desktop2](screenshots/5.png)
 ![Desktop2](screenshots/6.png)
-
+![Desktop2](screenshots/7.png)
+![Desktop2](screenshots/8.png)
+![Desktop2](screenshots/9.png)
+![Desktop2](screenshots/10.png)
+![Desktop2](screenshots/11.png)
 ---
 
 ## 🖥️ System Info
