@@ -163,7 +163,7 @@
     "custom/power": {
         "tooltip": true,
         "tooltip-format": "Power Menu",
-        "on-click": "wlogout",
+        "on-click": "bash ~/.config/rofi/scripts/powermenu.sh",
         "format": "󰐥"
     }
 }

@@ -40,10 +40,10 @@
             "weeks-pos": "right",
             "on-scroll": 1,
             "format": {
-                "months": "<span color='#7aa2f7'><b>{}</b></span>",
-                "days": "<span color='#c0caf5'><b>{}</b></span>",
+                "months": "<span color='#f92672'><b>{}</b></span>",
+                "days": "<span color='#f8f8f2'><b>{}</b></span>",
                 "weeks": "<span color='#94e2d5'><b>W{}</b></span>",
-                "weekdays": "<span color='#e0af68'><b>{}</b></span>",
+                "weekdays": "<span color='#e6db74'><b>{}</b></span>",
                 "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
             }
         },
@@ -174,7 +174,7 @@
     "custom/power": {
         "tooltip": true,
         "tooltip-format": "Power Menu",
-        "on-click": "wlogout",
+        "on-click": "bash ~/.config/rofi/scripts/powermenu.sh",
         "format": "󰐥"
     }
 }
