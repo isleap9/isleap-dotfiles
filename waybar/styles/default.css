@@ -137,6 +137,14 @@ tooltip {
     border-radius: 99px;
 }
 
+#custom-swaync {
+    font-weight: 900;
+    background-color: @bg1;
+    color: @fg1;
+    padding: 4px 18px;
+    border-radius: 99px;
+}
+
 #custom-power {
     font-weight: 900;
     background-color: @bg1;

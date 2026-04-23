@@ -16,6 +16,7 @@
         "hyprland/language",
         "pulseaudio",
         "network",
+        "custom/swaync",
         "custom/power"
     ],
     "custom/arch": {
@@ -39,10 +40,10 @@
             "weeks-pos": "right",
             "on-scroll": 1,
             "format": {
-                "months": "<span color='#ca9ee6'><b>{}</b></span>",
-                "days": "<span color='#c6d0f5'><b>{}</b></span>",
+                "months": "<span color='#7aa2f7'><b>{}</b></span>",
+                "days": "<span color='#c0caf5'><b>{}</b></span>",
                 "weeks": "<span color='#94e2d5'><b>W{}</b></span>",
-                "weekdays": "<span color='#e5c890'><b>{}</b></span>",
+                "weekdays": "<span color='#e0af68'><b>{}</b></span>",
                 "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
             }
         },
@@ -150,6 +151,25 @@
         "tooltip-format-ethernet": "{ifname} ",
         "tooltip-format-disconnected": "Disconnected",
         "max-length": 50
+    },
+    "custom/swaync": {
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "󱅫",
+            "none": "",
+            "dnd-notification": "󰂛",
+            "dnd-none": "󰂛",
+            "inhibited-notification": "󰂚",
+            "inhibited-none": "󰂜",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰂛"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
     },
     "custom/power": {
         "tooltip": true,

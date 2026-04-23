@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Papercolor Light
+ **/
+* {
+    background:     #e4e4e4FF;
+    background-alt: #d0d0d0FF;
+    foreground:     #444444FF;
+    selected:       #0087afFF;   /* blue accent */
+    active:         #008700FF;   /* green */
+    urgent:         #af0000FF;   /* red */
+}

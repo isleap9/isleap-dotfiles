@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Tokyo Day
+ **/
+* {
+    background:     #d5d6dbFF;
+    background-alt: #c4c8daFF;
+    foreground:     #3760bfFF;
+    selected:       #2e7de9FF;   /* blue accent */
+    active:         #587539FF;   /* green */
+    urgent:         #f52a65FF;   /* red */
+}

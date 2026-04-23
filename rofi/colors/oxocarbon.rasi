@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Oxocarbon
+ **/
+* {
+    background:     #1a1a1aFF;
+    background-alt: #161616FF;
+    foreground:     #f2f4f8FF;
+    selected:       #ff7eb6FF;   /* blue accent */
+    active:         #42be65FF;   /* green */
+    urgent:         #ff7eb6FF;   /* pink */
+}

@@ -7,10 +7,10 @@ window {
 }
 button {
     border-radius: 12px;
-    border-color: #9d8c91;
-    text-decoration-color: #eedfe2;
-    color: #eedfe2;
-    background-color: #504348;
+    border-color: #899294;
+    text-decoration-color: #e1e3e3;
+    color: #e1e3e3;
+    background-color: #3f484a;
     border-style: solid;
     border-width: 1px;
     background-repeat: no-repeat;
@@ -19,7 +19,7 @@ button {
     margin: 8px;
 }
 button:focus, button:active, button:hover {
-    background-color: #ffb0d0;
+    background-color: #8fd1db;
     outline-style: none;
 }
 #lock { background-image: image(url("/usr/share/wlogout/icons/lock.png"), url("/usr/local/share/wlogout/icons/lock.png")); }

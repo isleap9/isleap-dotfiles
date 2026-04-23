@@ -29,6 +29,9 @@ declare -A WAYBAR_THEME=(
     ["  Cyberdream"]="cyberdream.css"
     ["  Catppuccin Frappe"]="catppuccin-frappe.css"
     ["  Catppuccin Latte"]="catppuccin-latte.css"
+    ["  Oxocarbon"]="oxocarbon.css"
+    ["  Tokyo Day"]="tokyo-day.css"
+    ["  Papercolor"]="papercolor.css"
 )
 
 declare -A ROFI_THEME=(
@@ -43,6 +46,9 @@ declare -A ROFI_THEME=(
     ["  Cyberdream"]="cyberdream.rasi"
     ["  Catppuccin Frappe"]="catppuccin-frappe.rasi"
     ["  Catppuccin Latte"]="catppuccin-latte.rasi"
+    ["  Oxocarbon"]="oxocarbon.rasi"
+    ["  Tokyo Day"]="tokyo-day.rasi"
+    ["  Papercolor"]="papercolor.rasi"
 )
 
 declare -A SWAYNC_THEME=(
@@ -57,6 +63,9 @@ declare -A SWAYNC_THEME=(
     ["  Cyberdream"]="cyberdream.css"
     ["  Catppuccin Frappe"]="catppuccin-frappe.css"
     ["  Catppuccin Latte"]="catppuccin-latte.css" 
+    ["  Oxocarbon"]="oxocarbon.css"
+    ["  Tokyo Day"]="tokyo-day.css"
+    ["  Papercolor"]="papercolor.css"
 )
 
 declare -A KITTY_THEME=(
@@ -71,6 +80,9 @@ declare -A KITTY_THEME=(
     ["  Cyberdream"]="cyberdream.conf"
     ["  Catppuccin Frappe"]="catppuccin-frappe.conf"
     ["  Catppuccin Latte"]="catppuccin-latte.conf"
+    ["  Oxocarbon"]="oxocarbon.conf"
+    ["  Tokyo Day"]="tokyo-day.conf"
+    ["  Papercolor"]="papercolor.conf"
 )
 
 declare -A WLOGOUT_THEME=(
@@ -85,6 +97,9 @@ declare -A WLOGOUT_THEME=(
     ["  Cyberdream"]="cyberdream.css"
     ["  Catppuccin Frappe"]="catppuccin-frappe.css"
     ["  Catppuccin Latte"]="catppuccin-latte.css"
+    ["  Oxocarbon"]="oxocarbon.css"
+    ["  Tokyo Day"]="tokyo-day.css"
+    ["  Papercolor"]="papercolor.css"
 )
 
 declare -A KDE_THEME=(
@@ -98,7 +113,10 @@ declare -A KDE_THEME=(
     ["  Monokai Pro"]="MonokaiPro" 
     ["  Cyberdream"]="Cyberdream" 
     ["  Catppuccin Frappe"]="CatppuccinFrappe" 
-    ["  Catppuccin Latte"]="CatppuccinLatte" 
+    ["  Catppuccin Latte"]="CatppuccinLatte"
+    ["  Oxocarbon"]="Oxocarbon" 
+    ["  Tokyo Day"]="TokyoDay"
+    ["  Papercolor"]="Papercolor" 
 )
 
 declare -A HYPR_THEME=(
@@ -113,6 +131,9 @@ declare -A HYPR_THEME=(
     ["  Cyberdream"]="cyberdream.conf"
     ["  Catppuccin Frappe"]="catppuccin-frappe.conf"
     ["  Catppuccin Latte"]="catppuccin-latte.conf"
+    ["  Oxocarbon"]="oxocarbon.conf"
+    ["  Tokyo Day"]="tokyo-day.conf"
+    ["  Papercolor"]="papercolor.conf"
 )
 
 # Hyprland border colors per theme (for instant runtime apply)
@@ -127,7 +148,10 @@ declare -A HYPR_ACTIVE_BORDER=(
     ["  Monokai Pro"]="rgb(f92672)" 
     ["  Cyberdream"]="rgb(df80ff)" 
     ["  Catppuccin Frappe"]="rgb(ca9ee6)" 
-    ["  Catppuccin Latte"]="rgb(8839ef)" 
+    ["  Catppuccin Latte"]="rgb(8839ef)"
+    ["  Oxocarbon"]="rgb(ff7eb6)" 
+    ["  Tokyo Day"]="rgb(2e7de9)"   
+    ["  Papercolor"]="rgb(0087af)"
 )
 
 declare -A HYPR_INACTIVE_BORDER=(
@@ -142,6 +166,9 @@ declare -A HYPR_INACTIVE_BORDER=(
     ["  Cyberdream"]="rgb(16181a)"
     ["  Catppuccin Frappe"]="rgb(303446)" 
     ["  Catppuccin Latte"]="rgb(eff1f5)" 
+    ["  Oxocarbon"]="rgb(161616)"
+    ["  Tokyo Day"]="rgb(e1e2e7)" 
+    ["  Papercolor"]="rgb(eeeeee)"
 )
 
 declare -A CAL_MONTHS=(
@@ -156,6 +183,11 @@ declare -A CAL_MONTHS=(
     ["  Cyberdream"]="#df80ff"
     ["  Catppuccin Frappe"]="#ca9ee6"
     ["  Catppuccin Latte"]="#8839ef"
+    ["  Oxocarbon"]="#ff7eb6"
+    ["  Tokyo Day"]="#2e7de9"
+    ["  Papercolor"]="#0087af"
+    ["  Monokai Pro"]="#f92672"
+    ["  Tokyo Night"]="#7aa2f7"
 )
 
 declare -A CAL_DAYS=(
@@ -170,6 +202,11 @@ declare -A CAL_DAYS=(
     ["  Cyberdream"]="#ffffff"
     ["  Catppuccin Frappe"]="#c6d0f5"
     ["  Catppuccin Latte"]="#4c4f69"
+    ["  Oxocarbon"]="#f2f4f8"
+    ["  Tokyo Day"]="#3760bf"
+    ["  Papercolor"]="#444444"
+    ["  Monokai Pro"]="#f8f8f2"
+    ["  Tokyo Night"]="#c0caf5"
 )
 
 declare -A CAL_WEEKDAYS=(
@@ -184,6 +221,11 @@ declare -A CAL_WEEKDAYS=(
     ["  Cyberdream"]="#f6f600"
     ["  Catppuccin Frappe"]="#e5c890"
     ["  Catppuccin Latte"]="#df8e1d"
+    ["  Oxocarbon"]="#fddc69"
+    ["  Tokyo Day"]="#8c6c3e"
+    ["  Papercolor"]="#d75f00"
+    ["  Monokai Pro"]="#e6db74"
+    ["  Tokyo Night"]="#e0af68"
 )
 
 # Build menu

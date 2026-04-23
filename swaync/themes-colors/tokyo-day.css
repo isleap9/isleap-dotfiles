@@ -1,0 +1,22 @@
+@define-color bg0           #c8cad8;   /* darker base for panel */
+@define-color bg1           #d0d2de;   /* card surface */
+@define-color bg2           #c4c8da;
+@define-color bg3           #b4b5c0;
+@define-color bg4           #a8aecb;
+@define-color fg1           #3760bf;
+@define-color fg2           #848cb5;
+@define-color surface       #6172b0;
+@define-color red           #f52a65;
+@define-color orange        #b15c00;
+@define-color yellow        #8c6c3e;
+@define-color green         #587539;
+@define-color cyan          #007197;
+@define-color aqua          #118c74;
+@define-color blue          #2e7de9;
+@define-color purple        #9854f1;
+@define-color gray0         #848cb5;
+@define-color gray1         #6172b0;
+@define-color gray2         #3760bf;
+@define-color special-blue  #2e7de9;
+@define-color special-white #3760bf;
+@define-color accent        #2e7de9;
