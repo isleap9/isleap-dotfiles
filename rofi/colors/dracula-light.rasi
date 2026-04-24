@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Dracula Light
+ **/
+* {
+    background:     #ededf0FF;
+    background-alt: #e0e0e8FF;
+    foreground:     #282a36FF;
+    selected:       #7c4dbdFF;   /* purple */
+    active:         #007a00FF;   /* green */
+    urgent:         #cc0000FF;   /* red */
+}

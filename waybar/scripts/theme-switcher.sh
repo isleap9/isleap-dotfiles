@@ -32,6 +32,12 @@ declare -A WAYBAR_THEME=(
     ["  Oxocarbon"]="oxocarbon.css"
     ["  Tokyo Day"]="tokyo-day.css"
     ["  Papercolor"]="papercolor.css"
+    ["  Dracula"]="dracula.css" 
+    ["  Dracula Light"]="dracula-light.css" 
+    ["  Crimson"]="crimson.css" 
+    ["  Sakura"]="sakura.css" 
+    ["  Everforest Dark"]="everforest-dark.css" 
+    ["  Everforest Light"]="everforest-light.css"
 )
 
 declare -A ROFI_THEME=(
@@ -49,6 +55,12 @@ declare -A ROFI_THEME=(
     ["  Oxocarbon"]="oxocarbon.rasi"
     ["  Tokyo Day"]="tokyo-day.rasi"
     ["  Papercolor"]="papercolor.rasi"
+    ["  Dracula"]="dracula.rasi"
+    ["  Dracula Light"]="dracula-light.rasi"
+    ["  Crimson"]="crimson.rasi"
+    ["  Sakura"]="sakura.rasi" 
+    ["  Everforest Dark"]="everforest-dark.rasi"
+    ["  Everforest Light"]="everforest-light.rasi"
 )
 
 declare -A SWAYNC_THEME=(
@@ -66,6 +78,12 @@ declare -A SWAYNC_THEME=(
     ["  Oxocarbon"]="oxocarbon.css"
     ["  Tokyo Day"]="tokyo-day.css"
     ["  Papercolor"]="papercolor.css"
+    ["  Dracula"]="dracula.css" 
+    ["  Dracula Light"]="dracula-light.css" 
+    ["  Crimson"]="crimson.css" 
+    ["  Sakura"]="sakura.css" 
+    ["  Everforest Dark"]="everforest-dark.css" 
+    ["  Everforest Light"]="everforest-light.css"
 )
 
 declare -A KITTY_THEME=(
@@ -83,6 +101,12 @@ declare -A KITTY_THEME=(
     ["  Oxocarbon"]="oxocarbon.conf"
     ["  Tokyo Day"]="tokyo-day.conf"
     ["  Papercolor"]="papercolor.conf"
+    ["  Dracula"]="dracula.conf" 
+    ["  Dracula Light"]="dracula-light.conf" 
+    ["  Crimson"]="crimson.conf"
+    ["  Sakura"]="sakura.conf" 
+    ["  Everforest Dark"]="everforest-dark.conf"
+    ["  Everforest Light"]="everforest-light.conf"
 )
 
 declare -A WLOGOUT_THEME=(
@@ -100,6 +124,12 @@ declare -A WLOGOUT_THEME=(
     ["  Oxocarbon"]="oxocarbon.css"
     ["  Tokyo Day"]="tokyo-day.css"
     ["  Papercolor"]="papercolor.css"
+    ["  Dracula"]="dracula.css" 
+    ["  Dracula Light"]="dracula-light.css" 
+    ["  Crimson"]="crimson.css" 
+    ["  Sakura"]="sakura.css" 
+    ["  Everforest Dark"]="everforest-dark.css" 
+    ["  Everforest Light"]="everforest-light.css"
 )
 
 declare -A KDE_THEME=(
@@ -117,6 +147,12 @@ declare -A KDE_THEME=(
     ["  Oxocarbon"]="Oxocarbon" 
     ["  Tokyo Day"]="TokyoDay"
     ["  Papercolor"]="Papercolor" 
+    ["  Dracula"]="Dracula" 
+    ["  Dracula Light"]="DraculaLight" 
+    ["  Crimson"]="CrimsonDark" 
+    ["  Sakura"]="SakuraLight" 
+    ["  Everforest Dark"]="EverforestDark" 
+    ["  Everforest Light"]="EverforestLight" 
 )
 
 declare -A HYPR_THEME=(
@@ -134,6 +170,12 @@ declare -A HYPR_THEME=(
     ["  Oxocarbon"]="oxocarbon.conf"
     ["  Tokyo Day"]="tokyo-day.conf"
     ["  Papercolor"]="papercolor.conf"
+    ["  Dracula"]="dracula.conf" 
+    ["  Dracula Light"]="dracula-light.conf" 
+    ["  Crimson"]="crimson.conf"
+    ["  Sakura"]="sakura.conf" 
+    ["  Everforest Dark"]="everforest-dark.conf"
+    ["  Everforest Light"]="everforest-light.conf"
 )
 
 # Hyprland border colors per theme (for instant runtime apply)
@@ -152,6 +194,12 @@ declare -A HYPR_ACTIVE_BORDER=(
     ["  Oxocarbon"]="rgb(ff7eb6)" 
     ["  Tokyo Day"]="rgb(2e7de9)"   
     ["  Papercolor"]="rgb(0087af)"
+    ["  Dracula"]="rgb(bd93f9)"   
+    ["  Dracula Light"]="rgb(7c4dbd)"
+    ["  Crimson"]="rgb(cc1133)"
+    ["  Sakura"]="rgb(cc0044)" 
+    ["  Everforest Dark"]="rgb(a7c080)"
+    ["  Everforest Light"]="rgb(8da101)"
 )
 
 declare -A HYPR_INACTIVE_BORDER=(
@@ -169,6 +217,12 @@ declare -A HYPR_INACTIVE_BORDER=(
     ["  Oxocarbon"]="rgb(161616)"
     ["  Tokyo Day"]="rgb(e1e2e7)" 
     ["  Papercolor"]="rgb(eeeeee)"
+    ["  Dracula"]="rgb(282a36)" 
+    ["  Dracula Light"]="rgb(f8f8f2)" 
+    ["  Crimson"]="rgb(1a0a0a)" 
+    ["  Sakura"]="rgb(fff5f7)" 
+    ["  Everforest Dark"]="rgb(2d353b)" 
+    ["  Everforest Light"]="rgb(fdf6e3)"  
 )
 
 declare -A CAL_MONTHS=(
@@ -188,6 +242,13 @@ declare -A CAL_MONTHS=(
     ["  Papercolor"]="#0087af"
     ["  Monokai Pro"]="#f92672"
     ["  Tokyo Night"]="#7aa2f7"
+    ["  Dracula"]="#bd93f9"
+    ["  Dracula Light"]="#7c4dbd"
+    ["  Crimson"]="#cc1133"
+    ["  Sakura"]="#cc0044"
+    ["  Everforest Dark"]="#a7c080"
+    ["  Everforest Light"]="#8da101"
+
 )
 
 declare -A CAL_DAYS=(
@@ -207,6 +268,12 @@ declare -A CAL_DAYS=(
     ["  Papercolor"]="#444444"
     ["  Monokai Pro"]="#f8f8f2"
     ["  Tokyo Night"]="#c0caf5"
+    ["  Dracula"]="#f8f8f2"
+    ["  Dracula Light"]="#282a36"
+    ["  Crimson"]="#f5e6e6"
+    ["  Sakura"]="#4a1528"
+    ["  Everforest Dark"]="#d3c6aa"
+    ["  Everforest Light"]="#5c6a72"
 )
 
 declare -A CAL_WEEKDAYS=(
@@ -226,6 +293,12 @@ declare -A CAL_WEEKDAYS=(
     ["  Papercolor"]="#d75f00"
     ["  Monokai Pro"]="#e6db74"
     ["  Tokyo Night"]="#e0af68"
+    ["  Dracula"]="#f1fa8c"
+    ["  Dracula Light"]="#8b8b00"
+    ["  Crimson"]="#ffcc66"
+    ["  Sakura"]="#996600"
+    ["  Everforest Dark"]="#dbbc7f"
+    ["  Everforest Light"]="#dfa000"
 )
 
 # Build menu

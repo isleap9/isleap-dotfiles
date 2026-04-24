@@ -1,23 +1,22 @@
-
-@define-color bg0           #282c34;   /* base (Dark Background) */
-@define-color bg1           #393d4b;   /* mantle (Slightly lighter panel background) */
-@define-color bg2           #353a46;   /* surface0 */
-@define-color bg3           #2e3340;   /* surface1 */
-@define-color bg4           #353a46;   /* surface2 */
-@define-color fg1           #DCD3C5;   /* text (Off-white) */
-@define-color fg2           #9e97b0;   /* overlay0 — muted/inactive (Muted gray) */
-@define-color surface       #61afef;   /* overlay1 - Using a soft blue as a secondary highlight */
-@define-color red           #d43c78;   /* red (A contrasting dark pink/magenta for error) */
-@define-color orange        #e5c07b;   /* peach (Muted yellow/gold) */
-@define-color yellow        #98c379;   /* green (Success/warning) */
-@define-color green         #98c379;   /* green */
-@define-color cyan          #61afef;   /* sky (Soft blue) */
-@define-color aqua          #282c34;   /* teal - Using dark background for contrast */
-@define-color blue          #d43c78;   /* blue (Using the accent color) */
-@define-color purple        #c678dd;   /* mauve -> Primary Everforest Accent */
-@define-color gray0         #9e97b0;   /* overlay0 - Muted text */
-@define-color gray1         #353a46;   /* overlay1 - Surface background */
-@define-color gray2         #2e3340;   /* overlay2 - Panel background */
-@define-color special-blue  #61afef;   /* blue (soft link color) */
-@define-color special-white #DCD3C5;   /* text (off-white) */
-@define-color accent        #c678dd;   /* primary Everforest accent */
+@define-color bg0           #2d353b;
+@define-color bg1           #272e33;
+@define-color bg2           #3a464c;
+@define-color bg3           #4a555b;
+@define-color bg4           #576068;
+@define-color fg1           #d3c6aa;
+@define-color fg2           #7a8478;
+@define-color surface       #9da9a0;
+@define-color red           #e67e80;
+@define-color orange        #e69875;
+@define-color yellow        #dbbc7f;
+@define-color green         #a7c080;
+@define-color cyan          #83c092;
+@define-color aqua          #83c092;
+@define-color blue          #7fbbb3;
+@define-color purple        #d699b6;
+@define-color gray0         #7a8478;
+@define-color gray1         #9da9a0;
+@define-color gray2         #b9c0ab;
+@define-color special-blue  #7fbbb3;
+@define-color special-white #d3c6aa;
+@define-color accent        #a7c080;

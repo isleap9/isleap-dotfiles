@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Sakura Light
+ **/
+* {
+    background:     #fde8edFF;
+    background-alt: #f8d0daFF;
+    foreground:     #4a1528FF;
+    selected:       #cc0044FF;   /* sakura red */
+    active:         #336644FF;   /* green */
+    urgent:         #cc0033FF;   /* deep red */
+}

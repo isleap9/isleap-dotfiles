@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Everforest Light
+ **/
+* {
+    background:     #f4f0d9FF;
+    background-alt: #e9e4caFF;
+    foreground:     #5c6a72FF;
+    selected:       #8da101FF;   /* green */
+    active:         #35a77cFF;   /* aqua */
+    urgent:         #f85552FF;   /* red */
+}

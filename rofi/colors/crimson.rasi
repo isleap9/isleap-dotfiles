@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Crimson Dark
+ **/
+* {
+    background:     #1f0f0fFF;
+    background-alt: #2d1515FF;
+    foreground:     #f5e6e6FF;
+    selected:       #cc1133FF;   /* crimson */
+    active:         #66cc88FF;   /* green */
+    urgent:         #ff2244FF;   /* bright red */
+}
