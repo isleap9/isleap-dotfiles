@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Kanagawa Light (Lotus)
+ **/
+* {
+    background:     #ede9dbFF;
+    background-alt: #e2decEFF;
+    foreground:     #545464FF;
+    selected:       #c84053FF;
+    active:         #6f894eFF;
+    urgent:         #c84053FF;
+}

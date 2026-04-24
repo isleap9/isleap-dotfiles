@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * Kanagawa Dark
+ **/
+* {
+    background:     #16161dFF;
+    background-alt: #1f1f28FF;
+    foreground:     #dcd7baFF;
+    selected:       #e46876FF;   /* peach red */
+    active:         #76946aFF;   /* spring green */
+    urgent:         #c34043FF;   /* autumn red */
+}

@@ -1,0 +1,22 @@
+@define-color bg0           #1f1f28;   /* sumi-ink black */
+@define-color bg1           #16161d;   /* sumi-ink dark */
+@define-color bg2           #2a2a37;   /* sumi-ink overlay */
+@define-color bg3           #363646;   /* sumi-ink muted */
+@define-color bg4           #54546d;   /* sumi-ink subtle */
+@define-color fg1           #dcd7ba;   /* fuji white */
+@define-color fg2           #727169;   /* fuji gray — muted */
+@define-color surface       #938aa9;   /* spring violet */
+@define-color red           #c34043;   /* autumn red */
+@define-color orange        #ffa066;   /* surimi orange */
+@define-color yellow        #c0a36e;   /* carp yellow */
+@define-color green         #76946a;   /* spring green */
+@define-color cyan          #6a9589;   /* wave aqua */
+@define-color aqua          #7aa89f;   /* wave aqua 2 */
+@define-color blue          #7e9cd8;   /* crystal blue */
+@define-color purple        #957fb8;   /* oni violet */
+@define-color gray0         #727169;
+@define-color gray1         #938aa9;
+@define-color gray2         #c8c093;
+@define-color special-blue  #7e9cd8;
+@define-color special-white #dcd7ba;
+@define-color accent        #e46876;   /* peach red accent */

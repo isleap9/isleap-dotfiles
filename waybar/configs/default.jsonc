@@ -40,10 +40,10 @@
             "weeks-pos": "right",
             "on-scroll": 1,
             "format": {
-                "months": "<span color='#cc1133'><b>{}</b></span>",
-                "days": "<span color='#f5e6e6'><b>{}</b></span>",
+                "months": "<span color='#e46876'><b>{}</b></span>",
+                "days": "<span color='#dcd7ba'><b>{}</b></span>",
                 "weeks": "<span color='#94e2d5'><b>W{}</b></span>",
-                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "weekdays": "<span color='#c0a36e'><b>{}</b></span>",
                 "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
             }
         },

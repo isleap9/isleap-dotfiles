@@ -1,5 +1,5 @@
 # 🌸 isleap's dotfiles
-A Hyprland rice with a dynamic theme switcher supporting 11 static themes and a live wallpaper-based color system powered by matugen.
+A Hyprland rice with a dynamic theme switcher supporting multiple static themes and a live wallpaper-based color system powered by matugen.
 
 ---
 
@@ -15,6 +15,8 @@ A Hyprland rice with a dynamic theme switcher supporting 11 static themes and a 
 ![Desktop2](screenshots/9.png)
 ![Desktop2](screenshots/10.png)
 ![Desktop2](screenshots/11.png)
+![Desktop2](screenshots/12.png)
+
 ---
 
 ## 🖥️ System Info
@@ -116,7 +118,7 @@ This rice has two theming systems that coexist independently.
 
 ### 🖌️ Static Themes (`Super+Shift+T`)
 
-11 hand-crafted themes that instantly recolor every app via symlinks:
+Hand-crafted themes that instantly recolor every app via symlinks:
 
 | Theme | Type |
 |---|---|
@@ -128,9 +130,21 @@ This rice has two theming systems that coexist independently.
 | **Rosé Pine Moon** | Dark |
 | **Rosé Pine Dawn** | Light |
 | **Tokyo Night** | Dark |
+| **Tokyo Day** | Light |
 | **Monokai Pro** | Dark |
 | **Cyberdream** | Dark |
+| **Oxocarbon** | Dark |
+| **Dracula** | Dark |
+| **Dracula Light** | Light |
+| **Kanagawa Dark** | Dark |
+| **Kanagawa Light** | Light |
+| **Everforest Dark** | Dark |
+| **Everforest Light** | Light |
+| **Crimson** | Dark |
+| **Sakura** | Light |
 | **E-Ink** | Light |
+
+Each theme simultaneously updates: Waybar, Rofi, Kitty, Swaync, Wlogout, Hyprland borders, and Dolphin (via KDE color schemes).
 
 ### 🌈 Dynamic Wallpaper Theme (`Super+Shift+E` → Dynamic Theme)
 
@@ -170,6 +184,7 @@ wallpaper picked
 | `Super + A` | Open app launcher (Rofi) |
 | `Super + Shift + W` | Open wallpaper selector (Rofi) |
 | `Super + Shift + E` | Open control center (Rofi) |
+| `Super + Shift + P` | Open power menu (Rofi) |
 | `Super + N` | Toggle notification center (Swaync) |
 | `Super + T` | Open terminal (Kitty) |
 | `Super + E` | Open file manager (Dolphin) |
@@ -228,6 +243,7 @@ chmod +x ~/.config/rofi/scripts/wallpaper-picker.sh
 chmod +x ~/.config/rofi/scripts/dynamic-theme-menu.sh
 chmod +x ~/.config/rofi/scripts/matugen-scheme.sh
 chmod +x ~/.config/rofi/scripts/control-center.sh
+chmod +x ~/.config/rofi/scripts/powermenu.sh
 ```
 
 7. Log into Hyprland.
@@ -251,7 +267,8 @@ dotfiles/
 │       ├── control-center.sh    # Main control center menu
 │       ├── dynamic-theme-menu.sh# Dynamic theme submenu
 │       ├── matugen-scheme.sh    # Scheme type picker
-│       └── wallpaper-picker.sh  # Wallpaper picker with dynamic support
+│       ├── wallpaper-picker.sh  # Wallpaper picker with dynamic support
+│       └── powermenu.sh         # Rofi power menu
 ├── kitty/                       # Kitty terminal config
 │   └── themes/                  # Color themes (.conf files)
 ├── swaync/                      # Swaync notification center

@@ -38,6 +38,8 @@ declare -A WAYBAR_THEME=(
     ["  Sakura"]="sakura.css" 
     ["  Everforest Dark"]="everforest-dark.css" 
     ["  Everforest Light"]="everforest-light.css"
+    ["  Kanagawa Dark"]="kanagawa-dark.css" 
+    ["  Kanagawa Light"]="kanagawa-light.css"
 )
 
 declare -A ROFI_THEME=(
@@ -61,6 +63,8 @@ declare -A ROFI_THEME=(
     ["  Sakura"]="sakura.rasi" 
     ["  Everforest Dark"]="everforest-dark.rasi"
     ["  Everforest Light"]="everforest-light.rasi"
+    ["  Kanagawa Dark"]="kanagawa-dark.rasi" 
+    ["  Kanagawa Light"]="kanagawa-light.rasi"
 )
 
 declare -A SWAYNC_THEME=(
@@ -84,6 +88,8 @@ declare -A SWAYNC_THEME=(
     ["  Sakura"]="sakura.css" 
     ["  Everforest Dark"]="everforest-dark.css" 
     ["  Everforest Light"]="everforest-light.css"
+    ["  Kanagawa Dark"]="kanagawa-dark.css" 
+    ["  Kanagawa Light"]="kanagawa-light.css"
 )
 
 declare -A KITTY_THEME=(
@@ -107,6 +113,8 @@ declare -A KITTY_THEME=(
     ["  Sakura"]="sakura.conf" 
     ["  Everforest Dark"]="everforest-dark.conf"
     ["  Everforest Light"]="everforest-light.conf"
+    ["  Kanagawa Dark"]="kanagawa-dark.conf"
+    ["  Kanagawa Light"]="kanagawa-light.conf"
 )
 
 declare -A WLOGOUT_THEME=(
@@ -130,6 +138,8 @@ declare -A WLOGOUT_THEME=(
     ["  Sakura"]="sakura.css" 
     ["  Everforest Dark"]="everforest-dark.css" 
     ["  Everforest Light"]="everforest-light.css"
+    ["  Kanagawa Dark"]="kanagawa-dark.css" 
+    ["  Kanagawa Light"]="kanagawa-light.css"
 )
 
 declare -A KDE_THEME=(
@@ -153,6 +163,8 @@ declare -A KDE_THEME=(
     ["  Sakura"]="SakuraLight" 
     ["  Everforest Dark"]="EverforestDark" 
     ["  Everforest Light"]="EverforestLight" 
+    ["  Kanagawa Dark"]="KanagawaDark" 
+    ["  Kanagawa Light"]="KanagawaLight" 
 )
 
 declare -A HYPR_THEME=(
@@ -176,6 +188,8 @@ declare -A HYPR_THEME=(
     ["  Sakura"]="sakura.conf" 
     ["  Everforest Dark"]="everforest-dark.conf"
     ["  Everforest Light"]="everforest-light.conf"
+    ["  Kanagawa Dark"]="kanagawa-dark.conf"
+    ["  Kanagawa Light"]="kanagawa-light.conf"
 )
 
 # Hyprland border colors per theme (for instant runtime apply)
@@ -200,6 +214,8 @@ declare -A HYPR_ACTIVE_BORDER=(
     ["  Sakura"]="rgb(cc0044)" 
     ["  Everforest Dark"]="rgb(a7c080)"
     ["  Everforest Light"]="rgb(8da101)"
+    ["  Kanagawa Dark"]="rgb(e46876)"  
+    ["  Kanagawa Light"]="rgb(c84053)" 
 )
 
 declare -A HYPR_INACTIVE_BORDER=(
@@ -222,7 +238,9 @@ declare -A HYPR_INACTIVE_BORDER=(
     ["  Crimson"]="rgb(1a0a0a)" 
     ["  Sakura"]="rgb(fff5f7)" 
     ["  Everforest Dark"]="rgb(2d353b)" 
-    ["  Everforest Light"]="rgb(fdf6e3)"  
+    ["  Everforest Light"]="rgb(fdf6e3)" 
+    ["  Kanagawa Dark"]="rgb(1f1f28)" 
+    ["  Kanagawa Light"]="rgb(f2ecbc)" 
 )
 
 declare -A CAL_MONTHS=(
@@ -248,6 +266,8 @@ declare -A CAL_MONTHS=(
     ["  Sakura"]="#cc0044"
     ["  Everforest Dark"]="#a7c080"
     ["  Everforest Light"]="#8da101"
+    ["  Kanagawa Dark"]="#e46876"
+    ["  Kanagawa Light"]="#c84053"
 
 )
 
@@ -274,6 +294,8 @@ declare -A CAL_DAYS=(
     ["  Sakura"]="#4a1528"
     ["  Everforest Dark"]="#d3c6aa"
     ["  Everforest Light"]="#5c6a72"
+    ["  Kanagawa Dark"]="#dcd7ba"
+    ["  Kanagawa Light"]="#545464"
 )
 
 declare -A CAL_WEEKDAYS=(
@@ -299,6 +321,8 @@ declare -A CAL_WEEKDAYS=(
     ["  Sakura"]="#996600"
     ["  Everforest Dark"]="#dbbc7f"
     ["  Everforest Light"]="#dfa000"
+    ["  Kanagawa Dark"]="#c0a36e"
+    ["  Kanagawa Light"]="#77713f"
 )
 
 # Build menu
