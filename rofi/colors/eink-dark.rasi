@@ -1,0 +1,15 @@
+/**
+ *
+ * Author : isleap
+ * Github : @isleap9
+ *
+ * E-Ink Dark
+ **/
+* {
+    background:     #242424FF;
+    background-alt: #2e2e2eFF;
+    foreground:     #e8e8e8FF;
+    selected:       #e8e8e8FF;
+    active:         #909090FF;
+    urgent:         #cc3333FF;
+}

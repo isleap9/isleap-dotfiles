@@ -143,6 +143,7 @@ Hand-crafted themes that instantly recolor every app via symlinks:
 | **Crimson** | Dark |
 | **Sakura** | Light |
 | **E-Ink** | Light |
+| **E-Ink Dark** | Dark |
 
 Each theme simultaneously updates: Waybar, Rofi, Kitty, Swaync, Wlogout, Hyprland borders, and Dolphin (via KDE color schemes).
 
