@@ -3,7 +3,6 @@
 ROFI_THEME="$HOME/.config/rofi/cheatsheet.rasi"
 
 BINDS=$(printf '%s\n' \
-    "󰁍  Back" \
     "󰣇  SUPER + T           Terminal" \
     "󰅙  SUPER + Q           Kill Window" \
     "󰖟  SUPER + B           Browser" \
@@ -28,14 +27,8 @@ BINDS=$(printf '%s\n' \
     "󰒭  SUPER + SHIFT 1-0   Move to Workspace" \
 )
 
-CHOICE=$(echo "$BINDS" | rofi -dmenu \
+echo "$BINDS" | rofi -dmenu \
     -p "Keybinds" \
     -i \
     -no-custom \
-    -theme "$ROFI_THEME")
-
-[ -z "$CHOICE" ] && exit 0
-
-if [[ "$CHOICE" == *"Back"* ]]; then
-    bash "$HOME/.config/rofi/scripts/control-center.sh"
-fi
+    -theme "$ROFI_THEME"

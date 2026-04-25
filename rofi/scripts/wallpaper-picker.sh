@@ -22,7 +22,10 @@ done
 # Write entries to temp file with proper separators
 TMPFILE=$(mktemp)
 
-# Random option first
+# Back option first
+printf "󰁍  Back\0icon\x1f%s/%s\n" "$CACHE_DIR" "${names[0]}" >> "$TMPFILE"
+
+# Random option
 printf "🎲 Random Wallpaper\0icon\x1f%s/%s\n" "$CACHE_DIR" "${names[0]}" >> "$TMPFILE"
 
 # All wallpapers
@@ -41,6 +44,12 @@ chosen=$(rofi -dmenu -i \
 rm -f "$TMPFILE"
 
 [ -z "$chosen" ] && exit 0
+
+# Handle back
+if [ "$chosen" = "󰁍  Back" ]; then
+    bash "$HOME/.config/rofi/scripts/control-center.sh"
+    exit 0
+fi
 
 # Handle random
 if [ "$chosen" = "🎲 Random Wallpaper" ]; then

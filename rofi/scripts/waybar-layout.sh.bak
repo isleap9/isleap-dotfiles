@@ -16,8 +16,6 @@ CHOICE=$(printf '%s\n' \
         -no-custom \
         -theme "$ROFI_THEME")
 
-[ -z "$CHOICE" ] && exit 0
-
 case "$CHOICE" in
 	*"Back")      bash "$HOME/.config/rofi/scripts/control-center.sh" ;;
     *"Default")   echo "default"  > "$LAYOUT_FILE" ;;

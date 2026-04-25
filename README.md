@@ -58,7 +58,7 @@ awww matugen-bin (AUR)
 
 ### 🚀 App Launcher
 ```
-rofi
+rofi rofimoji
 ```
 
 ### 💻 Terminal
@@ -96,7 +96,7 @@ bibata-cursor-theme
 ### 🛠️ Utilities
 ```
 wl-clip-persist wlogout nwg-look nwg-displays brightnessctl
-starship fastfetch htop nano git wget
+starship fastfetch htop nano git wget cliphist
 ```
 
 ### 🎮 GPU (NVIDIA)
@@ -107,7 +107,7 @@ nvidia-open-dkms nvidia-settings libva-nvidia-driver
 ### 🌐 Apps
 ```
 firefox google-chrome visual-studio-code-bin
-pavucontrol dolphin rofimoji
+pavucontrol dolphin
 ```
 
 ---
@@ -145,7 +145,7 @@ Hand-crafted themes that instantly recolor every app via symlinks:
 | **E-Ink** | Light |
 | **E-Ink Dark** | Dark |
 
-Each theme simultaneously updates: Waybar, Rofi, Kitty, Swaync, Wlogout, Hyprland borders, and Dolphin (via KDE color schemes).
+Each theme simultaneously updates: Waybar, Rofi, Kitty, Swaync, Wlogout, Hyprland borders, Cava, and Dolphin (via KDE color schemes).
 
 ### 🌈 Dynamic Wallpaper Theme (`Super+Shift+E` → Dynamic Theme)
 
@@ -183,15 +183,27 @@ wallpaper picked
 | Keybind | Action |
 |---|---|
 | `Super + A` | Open app launcher (Rofi) |
-| `Super + Shift + W` | Open wallpaper selector (Rofi) |
-| `Super + Shift + E` | Open control center (Rofi) |
-| `Super + Shift + P` | Open power menu (Rofi) |
-| `Super + N` | Toggle notification center (Swaync) |
 | `Super + T` | Open terminal (Kitty) |
 | `Super + E` | Open file manager (Dolphin) |
+| `Super + B` | Open browser (Chrome) |
+| `Super + C` | Open VSCode |
+| `Super + M` | Open power menu |
 | `Super + L` | Lock screen (BlazinLock) |
-| `Super + Shift + S` | Screenshot region |
+| `Super + N` | Toggle notification center (Swaync) |
+| `Super + F` | Fullscreen (keep bar) |
+| `Super + Shift + F` | Fullscreen (true) |
+| `Super + W` | Toggle floating |
+| `Super + S` | Toggle scratchpad |
+| `Super + R` | Reload Waybar |
+| `Super + Shift + W` | Open wallpaper selector |
+| `Super + Shift + E` | Open control center |
 | `Super + Shift + T` | Open theme switcher |
+| `Super + Shift + S` | Screenshot region |
+| `Super + Shift + V` | Open capture menu |
+| `Super + Shift + C` | Open clipboard manager |
+| `Super + j/l/i/k` | Move focus left/right/up/down |
+| `Super + 1-0` | Switch workspace |
+| `Super + Shift + 1-0` | Move window to workspace |
 
 ---
 
@@ -204,7 +216,7 @@ git clone git@github.com:isleap9/isleap-dotfiles.git ~/dotfiles
 
 2. Install packages (see above) with `yay`:
 ```bash
-yay -S matugen-bin
+yay -S matugen-bin google-sans-display
 ```
 
 3. Copy configs:
@@ -245,6 +257,11 @@ chmod +x ~/.config/rofi/scripts/dynamic-theme-menu.sh
 chmod +x ~/.config/rofi/scripts/matugen-scheme.sh
 chmod +x ~/.config/rofi/scripts/control-center.sh
 chmod +x ~/.config/rofi/scripts/powermenu.sh
+chmod +x ~/.config/rofi/scripts/capture.sh
+chmod +x ~/.config/rofi/scripts/cheatsheet.sh
+chmod +x ~/.config/rofi/scripts/clipboard.sh
+chmod +x ~/.config/rofi/scripts/waybar-layout.sh
+chmod +x ~/.config/rofi/scripts/rofi-layout.sh
 ```
 
 7. Log into Hyprland.
@@ -260,8 +277,10 @@ dotfiles/
 │   └── scripts/
 │       └── wallpaper-dynamic.sh # Dynamic wallpaper + matugen script
 ├── waybar/                      # Waybar config + styles
+│   ├── configs/                 # Layout configs (default, default2, minimal)
+│   ├── styles/                  # Layout styles (default, default2, minimal)
 │   ├── themes/                  # Color themes (.css files)
-│   └── scripts/                 # launch.sh, theme-switcher.sh, etc.
+│   └── scripts/                 # launch.sh, theme-switcher.sh
 ├── rofi/                        # Rofi launcher + styles
 │   ├── colors/                  # Color themes (.rasi files)
 │   └── scripts/
@@ -269,7 +288,13 @@ dotfiles/
 │       ├── dynamic-theme-menu.sh# Dynamic theme submenu
 │       ├── matugen-scheme.sh    # Scheme type picker
 │       ├── wallpaper-picker.sh  # Wallpaper picker with dynamic support
-│       └── powermenu.sh         # Rofi power menu
+│       ├── waybar-layout.sh     # Waybar layout switcher
+│       ├── rofi-layout.sh       # Rofi layout switcher
+│       ├── capture.sh           # Screenshot/capture menu
+│       ├── clipboard.sh         # Clipboard manager (cliphist)
+│       ├── cheatsheet.sh        # Keybind reference
+│       ├── emoji.sh             # Emoji picker (rofimoji)
+│       └── powermenu.sh         # Power menu
 ├── kitty/                       # Kitty terminal config
 │   └── themes/                  # Color themes (.conf files)
 ├── swaync/                      # Swaync notification center
@@ -278,5 +303,6 @@ dotfiles/
 │   └── themes/                  # Color themes (.css files)
 ├── matugen/                     # matugen config + templates
 │   └── templates/               # Color templates for each app
-└── color-schemes/               # KDE color schemes for Dolphin (.colors files)
+├── color-schemes/               # KDE color schemes for Dolphin (.colors files)
+└── cliphist/                    # Cliphist favorites config
 ```

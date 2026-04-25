@@ -337,6 +337,31 @@ declare -A CAL_WEEKDAYS=(
     ["  Kanagawa Light"]="#77713f"
 )
 
+declare -A CAVA_COLOR=(
+    ["  One Dark"]="#61AFEF"
+    ["  Catppuccin Mocha"]="#cba6f7"
+    ["  Catppuccin Frappe"]="#ca9ee6"
+    ["  Catppuccin Latte"]="#8839ef"
+    ["  Gruvbox Dark"]="#fabd2f"
+    ["  Rosé Pine Moon"]="#c4a7e7"
+    ["  Rosé Pine Dawn"]="#907aa9"
+    ["  Tokyo Night"]="#7aa2f7"
+    ["  Tokyo Day"]="#2e7de9"
+    ["  Monokai Pro"]="#f92672"
+    ["  Cyberdream"]="#df80ff"
+    ["  Oxocarbon"]="#ff7eb6"
+    ["  Dracula"]="#bd93f9"
+    ["  Dracula Light"]="#7c4dbd"
+    ["  Kanagawa Dark"]="#e46876"
+    ["  Kanagawa Light"]="#c84053"
+    ["  Everforest Dark"]="#a7c080"
+    ["  Everforest Light"]="#8da101"
+    ["  Crimson"]="#cc1133"
+    ["  Sakura"]="#cc0044"
+    ["  E-Ink"]="#1a1a1a"
+    ["  E-Ink Dark"]="#e8e8e8"
+)
+
 # Build menu
 MENU=$(printf '%s\n' "󰁍  Back to Control Center" "${!WAYBAR_THEME[@]}" | sort)
 
@@ -403,6 +428,16 @@ ln -sf "$KITTY_THEMES/$KITTY_FILE" "$KITTY_ACTIVE"
 ln -sf "$WLOGOUT_THEMES/$WLOGOUT_FILE" "$WLOGOUT_ACTIVE"
 ln -sf "$HYPR_THEMES/$HYPR_FILE" "$HYPR_ACTIVE"
 
+# Update cava color
+cat > ~/.config/cava/themes/active << EOF
+[color]
+foreground = '${CAVA_COLOR[$CHOICE]}'
+EOF
+
+# Apply hyprland border colors instantly (runtime)
+hyprctl keyword general:col.active_border "${HYPR_ACTIVE_BORDER[$CHOICE]}"
+hyprctl keyword general:col.inactive_border "${HYPR_INACTIVE_BORDER[$CHOICE]}"
+
 # Update calendar colors
 for CONFIG in \
     "$HOME/.config/waybar/configs/default.jsonc" \
@@ -430,6 +465,9 @@ swaync-client --reload-css &disown
 
 # Reload kitty
 pkill -USR1 kitty
+
+# Reload cava
+pkill -USR1 cava
 
 # Notify
 notify-send "Theme Switcher" "Switched to $CHOICE" --icon=preferences-desktop-theme
