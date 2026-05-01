@@ -4,7 +4,7 @@ ROFI_THEME="$HOME/.config/rofi/cheatsheet.rasi"
 
 BINDS=$(printf '%s\n' \
     "󰁍  Back" \
-    "󰣇  SUPER + T           Terminal" \
+    "  SUPER + T           Terminal" \
     "󰅙  SUPER + Q           Kill Window" \
     "󰖟  SUPER + B           Browser" \
     "󰨞  SUPER + C           VSCode" \
@@ -17,11 +17,12 @@ BINDS=$(printf '%s\n' \
     "󰍹  SUPER + N           Notifications" \
     "󰌌  SUPER + L           Lock Screen" \
     "󰸉  SUPER + SHIFT + W   Wallpaper" \
-    "  SUPER + SHIFT + T   Theme Switcher" \
-    "  SUPER + SHIFT + E   Control Center" \
+    "󰹉  SUPER + SHIFT + T   Theme Switcher" \
+    "  SUPER + SHIFT + E   Control Center" \
+    "󰃣 SUPER + SHIFT + P   Color picker" \
     "󰹑  SUPER + SHIFT + S   Screenshot Region" \
-    "  SUPER + SHIFT + V   Capture Menu" \
-    "  SUPER + SHIFT + C   Clipboard" \
+    "󰍜  SUPER + SHIFT + V   Capture Menu" \
+    "  SUPER + SHIFT + C   Clipboard" \
     "󰒅  SUPER + R           Reload Waybar" \
     "󰒭  SUPER + j/l/i/k     Move Focus" \
     "󰒭  SUPER + 1-0         Switch Workspace" \
