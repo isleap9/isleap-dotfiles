@@ -347,6 +347,7 @@ declare -A CAVA_COLOR=(
     ["  Rosé Pine Dawn"]="#907aa9"
     ["  Tokyo Night"]="#7aa2f7"
     ["  Tokyo Day"]="#2e7de9"
+    ["  Papercolor"]="#0087af"
     ["  Monokai Pro"]="#f92672"
     ["  Cyberdream"]="#df80ff"
     ["  Oxocarbon"]="#ff7eb6"
