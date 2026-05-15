@@ -22,8 +22,6 @@ hl.config({
     },
 })
 
--- 3-finger horizontal swipe to switch workspace
-hl.gesture({ fingers = 3, direction = "horizontal", dispatcher = hl.dsp.focus({ workspace = "e+1" }) })
 
 -- Per-device config
 hl.device({

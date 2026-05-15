@@ -1,6 +1,6 @@
-#############################
+
 --- ENVIRONMENT VARIABLES ---
-#############################
+
 
 -- Cursor
 hl.env("XCURSOR_SIZE",    "20")

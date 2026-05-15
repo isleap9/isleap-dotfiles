@@ -17,9 +17,8 @@ hl.bind(mainMod .. " + R",           hl.dsp.exec_cmd("~/.config/waybar/scripts/l
 -- Window management
 hl.bind(mainMod .. " + W",           hl.dsp.window.float({ action = "toggle" }))                        -- toggle floating
 hl.bind(mainMod .. " + P",           hl.dsp.window.pseudo())                                            -- pseudo (dwindle)
-hl.bind(mainMod .. " + F",           hl.dsp.window.fullscreen({ mode = "maximize" }))                   -- maximize
+                  -- maximize
 hl.bind(mainMod .. " + SHIFT + F",   hl.dsp.window.fullscreen({ mode = "fullscreen" }))                 -- true fullscreen
-hl.bind(mainMod .. " + SHIFT + J",   hl.dsp.layout("togglesplit"))                                      -- toggle split (dwindle)
 
 -- Move focus (j/l/i/k = left/right/up/down)
 hl.bind(mainMod .. " + j",           hl.dsp.focus({ direction = "l" }))

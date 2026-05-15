@@ -41,6 +41,7 @@ declare -A WAYBAR_THEME=(
     ["  Everforest Light"]="everforest-light.css"
     ["  Kanagawa Dark"]="kanagawa-dark.css" 
     ["  Kanagawa Light"]="kanagawa-light.css"
+    ["  Sleepy"]="sleepy.css"
 )
 
 declare -A ROFI_THEME=(
@@ -67,6 +68,7 @@ declare -A ROFI_THEME=(
     ["  Everforest Light"]="everforest-light.rasi"
     ["  Kanagawa Dark"]="kanagawa-dark.rasi" 
     ["  Kanagawa Light"]="kanagawa-light.rasi"
+    ["  Sleepy"]="sleepy.rasi"
 )
 
 declare -A SWAYNC_THEME=(
@@ -93,6 +95,7 @@ declare -A SWAYNC_THEME=(
     ["  Everforest Light"]="everforest-light.css"
     ["  Kanagawa Dark"]="kanagawa-dark.css" 
     ["  Kanagawa Light"]="kanagawa-light.css"
+    ["  Sleepy"]="sleepy.css"
 )
 
 declare -A KITTY_THEME=(
@@ -119,6 +122,7 @@ declare -A KITTY_THEME=(
     ["  Everforest Light"]="everforest-light.conf"
     ["  Kanagawa Dark"]="kanagawa-dark.conf"
     ["  Kanagawa Light"]="kanagawa-light.conf"
+    ["  Sleepy"]="sleepy.conf"
 )
 
 declare -A WLOGOUT_THEME=(
@@ -145,6 +149,7 @@ declare -A WLOGOUT_THEME=(
     ["  Everforest Light"]="everforest-light.css"
     ["  Kanagawa Dark"]="kanagawa-dark.css" 
     ["  Kanagawa Light"]="kanagawa-light.css"
+    ["  Sleepy"]="sleepy.css"
 )
 
 declare -A KDE_THEME=(
@@ -171,6 +176,7 @@ declare -A KDE_THEME=(
     ["  Everforest Light"]="EverforestLight" 
     ["  Kanagawa Dark"]="KanagawaDark" 
     ["  Kanagawa Light"]="KanagawaLight" 
+    ["  Sleepy"]="sleepy"
 )
 
 declare -A HYPR_THEME=(
@@ -197,6 +203,7 @@ declare -A HYPR_THEME=(
     ["  Everforest Light"]="everforest-light.conf"
     ["  Kanagawa Dark"]="kanagawa-dark.conf"
     ["  Kanagawa Light"]="kanagawa-light.conf"
+    ["  Sleepy"]="sleepy.conf"
 )
 
 # Hyprland border colors per theme (for instant runtime apply)
@@ -224,6 +231,7 @@ declare -A HYPR_ACTIVE_BORDER=(
     ["  Everforest Light"]="rgb(8da101)"
     ["  Kanagawa Dark"]="rgb(e46876)"  
     ["  Kanagawa Light"]="rgb(c84053)" 
+    ["  Sleepy"]="rgb(BAABE4)"
 )
 
 declare -A HYPR_INACTIVE_BORDER=(
@@ -250,6 +258,7 @@ declare -A HYPR_INACTIVE_BORDER=(
     ["  Everforest Light"]="rgb(fdf6e3)" 
     ["  Kanagawa Dark"]="rgb(1f1f28)" 
     ["  Kanagawa Light"]="rgb(f2ecbc)" 
+    ["  Sleepy"]="rgb(1a1a1a)"
 )
 
 declare -A CAL_MONTHS=(
@@ -278,6 +287,7 @@ declare -A CAL_MONTHS=(
     ["  Everforest Light"]="#8da101"
     ["  Kanagawa Dark"]="#e46876"
     ["  Kanagawa Light"]="#c84053"
+    ["  Sleepy"]="#e8e8e8"
 
 )
 
@@ -307,6 +317,7 @@ declare -A CAL_DAYS=(
     ["  Everforest Light"]="#5c6a72"
     ["  Kanagawa Dark"]="#dcd7ba"
     ["  Kanagawa Light"]="#545464"
+    ["  Sleepy"]="#e8e8e8"
 )
 
 declare -A CAL_WEEKDAYS=(
@@ -335,6 +346,7 @@ declare -A CAL_WEEKDAYS=(
     ["  Everforest Light"]="#dfa000"
     ["  Kanagawa Dark"]="#c0a36e"
     ["  Kanagawa Light"]="#77713f"
+    ["  Sleepy"]="#BAABE4"
 )
 
 declare -A CAVA_COLOR=(
@@ -361,6 +373,7 @@ declare -A CAVA_COLOR=(
     ["  Sakura"]="#cc0044"
     ["  E-Ink"]="#1a1a1a"
     ["  E-Ink Dark"]="#e8e8e8"
+    ["  Sleepy"]="#e8e8e8"
 )
 
 # Build menu
