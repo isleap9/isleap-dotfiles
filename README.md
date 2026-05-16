@@ -1,6 +1,8 @@
 # 🌸 isleap's dotfiles
 A Hyprland rice with a dynamic theme switcher supporting multiple static themes and a live wallpaper-based color system powered by matugen.
 
+> **Note:** As of Hyprland 0.55, this config is fully migrated to **Lua**. The old hyprlang `.conf` format is no longer used.
+
 ---
 
 ## 📸 Preview
@@ -23,7 +25,7 @@ A Hyprland rice with a dynamic theme switcher supporting multiple static themes 
 | | |
 |---|---|
 | **OS** | Arch Linux |
-| **WM** | Hyprland |
+| **WM** | Hyprland 0.55+ (Lua config) |
 | **Bar** | Waybar |
 | **Terminal** | Kitty |
 | **Shell** | Fish |
@@ -33,7 +35,7 @@ A Hyprland rice with a dynamic theme switcher supporting multiple static themes 
 | **Wallpaper** | awww |
 | **Color Extraction** | matugen |
 | **Idle Daemon** | Hypridle |
-| **Lock Screen** | Hyprlock (BlazinLock) |
+| **Lock Screen** | BlazinLock |
 | **Cursor** | Bibata-Modern-Ice |
 | **GPU** | NVIDIA (nvidia-open-dkms) |
 
@@ -43,7 +45,7 @@ A Hyprland rice with a dynamic theme switcher supporting multiple static themes 
 
 ### 🪟 Hyprland & WM
 ```
-hyprland hypridle hyprlock polkit-gnome hyprshot
+hyprland hypridle polkit-gnome hyprshot blazinlock
 ```
 
 ### 📊 Bar & Notifications
@@ -142,6 +144,8 @@ Hand-crafted themes that instantly recolor every app via symlinks:
 | **Everforest Light** | Light |
 | **Crimson** | Dark |
 | **Sakura** | Light |
+| **Papercolor** | Light |
+| **Sleepy** | Dark |
 | **E-Ink** | Light |
 | **E-Ink Dark** | Dark |
 
@@ -172,7 +176,7 @@ Each app reads colors from an `active` symlink in its themes folder. Static them
 ```
 wallpaper picked
     → matugen extracts Material You palette
-    → generates dynamic.css / dynamic.conf for each app
+    → generates dynamic.css / dynamic.lua / dynamic.conf for each app
     → symlinks repointed to dynamic.*
     → all apps reloaded
 ```
@@ -201,6 +205,7 @@ wallpaper picked
 | `Super + Shift + S` | Screenshot region |
 | `Super + Shift + V` | Open capture menu |
 | `Super + Shift + C` | Open clipboard manager |
+| `Super + Shift + P` | Color picker |
 | `Super + j/l/i/k` | Move focus left/right/up/down |
 | `Super + 1-0` | Switch workspace |
 | `Super + Shift + 1-0` | Move window to workspace |
@@ -216,7 +221,7 @@ git clone git@github.com:isleap9/isleap-dotfiles.git ~/dotfiles
 
 2. Install packages (see above) with `yay`:
 ```bash
-yay -S matugen-bin google-sans-display
+yay -S matugen-bin google-sans-display blazinlock
 ```
 
 3. Copy configs:
@@ -244,7 +249,7 @@ ln -sf ~/.config/rofi/colors/isleaponedark.rasi ~/.config/rofi/colors/active.ras
 ln -sf ~/.config/swaync/themes-colors/onedark.css ~/.config/swaync/themes-colors/active.css
 ln -sf ~/.config/kitty/themes/onedark.conf ~/.config/kitty/themes/active.conf
 ln -sf ~/.config/wlogout/themes/onedark.css ~/.config/wlogout/style.css
-ln -sf ~/.config/hypr/modules/themes/onedark.conf ~/.config/hypr/modules/active.conf
+ln -sf ~/.config/hypr/modules/themes/onedark.lua ~/.config/hypr/modules/active.lua
 ```
 
 6. Make scripts executable:
@@ -262,23 +267,39 @@ chmod +x ~/.config/rofi/scripts/cheatsheet.sh
 chmod +x ~/.config/rofi/scripts/clipboard.sh
 chmod +x ~/.config/rofi/scripts/waybar-layout.sh
 chmod +x ~/.config/rofi/scripts/rofi-layout.sh
+chmod +x ~/.config/rofi/scripts/emoji.sh
 ```
 
 7. Log into Hyprland.
+
+> **Hyprland 0.55+ note:** This config uses `hyprland.lua` as the entry point. Do **not** create a `hyprland.conf` — Hyprland will prefer the `.lua` file automatically.
 
 ---
 
 ## 📁 Structure
 ```
 dotfiles/
-├── hypr/                        # Hyprland config + keybinds + modules
+├── hypr/                        # Hyprland config (Lua)
+│   ├── hyprland.lua             # Main entry point (replaces hyprland.conf)
 │   ├── modules/
-│   │   └── themes/              # Border color themes per theme
+│   │   ├── monitors.lua         # Monitor config
+│   │   ├── binds.lua            # Keybindings
+│   │   ├── decoration.lua       # Borders, blur, shadows
+│   │   ├── animation.lua        # Animations
+│   │   ├── input.lua            # Input devices
+│   │   ├── layout.lua           # Dwindle/master layout
+│   │   ├── misc.lua             # Misc options
+│   │   ├── windowrules.lua      # Window rules
+│   │   ├── autostart.lua        # Startup apps
+│   │   ├── env.lua              # Environment variables
+│   │   ├── programs.lua         # Program variables
+│   │   ├── active.lua -> themes/xxx.lua  # Active theme symlink
+│   │   └── themes/              # Border color themes (.lua files)
 │   └── scripts/
 │       └── wallpaper-dynamic.sh # Dynamic wallpaper + matugen script
 ├── waybar/                      # Waybar config + styles
 │   ├── configs/                 # Layout configs (default, default2, minimal)
-│   ├── styles/                  # Layout styles (default, default2, minimal)
+│   ├── styles/                  # Layout styles
 │   ├── themes/                  # Color themes (.css files)
 │   └── scripts/                 # launch.sh, theme-switcher.sh
 ├── rofi/                        # Rofi launcher + styles
