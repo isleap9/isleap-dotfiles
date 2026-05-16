@@ -231,7 +231,7 @@ declare -A HYPR_ACTIVE_BORDER=(
     ["  Everforest Light"]="rgb(8da101)"
     ["  Kanagawa Dark"]="rgb(e46876)"  
     ["  Kanagawa Light"]="rgb(c84053)" 
-    ["  Sleepy"]="rgb(BAABE4)"
+    ["  Sleepy"]="rgb(baabe4)"
 )
 
 declare -A HYPR_INACTIVE_BORDER=(
@@ -287,7 +287,7 @@ declare -A CAL_MONTHS=(
     ["  Everforest Light"]="#8da101"
     ["  Kanagawa Dark"]="#e46876"
     ["  Kanagawa Light"]="#c84053"
-    ["  Sleepy"]="#e8e8e8"
+    ["  Sleepy"]="#baabe4"
 
 )
 
@@ -346,7 +346,7 @@ declare -A CAL_WEEKDAYS=(
     ["  Everforest Light"]="#dfa000"
     ["  Kanagawa Dark"]="#c0a36e"
     ["  Kanagawa Light"]="#77713f"
-    ["  Sleepy"]="#BAABE4"
+    ["  Sleepy"]="#909090"
 )
 
 declare -A CAVA_COLOR=(
@@ -373,7 +373,7 @@ declare -A CAVA_COLOR=(
     ["  Sakura"]="#cc0044"
     ["  E-Ink"]="#1a1a1a"
     ["  E-Ink Dark"]="#e8e8e8"
-    ["  Sleepy"]="#e8e8e8"
+    ["  Sleepy"]="#baabe4"
 )
 
 # Build menu

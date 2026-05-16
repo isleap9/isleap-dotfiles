@@ -4,8 +4,8 @@ Name=EInkDark
 [Colors:Button]
 BackgroundNormal=56,56,56
 BackgroundAlternate=26,26,26
-DecorationFocus=232,232,232
-DecorationHover=232,232,232
+DecorationFocus=186,171,228
+DecorationHover=186,171,228
 ForegroundNormal=232,232,232
 ForegroundInactive=112,112,112
 ForegroundActive=232,232,232
@@ -16,7 +16,7 @@ ForegroundNeutral=136,136,0
 ForegroundPositive=51,102,51
 
 [Colors:Selection]
-BackgroundNormal=232,232,232
+BackgroundNormal=186,171,228
 BackgroundAlternate=200,200,200
 DecorationFocus=232,232,232
 DecorationHover=232,232,232

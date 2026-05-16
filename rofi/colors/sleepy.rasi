@@ -3,13 +3,13 @@
  * Author : isleap
  * Github : @isleap9
  *
- * E-Ink Dark
+ * Sleepy
  **/
 * {
     background:     #242424FF;
     background-alt: #2e2e2eFF;
     foreground:     #e8e8e8FF;
-    selected:       #BAABE4;
-    active:         #909090FF;
+    selected:       #baabe4FF;
+    active:         #336633FF;
     urgent:         #cc3333FF;
 }

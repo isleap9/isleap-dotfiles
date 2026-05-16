@@ -1,1 +1,1 @@
-/home/isleap/.config/hypr/modules/themes/monokai-pro.lua
+/home/isleap/.config/hypr/modules/themes/kanagawa-dark.lua
