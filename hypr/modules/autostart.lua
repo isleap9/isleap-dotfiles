@@ -1,23 +1,15 @@
---- AUTOSTART ---
-
-os.execute("hyprctl setcursor Bibata-Modern-Ice 20 &")
-
-os.execute("/usr/lib/polkit-kde-authentication-agent-1 &")
-os.execute("awww-daemon &")
-os.execute("~/.config/waybar/scripts/launch.sh &")
-
-os.execute("wl-paste --type text --watch cliphist store &")
-os.execute("wl-paste --type image --watch cliphist store &")
-
-os.execute("wl-clip-persist --clipboard regular &")
-
-os.execute("arch-update --tray &")
-
-os.execute("systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP &")
-
-os.execute("hypridle &")
-
-os.execute("/usr/lib/gnome-settings-daemon/gsd-xsettings &")
-os.execute("/usr/lib/gsd-xsettings &")
-
-os.execute("~/.config/hypr/scripts/spotify-notify.sh &")
+-- AUTOSTART --
+hl.on("hyprland.start", function()
+    hl.exec_cmd("hyprctl setcursor Bibata-Modern-Ice 20")
+    hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
+    hl.exec_cmd("awww-daemon")
+    hl.exec_cmd("~/.config/waybar/scripts/launch.sh")
+    hl.exec_cmd("wl-paste --type text --watch cliphist store")
+    hl.exec_cmd("wl-paste --type image --watch cliphist store")
+    hl.exec_cmd("wl-clip-persist --clipboard regular")
+    hl.exec_cmd("arch-update --tray")
+    hl.exec_cmd("systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+    hl.exec_cmd("hypridle")
+    hl.exec_cmd("/usr/lib/gsd-xsettings")
+    hl.exec_cmd("~/.config/hypr/scripts/spotify-notify.sh")
+end)

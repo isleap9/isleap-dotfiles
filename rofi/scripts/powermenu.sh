@@ -45,7 +45,7 @@ run_cmd() {
         elif [[ $1 == '--suspend' ]]; then
             systemctl suspend
         elif [[ $1 == '--logout' ]]; then
-            hyprctl dispatch exit
+            killall Hyprland
         fi
     else
         exit 0

@@ -180,30 +180,30 @@ declare -A KDE_THEME=(
 )
 
 declare -A HYPR_THEME=(
-    ["  One Dark"]="onedark.conf"
-    ["  Catppuccin Mocha"]="catppuccin-mocha.conf"
-    ["  Gruvbox Dark"]="gruvbox.conf"
-    ["  Rosé Pine Moon"]="rosepine-moon.conf"
-    ["  Rosé Pine Dawn"]="rosepine-dawn.conf"
-    ["  E-Ink"]="eink.conf"
-    ["  E-Ink Dark"]="eink-dark.conf" 
-    ["  Tokyo Night"]="tokyo-night.conf" 
-    ["  Monokai Pro"]="monokai-pro.conf"
-    ["  Cyberdream"]="cyberdream.conf"
-    ["  Catppuccin Frappe"]="catppuccin-frappe.conf"
-    ["  Catppuccin Latte"]="catppuccin-latte.conf"
-    ["  Oxocarbon"]="oxocarbon.conf"
-    ["  Tokyo Day"]="tokyo-day.conf"
-    ["  Papercolor"]="papercolor.conf"
-    ["  Dracula"]="dracula.conf" 
-    ["  Dracula Light"]="dracula-light.conf" 
-    ["  Crimson"]="crimson.conf"
-    ["  Sakura"]="sakura.conf" 
-    ["  Everforest Dark"]="everforest-dark.conf"
-    ["  Everforest Light"]="everforest-light.conf"
-    ["  Kanagawa Dark"]="kanagawa-dark.conf"
-    ["  Kanagawa Light"]="kanagawa-light.conf"
-    ["  Sleepy"]="sleepy.conf"
+    ["  One Dark"]="onedark.lua"
+    ["  Catppuccin Mocha"]="catppuccin-mocha.lua"
+    ["  Gruvbox Dark"]="gruvbox.lua"
+    ["  Rosé Pine Moon"]="rosepine-moon.lua"
+    ["  Rosé Pine Dawn"]="rosepine-dawn.lua"
+    ["  E-Ink"]="eink.lua"
+    ["  E-Ink Dark"]="eink-dark.lua" 
+    ["  Tokyo Night"]="tokyo-night.lua" 
+    ["  Monokai Pro"]="monokai-pro.lua"
+    ["  Cyberdream"]="cyberdream.lua"
+    ["  Catppuccin Frappe"]="catppuccin-frappe.lua"
+    ["  Catppuccin Latte"]="catppuccin-latte.lua"
+    ["  Oxocarbon"]="oxocarbon.lua"
+    ["  Tokyo Day"]="tokyo-day.lua"
+    ["  Papercolor"]="papercolor.lua"
+    ["  Dracula"]="dracula.lua" 
+    ["  Dracula Light"]="dracula-light.lua" 
+    ["  Crimson"]="crimson.lua"
+    ["  Sakura"]="sakura.lua" 
+    ["  Everforest Dark"]="everforest-dark.lua"
+    ["  Everforest Light"]="everforest-light.lua"
+    ["  Kanagawa Dark"]="kanagawa-dark.lua"
+    ["  Kanagawa Light"]="kanagawa-light.lua"
+    ["  Sleepy"]="sleepy.lua"
 )
 
 # Hyprland border colors per theme (for instant runtime apply)
@@ -471,7 +471,7 @@ plasma-apply-colorscheme "${KDE_THEME[$CHOICE]}"
 
 # Reload waybar
 LAYOUT=$(cat "$HOME/.config/waybar/current-layout" 2>/dev/null || echo "default")
-pkill waybar
+pkill -9 waybar
 waybar --config "$HOME/.config/waybar/configs/${LAYOUT}.jsonc" --style "$HOME/.config/waybar/styles/${LAYOUT}.css" &disown
 
 # Reload swaync
