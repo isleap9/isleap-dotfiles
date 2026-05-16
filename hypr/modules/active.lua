@@ -1,1 +1,1 @@
-/home/isleap/.config/hypr/modules/themes/papercolor.lua
+/home/isleap/.config/hypr/modules/themes/eink-dark.lua
