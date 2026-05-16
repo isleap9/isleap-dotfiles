@@ -16,15 +16,14 @@ hl.bind(mainMod .. " + R",           hl.dsp.exec_cmd("~/.config/waybar/scripts/l
 
 -- Window management
 hl.bind(mainMod .. " + W",           hl.dsp.window.float({ action = "toggle" }))                        -- toggle floating
-hl.bind(mainMod .. " + P",           hl.dsp.window.pseudo())                                            -- pseudo (dwindle)
-                  -- maximize
-hl.bind(mainMod .. " + SHIFT + F",   hl.dsp.window.fullscreen({ mode = "fullscreen" }))                 -- true fullscreen
+hl.bind(mainMod .. " + F",           hl.dsp.window.fullscreen({ mode = 1 }))                   -- maximize
+hl.bind(mainMod .. " + SHIFT + F",   hl.dsp.window.fullscreen({ mode = 0 }))                 -- true fullscreen
 
 -- Move focus (j/l/i/k = left/right/up/down)
-hl.bind(mainMod .. " + j",           hl.dsp.focus({ direction = "l" }))
-hl.bind(mainMod .. " + l",           hl.dsp.focus({ direction = "r" }))
-hl.bind(mainMod .. " + i",           hl.dsp.focus({ direction = "u" }))
-hl.bind(mainMod .. " + k",           hl.dsp.focus({ direction = "d" }))
+hl.bind(mainMod .. " + j",           hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. " + l",           hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + i",           hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + k",           hl.dsp.focus({ direction = "down" }))
 
 -- Switch workspaces (SUPER + 1-9, 0 = ws 10)
 for i = 1, 9 do
@@ -34,12 +33,12 @@ hl.bind(mainMod .. " + 0",           hl.dsp.focus({ workspace = "10" }))
 
 -- Move active window to workspace (SUPER + SHIFT + 1-9, 0 = ws 10)
 for i = 1, 9 do
-    hl.bind(mainMod .. " + SHIFT + " .. i, hl.dsp.window.move_to_workspace({ workspace = tostring(i) }))
+    hl.bind(mainMod .. " + SHIFT + " .. i, hl.dsp.window.move({ workspace = tostring(i) }))
 end
-hl.bind(mainMod .. " + SHIFT + 0",   hl.dsp.window.move_to_workspace({ workspace = "10" }))
+hl.bind(mainMod .. " + SHIFT + 0",   hl.dsp.window.move({ workspace = "10" }))
 
 -- Special workspace (scratchpad)
-hl.bind(mainMod .. " + S",           hl.dsp.special_workspace({ name = "magic" }))
+hl.bind(mainMod .. " + S",           hl.dsp.workspace.toggle_special("magic"))
 
 -- Scroll through workspaces with SUPER + mouse wheel
 hl.bind(mainMod .. " + mouse_down",  hl.dsp.focus({ workspace = "e+1" }))

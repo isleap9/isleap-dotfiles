@@ -14,7 +14,7 @@ ROFI_ACTIVE="$ROFI_COLORS/active.rasi"
 SWAYNC_ACTIVE="$SWAYNC_THEMES/active.css"
 KITTY_ACTIVE="$KITTY_THEMES/active.conf"
 WLOGOUT_ACTIVE="$HOME/.config/wlogout/style.css"
-HYPR_ACTIVE="$HOME/.config/hypr/modules/active.conf"
+HYPR_ACTIVE="$HOME/.config/hypr/modules/active.lua"
 
 # Map display names → theme files
 declare -A WAYBAR_THEME=(

@@ -1,1 +1,1 @@
-/home/isleap/.config/hypr/modules/themes/onedark.lua
+/home/isleap/.config/hypr/modules/themes/catppuccin-frappe.conf
