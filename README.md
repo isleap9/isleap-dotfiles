@@ -45,7 +45,7 @@ A Hyprland rice with a dynamic theme switcher supporting multiple static themes 
 
 ### 🪟 Hyprland & WM
 ```
-hyprland hypridle polkit-gnome hyprshot blazinlock
+hyprland hypridle polkit-kde hyprshot blazinlock
 ```
 
 ### 📊 Bar & Notifications
