@@ -13,7 +13,7 @@ SWAYNC_THEMES="$HOME/.config/swaync/themes-colors"
 WLOGOUT_THEMES="$HOME/.config/wlogout/themes"
 HYPR_THEMES="$HOME/.config/hypr/modules/themes"
 ROFI_COLORS="$HOME/.config/rofi/colors"
-HYPR_DYNAMIC="$HYPR_THEMES/dynamic.conf"
+HYPR_DYNAMIC="$HYPR_THEMES/dynamic.lua"
 WAYBAR_LAYOUT_FILE="$HOME/.config/waybar/current-layout"
 
 awww img "$WALLPAPER" --transition-type fade --transition-duration 2 --transition-fps 60
@@ -26,15 +26,12 @@ ln -sf "$WAYBAR_THEMES/dynamic.css"  "$WAYBAR_THEMES/active.css"
 ln -sf "$KITTY_THEMES/dynamic.conf"  "$KITTY_THEMES/active.conf"
 ln -sf "$SWAYNC_THEMES/dynamic.css"  "$SWAYNC_THEMES/active.css"
 ln -sf "$WLOGOUT_THEMES/dynamic.css" "$HOME/.config/wlogout/style.css"
-ln -sf "$HYPR_THEMES/dynamic.conf"   "$HOME/.config/hypr/modules/active.conf"
+ln -sf "$HYPR_THEMES/dynamic.lua"   "$HOME/.config/hypr/modules/active.lua"
 ln -sf "$ROFI_COLORS/dynamic.rasi"   "$ROFI_COLORS/active.rasi"
 
-ACTIVE_BORDER=$(grep "active_border " "$HYPR_DYNAMIC" | grep -v inactive | awk -F"= " "{print \$2}" | tr -d "[:space:]")
-INACTIVE_BORDER=$(grep "inactive_border" "$HYPR_DYNAMIC" | awk -F"= " "{print \$2}" | tr -d "[:space:]")
-hyprctl keyword general:col.active_border   "$ACTIVE_BORDER"   2>/dev/null || true
-hyprctl keyword general:col.inactive_border "$INACTIVE_BORDER" 2>/dev/null || true
 
-PRIMARY_HEX=$(grep "active_border " "$HYPR_DYNAMIC" | grep -v inactive | grep -oP "[A-Fa-f0-9]{6}" | head -1)
+
+PRIMARY_HEX=$(grep "col.active_border" "$HYPR_DYNAMIC" | grep -oP "[A-Fa-f0-9]{6}" | head -1 || echo "ffffff")
 PRIMARY_COLOR="#${PRIMARY_HEX}"
 ONSURFACE_HEX=$(grep "define-color fg1" "$WAYBAR_THEMES/dynamic.css" | grep -oP "#[A-Fa-f0-9]{6}")
 
@@ -45,8 +42,9 @@ for CONFIG in "$HOME/.config/waybar/configs/default.jsonc" "$HOME/.config/waybar
 done
 
 LAYOUT=$(cat "$WAYBAR_LAYOUT_FILE" 2>/dev/null || echo "default")
-pkill waybar || true
-sleep 0.3
+hyprctl reload 2>/dev/null || true
+pkill -9 waybar || true
+sleep 0.2
 waybar --config "$HOME/.config/waybar/configs/${LAYOUT}.jsonc" --style "$HOME/.config/waybar/styles/${LAYOUT}.css" &disown
 
 pkill -USR1 kitty 2>/dev/null || true

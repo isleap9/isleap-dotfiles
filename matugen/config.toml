@@ -20,7 +20,7 @@ output_path = "~/.config/wlogout/themes/dynamic.css"
 
 [templates.hypr]
 input_path  = "~/.config/matugen/templates/hypr-colors.conf"
-output_path = "~/.config/hypr/modules/themes/dynamic.conf"
+output_path = "~/.config/hypr/modules/themes/dynamic.lua"
 
 [templates.rofi]
 input_path  = "~/.config/matugen/templates/rofi-colors.rasi"

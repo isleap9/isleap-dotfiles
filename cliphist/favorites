@@ -1,1 +1,2 @@
 systemctl --user restart pipewire wireplumber pipewire-pulse
+hyprctl reload
