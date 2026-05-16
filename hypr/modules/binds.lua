@@ -11,7 +11,7 @@ hl.bind(mainMod .. " + B",           hl.dsp.exec_cmd("google-chrome-stable"))   
 hl.bind(mainMod .. " + C",           hl.dsp.exec_cmd("code"))                                           -- vscode
 hl.bind(mainMod .. " + M",           hl.dsp.exec_cmd("bash ~/.config/rofi/scripts/powermenu.sh"))       -- power menu
 hl.bind(mainMod .. " + E",           hl.dsp.exec_cmd("dolphin"))                                        -- file manager
-hl.bind(mainMod .. " + A",           hl.dsp.exec_cmd("rofi -show drun"))                                -- app launcher ($menu)
+hl.bind(mainMod .. " + A",           hl.dsp.exec_cmd("bash ~/.config/rofi/launcher.sh"))                                -- app launcher ($menu)
 hl.bind(mainMod .. " + R",           hl.dsp.exec_cmd("~/.config/waybar/scripts/launch.sh"))             -- waybar reload
 
 -- Window management
