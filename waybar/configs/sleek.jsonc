@@ -63,7 +63,6 @@
         "tooltip": false
     },
     "hyprland/workspaces": {
-        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"{name}\" })'",
         "format": "{icon}",
         "format-icons": {
             "active": "󰮯",
@@ -175,7 +174,7 @@
         "format": "󰐥"
     },
     "cava": {
-        // "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
+        "cava_config": "/home/isleap/.config/cava/config",
         "framerate": 30,
         "autosens": 0,
         "sensitivity": 0.01,
@@ -184,7 +183,7 @@
         "higher_cutoff_freq": 10000,
         "hide_on_silence": false,
         // "format_silent": "quiet",
-        "method": "pulse",
+        "method": "pipewire",
         "source": "auto",
         "stereo": true,
         "reverse": false,
