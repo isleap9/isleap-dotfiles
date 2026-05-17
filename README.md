@@ -50,7 +50,7 @@ hyprland hypridle polkit-kde hyprshot blazinlock
 
 ### 📊 Bar & Notifications
 ```
-waybar swaync
+waybar-git swaync
 ```
 
 ### 🖼️ Wallpaper & Colors
