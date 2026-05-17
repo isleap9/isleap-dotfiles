@@ -50,6 +50,9 @@ waybar --config "$HOME/.config/waybar/configs/${LAYOUT}.jsonc" --style "$HOME/.c
 pkill -USR1 kitty 2>/dev/null || true
 swaync-client --reload-css &disown
 
+cp ~/.config/btop/themes/dynamic.theme ~/.config/btop/themes/active.theme
+pkill -SIGUSR2 btop 2>/dev/null || true
+
 python3 -c "
 import re, os
 path = os.path.expanduser('~/.local/share/color-schemes/Dynamic.colors')

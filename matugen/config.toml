@@ -30,4 +30,7 @@ output_path = "~/.config/rofi/colors/dynamic.rasi"
 input_path  = "~/.config/matugen/templates/kde-colors.colors"
 output_path = "~/.local/share/color-schemes/Dynamic.colors"
 
+[templates.btop]
+input_path  = "~/.config/matugen/templates/btop-colors.theme"
+output_path = "~/.config/btop/themes/dynamic.theme"
 

@@ -7,6 +7,7 @@ SWAYNC_THEMES="$HOME/.config/swaync/themes-colors"
 KITTY_THEMES="$HOME/.config/kitty/themes"
 WLOGOUT_THEMES="$HOME/.config/wlogout/themes"
 HYPR_THEMES="$HOME/.config/hypr/modules/themes"
+BTOP_THEMES="$HOME/.config/btop/themes"
 
 # Symlink targets
 WAYBAR_ACTIVE="$WAYBAR_THEMES/active.css"
@@ -15,6 +16,7 @@ SWAYNC_ACTIVE="$SWAYNC_THEMES/active.css"
 KITTY_ACTIVE="$KITTY_THEMES/active.conf"
 WLOGOUT_ACTIVE="$HOME/.config/wlogout/style.css"
 HYPR_ACTIVE="$HOME/.config/hypr/modules/active.lua"
+BTOP_ACTIVE="$BTOP_THEMES/active.theme"
 
 # Map display names → theme files
 declare -A WAYBAR_THEME=(
@@ -376,6 +378,33 @@ declare -A CAVA_COLOR=(
     ["  Sleepy"]="#baabe4"
 )
 
+declare -A BTOP_THEME=(
+    ["  One Dark"]="onedark.theme"
+    ["  Catppuccin Mocha"]="catppuccin-mocha.theme"
+    ["  Catppuccin Frappe"]="catppuccin-frappe.theme"
+    ["  Catppuccin Latte"]="catppuccin-latte.theme"
+    ["  Gruvbox Dark"]="gruvbox.theme"
+    ["  Rosé Pine Moon"]="rosepine-moon.theme"
+    ["  Rosé Pine Dawn"]="rosepine-dawn.theme"
+    ["  E-Ink"]="eink.theme"
+    ["  E-Ink Dark"]="eink-dark.theme"
+    ["  Tokyo Night"]="tokyo-night.theme"
+    ["  Tokyo Day"]="tokyo-day.theme"
+    ["  Monokai Pro"]="monokai-pro.theme"
+    ["  Cyberdream"]="cyberdream.theme"
+    ["  Oxocarbon"]="oxocarbon.theme"
+    ["  Papercolor"]="papercolor.theme"
+    ["  Dracula"]="dracula.theme"
+    ["  Dracula Light"]="dracula-light.theme"
+    ["  Crimson"]="crimson.theme"
+    ["  Sakura"]="sakura.theme"
+    ["  Everforest Dark"]="everforest-dark.theme"
+    ["  Everforest Light"]="everforest-light.theme"
+    ["  Kanagawa Dark"]="kanagawa-dark.theme"
+    ["  Kanagawa Light"]="kanagawa-light.theme"
+    ["  Sleepy"]="sleepy.theme"
+)
+
 # Build menu
 MENU=$(printf '%s\n' "󰁍  Back to Control Center" "${!WAYBAR_THEME[@]}" | sort)
 
@@ -482,6 +511,13 @@ pkill -USR1 kitty
 
 # Reload cava
 pkill -USR1 cava
+
+# Swap btop symlink and reload
+BTOP_FILE="${BTOP_THEME[$CHOICE]}"
+if [ -f "$BTOP_THEMES/$BTOP_FILE" ]; then
+    ln -sf "$BTOP_THEMES/$BTOP_FILE" "$BTOP_ACTIVE"
+    pkill -SIGUSR2 btop 2>/dev/null || true
+fi
 
 # Notify
 notify-send "Theme Switcher" "Switched to $CHOICE" --icon=preferences-desktop-theme
