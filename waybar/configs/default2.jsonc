@@ -80,7 +80,7 @@
     "hyprland/workspaces": {
         "format": "{icon}",
         "format-icons": {
-            "active": "\uebb4",
+            "active": "󰮯",
             "default": "\uebb4"
         },
         "persistent-workspaces": {
