@@ -10,7 +10,7 @@ CHOICE=$(printf '%s\n' \
     "  Default" \
     "  Default 2" \
     "  Minimal" \
-    | rofi -dmenu \
+    | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
         -p "Waybar Layout" \
         -i \
         -no-custom \

@@ -16,9 +16,9 @@ hl.config({
             { name = "global",        enabled = true, speed = 10,   curve = "default"       },
             { name = "border",        enabled = true, speed = 5.39, curve = "easeOutQuint"  },
 
-            { name = "windows",       enabled = true, speed = 4.79, curve = "easeOutQuint",  style = "slide"      },
-            { name = "windowsIn",     enabled = true, speed = 4.1,  curve = "easeOutQuint",  style = "slide"      },
-            { name = "windowsOut",    enabled = true, speed = 1.49, curve = "linear",         style = "slide"      },
+            { name = "windows",       enabled = true, speed = 10.06, curve = "easeOutQuint",  style = "slide"      },
+            { name = "windowsIn",     enabled = true, speed = 8.61,  curve = "easeOutQuint",  style = "slide"      },
+            { name = "windowsOut",    enabled = true, speed = 3.13, curve = "linear",         style = "slide"      },
 
             { name = "fadeIn",        enabled = true, speed = 1.73, curve = "almostLinear"  },
             { name = "fadeOut",       enabled = true, speed = 1.46, curve = "almostLinear"  },

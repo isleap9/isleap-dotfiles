@@ -17,7 +17,7 @@ MENU=$(printf '%s\n' \
     "  Cheatsheet"
 )
 
-CHOICE=$(echo "$MENU" | rofi -dmenu \
+CHOICE=$(echo "$MENU" | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
     -p "Select Option" \
     -i \
     -no-custom \

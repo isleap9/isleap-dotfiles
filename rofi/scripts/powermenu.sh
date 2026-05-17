@@ -14,14 +14,14 @@ yes='󰋊'
 no='󰚌'
 
 rofi_cmd() {
-    rofi -dmenu \
+    rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
         -p "Goodbye ${USER}" \
         -mesg "Uptime: $uptime" \
         -theme ${dir}/${theme}.rasi
 }
 
 confirm_cmd() {
-    rofi -dmenu \
+    rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
         -p 'Confirmation' \
         -mesg 'Are you Sure?' \
         -theme ${dir}/shared/confirm.rasi

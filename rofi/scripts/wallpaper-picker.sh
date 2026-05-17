@@ -34,7 +34,7 @@ for i in "${!names[@]}"; do
 done
 
 # Show rofi
-chosen=$(rofi -dmenu -i \
+chosen=$(rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -i \
     -p "Select Wallpaper" \
     -show-icons \
     -icon-size 160 \

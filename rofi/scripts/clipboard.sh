@@ -8,24 +8,24 @@ VIEW_FAV="󰋃  Favorites"
 VIEW_ALL="󰅍  All Clips"
 
 ACTION=$(printf "%s
-" "$BACK" "$VIEW_FAV" "$VIEW_ALL" "$ADD_FAV" "$REMOVE_FAV" | rofi -dmenu -p "Clipboard" -i -no-custom -theme "$ROFI_THEME")
+" "$BACK" "$VIEW_FAV" "$VIEW_ALL" "$ADD_FAV" "$REMOVE_FAV" | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -p "Clipboard" -i -no-custom -theme "$ROFI_THEME")
 [ -z "$ACTION" ] && exit 0
 
 case "$ACTION" in
     "$BACK") bash "$HOME/.config/rofi/scripts/control-center.sh" ;;
     "$VIEW_FAV")
         if [ ! -s "$FAVORITES" ]; then notify-send "Clipboard" "No favorites yet" --icon=dialog-information; exit 0; fi
-        CHOICE=$( (echo "$BACK"; cat "$FAVORITES") | rofi -dmenu -p "Favorites" -i -theme "$ROFI_THEME")
+        CHOICE=$( (echo "$BACK"; cat "$FAVORITES") | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -p "Favorites" -i -theme "$ROFI_THEME")
         [ -z "$CHOICE" ] && exit 0
         [ "$CHOICE" = "$BACK" ] && bash "$HOME/.config/rofi/scripts/clipboard.sh" && exit 0
         echo -n "$CHOICE" | wl-copy ;;
     "$VIEW_ALL")
-        CHOICE=$( (echo "$BACK"; cliphist list | awk -F"	" "{print \$2}") | rofi -dmenu -p "Clipboard" -i -theme "$ROFI_THEME")
+        CHOICE=$( (echo "$BACK"; cliphist list | awk -F"	" "{print \$2}") | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -p "Clipboard" -i -theme "$ROFI_THEME")
         [ -z "$CHOICE" ] && exit 0
         [ "$CHOICE" = "$BACK" ] && bash "$HOME/.config/rofi/scripts/clipboard.sh" && exit 0
         echo "$CHOICE" | cliphist decode | wl-copy ;;
     "$ADD_FAV")
-        CHOICE=$( (echo "$BACK"; cliphist list | awk -F"	" "{print \$2}") | rofi -dmenu -p "Add Favorite" -i -theme "$ROFI_THEME")
+        CHOICE=$( (echo "$BACK"; cliphist list | awk -F"	" "{print \$2}") | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -p "Add Favorite" -i -theme "$ROFI_THEME")
         [ -z "$CHOICE" ] && exit 0
         [ "$CHOICE" = "$BACK" ] && bash "$HOME/.config/rofi/scripts/clipboard.sh" && exit 0
         DECODED=$(echo "$CHOICE" | cliphist decode)
@@ -33,7 +33,7 @@ case "$ACTION" in
         else echo "$DECODED" >> "$FAVORITES"; notify-send "Clipboard" "Added to favorites" --icon=dialog-information; fi ;;
     "$REMOVE_FAV")
         if [ ! -s "$FAVORITES" ]; then notify-send "Clipboard" "No favorites yet" --icon=dialog-information; exit 0; fi
-        CHOICE=$( (echo "$BACK"; cat "$FAVORITES") | rofi -dmenu -p "Remove Favorite" -i -theme "$ROFI_THEME")
+        CHOICE=$( (echo "$BACK"; cat "$FAVORITES") | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -p "Remove Favorite" -i -theme "$ROFI_THEME")
         [ -z "$CHOICE" ] && exit 0
         [ "$CHOICE" = "$BACK" ] && bash "$HOME/.config/rofi/scripts/clipboard.sh" && exit 0
         grep -vF "$CHOICE" "$FAVORITES" > "$FAVORITES.tmp" && mv "$FAVORITES.tmp" "$FAVORITES"

@@ -8,7 +8,7 @@ CHOICE=$(printf '%s\n' \
     "󰹑  Region" \
     "󰍹  Fullscreen" \
     "󱣴  Window" \
-    | rofi -dmenu \
+    | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
         -p "Capture" \
         -i \
         -no-custom \

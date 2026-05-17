@@ -29,7 +29,7 @@ BINDS=$(printf '%s\n' \
     "󰒭  SUPER + SHIFT 1-0   Move to Workspace" \
 )
 
-CHOICE=$(echo "$BINDS" | rofi -dmenu \
+CHOICE=$(echo "$BINDS" | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
     -p "Keybinds" \
     -i \
     -no-custom \

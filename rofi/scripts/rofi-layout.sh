@@ -7,7 +7,7 @@ CHOICE=$(printf '%s\n' \
 	"󰁍  Back" \
     "  Default" \
     "  Minimal" \
-    | rofi -dmenu \
+    | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
         -p "Rofi Layout" \
         -i \
         -no-custom \

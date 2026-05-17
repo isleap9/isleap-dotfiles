@@ -32,7 +32,7 @@ MENU=$(printf '%s\n' \
     "$MODE_LABEL"
 )
 
-CHOICE=$(echo "$MENU" | rofi -dmenu \
+CHOICE=$(echo "$MENU" | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
     -p "$STATUS" \
     -i \
     -no-custom \

@@ -13,7 +13,7 @@ SCHEMES=$(printf '%s
     "scheme-fruit-salad (playful)"
 )
 
-CHOICE=$(echo "$SCHEMES" | rofi -dmenu \
+CHOICE=$(echo "$SCHEMES" | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
     -p "Scheme Type" \
     -i \
     -no-custom \

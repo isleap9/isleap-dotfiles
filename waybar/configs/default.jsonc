@@ -21,7 +21,9 @@
     ],
     "custom/arch": {
         "format": "󰣇",
-        "tooltip": false
+        "tooltip": false,
+        "on-click": "bash ~/.config/rofi/launcher.sh",
+        "on-click-right": "bash ~/.config/rofi/scripts/control-center.sh"
     },
     "custom/weather": {
         "exec": "python ~/.config/waybar/scripts/weather.py",

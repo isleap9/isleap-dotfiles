@@ -125,6 +125,7 @@ window#waybar {
 }
 
 menu {
+    font-weight: 900;
     background-color: @bg1;
     color: @fg1;
     border-radius: 10px;
@@ -132,6 +133,7 @@ menu {
 }
 
 menuitem {
+    font-weight: 900;
     background-color: @bg1;
     color: @fg1;
     padding: 5px 10px;
