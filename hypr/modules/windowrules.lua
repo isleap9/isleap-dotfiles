@@ -41,5 +41,7 @@ hl.layer_rule({ match = { namespace = "swaync-notification-window" }, blur = tru
 hl.layer_rule({ match = { namespace = "logout_dialog"            }, blur = true, ignore_alpha = 0.0 })
 hl.layer_rule({ match = { namespace = "rofi"                     }, blur = true, ignore_alpha = 0.1 })
 
+
+
 -- arch-update: open on focused monitor
 hl.window_rule({ match = { class = "kitty", title = ".*arch-update.*" }, monitor = "current" })

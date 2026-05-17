@@ -10,6 +10,7 @@ CHOICE=$(printf '%s\n' \
     "  Default" \
     "  Default 2" \
     "  Minimal" \
+    "  Sleek" \
     | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" \
         -p "Waybar Layout" \
         -i \
@@ -23,6 +24,7 @@ case "$CHOICE" in
     *"Default")   echo "default"  > "$LAYOUT_FILE" ;;
     *"Default 2") echo "default2" > "$LAYOUT_FILE" ;;
     *"Minimal")   echo "minimal"  > "$LAYOUT_FILE" ;;
+    *"Sleek")   echo "sleek"  > "$LAYOUT_FILE" ;;
 esac
 
 LAYOUT=$(cat "$LAYOUT_FILE")

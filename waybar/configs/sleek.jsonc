@@ -1,21 +1,21 @@
 {
     "layer": "top",
-    "spacing": 18,
-    "margin-top": 16,
+    "width": 1000,
     "modules-left": [
         "custom/arch",
-        "custom/weather",
-        "clock",
+        "pulseaudio",
         "cava",
         "mpris"
     ],
     "modules-center": [
-        "hyprland/workspaces"
+        "clock",
+        "hyprland/workspaces",
+        "clock#right",
+        "custom/weather"
     ],
     "modules-right": [
         "tray",
         "hyprland/language",
-        "pulseaudio",
         "network",
         "custom/swaync",
         "custom/power"
@@ -34,8 +34,8 @@
         // "format-alt": "{alt}",
     },
     "clock": {
-        "format": "{:%I:%M %p}   ",
-        "format-alt": "{:%A, %B %d, %Y (%R)}    ",
+        "format": "{:%I}",
+        "format-alt": "{:%A, %B %d, %Y}  ",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {
             "mode": "year",
@@ -58,37 +58,30 @@
             "on-scroll-down": "shift_down"
         },
     },
-    "cava": {
-       // "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
-        "framerate": 30,
-        "autosens": 0,
-        "sensitivity": 0.01,
-        "bars": 14,
-        "lower_cutoff_freq": 50,
-        "higher_cutoff_freq": 10000,
-        "hide_on_silence": false,
-        // "format_silent": "quiet",
-        "method": "pulse",
-        "source": "auto",
-        "stereo": true,
-        "reverse": false,
-        "bar_delimiter": 0,
-        "monstercat": false,
-        "waves": false,
-        "noise_reduction": 0.77,
-        "input_delay": 2,
-        "format-icons": [
-            "▁",
-            "▂",
-            "▃",
-            "▄",
-            "▅",
-            "▆",
-            "▇",
-            "█"
-        ],
-        "actions": {
-            "on-click-right": "mode"
+    "clock#right": {
+        "format": "{:%M %p}  ",
+        "tooltip": false
+    },
+    "hyprland/workspaces": {
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"{name}\" })'",
+        "format": "{icon}",
+        "format-icons": {
+            "active": "󰮯",
+            "default": "\uebb4"
+        },
+        "persistent-workspaces": {
+            "DP-2": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "DP-3": [
+                1,
+                2,
+                3,
+                4
+            ]
         }
     },
     "mpris": {
@@ -107,38 +100,6 @@
             "playing": "▶"
         }
     },
-    "custom/expand-icon": {
-        "format": " ",
-        "tooltip": false
-    },
-    "hyprland/workspaces": {
-        "format": "{icon}",
-        "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "󰨞",
-            "4": "󰎆",
-            "5": "󰉋",
-            "6": "󰙯",
-            "7": "󰒱",
-            "8": "󰋹",
-            "default": "󰮯"
-        },
-        "persistent-workspaces": {
-            "DP-2": [
-                1,
-                2,
-                3,
-                4
-            ],
-            "DP-3": [
-                1,
-                2,
-                3,
-                4
-            ]
-        }
-    },
     "tray": {
         "icon-size": 21,
         "spacing": 10,
@@ -148,12 +109,12 @@
         }
     },
     "hyprland/language": {
-        "format": "\udb80\udf0c   {}",
+        "format": " \udb80\udf0c  {}",
         "format-en": "UK",
         "format-it": "IT"
     },
     "pulseaudio": {
-        "format": "{icon}  {volume}%",
+        "format": "{icon} {volume}%",
         "format-bluetooth": "{volume}%  󰂯",
         "format-muted": "Muted  ",
         "format-icons": {
@@ -212,5 +173,38 @@
         "tooltip-format": "Power Menu",
         "on-click": "bash ~/.config/rofi/scripts/powermenu.sh",
         "format": "󰐥"
+    },
+    "cava": {
+        // "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
+        "framerate": 30,
+        "autosens": 0,
+        "sensitivity": 0.01,
+        "bars": 14,
+        "lower_cutoff_freq": 50,
+        "higher_cutoff_freq": 10000,
+        "hide_on_silence": false,
+        // "format_silent": "quiet",
+        "method": "pulse",
+        "source": "auto",
+        "stereo": true,
+        "reverse": false,
+        "bar_delimiter": 0,
+        "monstercat": false,
+        "waves": false,
+        "noise_reduction": 0.77,
+        "input_delay": 2,
+        "format-icons": [
+            "▁",
+            "▂",
+            "▃",
+            "▄",
+            "▅",
+            "▆",
+            "▇",
+            "█"
+        ],
+        "actions": {
+            "on-click": "mode"
+        }
     }
 }
