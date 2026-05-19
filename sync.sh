@@ -12,6 +12,7 @@ cp -r ~/.config/swaync "$DOTFILES/"
 cp -r ~/.config/wlogout "$DOTFILES/"
 cp -r ~/.config/matugen "$DOTFILES/"
 cp -r ~/.config/cliphist "$DOTFILES/"
+cp -r ~/.config/menus "$DOTFILES/"
 
 # Wallpapers
 mkdir -p "$DOTFILES/Wallpapers"
