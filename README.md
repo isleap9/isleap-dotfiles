@@ -72,7 +72,7 @@ kitty
 ```
 ttf-rubik-vf
 ttf-jetbrains-mono-nerd
-google-sans-display (AUR)
+ttf-google-sans (AUR)
 ttf-firacode-nerd
 ttf-nerd-fonts-symbols
 otf-font-awesome
@@ -97,7 +97,7 @@ bibata-cursor-theme
 
 ### 🛠️ Utilities
 ```
-wl-clip-persist wlogout nwg-look nwg-displays brightnessctl
+wl-clip-persist wlogout nwg-look hyprpicker  nwg-displays brightnessctl
 starship fastfetch htop nano git wget cliphist
 ```
 

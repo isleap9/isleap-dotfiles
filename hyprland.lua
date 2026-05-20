@@ -1,0 +1,13 @@
+-- ~/.config/hypr/hyprland.lua
+require("modules/monitors")
+require("modules/programs")
+require("modules/env")
+require("modules/autostart")
+require("modules/decoration")
+require("modules/animation")
+require("modules/windowrules")
+require("modules/layout")
+require("modules/misc")
+require("modules/input")
+require("modules/binds")
+require("modules/active")
