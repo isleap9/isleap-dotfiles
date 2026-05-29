@@ -227,7 +227,7 @@ yay -S \
   awww matugen-bin \
   rofi rofimoji \
   kitty fish starship \
-  ttf-rubik-vf ttf-jetbrains-mono-nerd google-sans-display \
+  ttf-rubik-vf ttf-jetbrains-mono-nerd ttf-google-sans \
   ttf-firacode-nerd ttf-nerd-fonts-symbols otf-font-awesome noto-fonts-cjk \
   pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber pavucontrol libpulse \
   bluez bluez-utils networkmanager network-manager-applet \
