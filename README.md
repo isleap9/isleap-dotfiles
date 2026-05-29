@@ -221,7 +221,23 @@ git clone git@github.com:isleap9/isleap-dotfiles.git ~/dotfiles
 
 2. Install packages (see above) with `yay`:
 ```bash
-yay -S matugen-bin google-sans-display blazinlock
+yay -S \
+  hyprland hypridle blazinlock polkit-kde-agent hyprshot \
+  waybar-git swaync-git \
+  awww matugen-bin \
+  rofi rofimoji \
+  kitty fish starship \
+  ttf-rubik-vf ttf-jetbrains-mono-nerd google-sans-display \
+  ttf-firacode-nerd ttf-nerd-fonts-symbols otf-font-awesome noto-fonts-cjk \
+  pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber pavucontrol libpulse \
+  bluez bluez-utils networkmanager network-manager-applet \
+  bibata-cursor-theme \
+  wl-clip-persist wlogout nwg-look nwg-displays brightnessctl \
+  cliphist fastfetch btop htop nano git wget \
+  nvidia-open-dkms nvidia-settings libva-nvidia-driver \
+  firefox google-chrome visual-studio-code-bin \
+  dolphin kde-cli-tools \
+  cava
 ```
 
 3. Copy configs:
