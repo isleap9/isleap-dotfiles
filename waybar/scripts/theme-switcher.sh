@@ -512,10 +512,10 @@ pkill -USR1 kitty
 # Reload cava
 pkill -USR1 cava
 
-# Swap btop symlink and reload
+# Apply btop theme directly
 BTOP_FILE="${BTOP_THEME[$CHOICE]}"
 if [ -f "$BTOP_THEMES/$BTOP_FILE" ]; then
-    ln -sf "$BTOP_THEMES/$BTOP_FILE" "$BTOP_ACTIVE"
+    cp "$BTOP_THEMES/$BTOP_FILE" "$HOME/.config/btop/themes/active.theme"
     pkill -SIGUSR2 btop 2>/dev/null || true
 fi
 

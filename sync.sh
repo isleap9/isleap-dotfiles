@@ -13,6 +13,7 @@ cp -r ~/.config/wlogout "$DOTFILES/"
 cp -r ~/.config/matugen "$DOTFILES/"
 cp -r ~/.config/cliphist "$DOTFILES/"
 cp -r ~/.config/menus "$DOTFILES/"
+cp -r ~/.config/btop "$DOTFILES/"
 
 # Wallpapers
 mkdir -p "$DOTFILES/Wallpapers"
