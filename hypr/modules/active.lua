@@ -1,1 +1,1 @@
-/home/isleap/.config/hypr/modules/themes/eink-dark.lua
+/home/isleap/.config/hypr/modules/themes/rosepine-moon.lua

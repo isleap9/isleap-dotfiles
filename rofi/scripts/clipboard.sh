@@ -7,8 +7,7 @@ REMOVE_FAV="󰛌  Remove Favorite"
 VIEW_FAV="󰋃  Favorites"
 VIEW_ALL="󰅍  All Clips"
 
-ACTION=$(printf "%s
-" "$BACK" "$VIEW_FAV" "$VIEW_ALL" "$ADD_FAV" "$REMOVE_FAV" | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -p "Clipboard" -i -no-custom -theme "$ROFI_THEME")
+ACTION=$(printf "%s\n" "$BACK" "$VIEW_FAV" "$VIEW_ALL" "$ADD_FAV" "$REMOVE_FAV" | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -p "Clipboard" -i -no-custom -theme "$ROFI_THEME")
 [ -z "$ACTION" ] && exit 0
 
 case "$ACTION" in
@@ -20,14 +19,14 @@ case "$ACTION" in
         [ "$CHOICE" = "$BACK" ] && bash "$HOME/.config/rofi/scripts/clipboard.sh" && exit 0
         echo -n "$CHOICE" | wl-copy ;;
     "$VIEW_ALL")
-        CHOICE=$( (echo "$BACK"; cliphist list | awk -F"	" "{print \$2}") | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -p "Clipboard" -i -theme "$ROFI_THEME")
+        CHOICE=$( (printf "0\t%s\n" "$BACK"; cliphist list) | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -display-columns 2 -p "Clipboard" -i -theme "$ROFI_THEME")
         [ -z "$CHOICE" ] && exit 0
-        [ "$CHOICE" = "$BACK" ] && bash "$HOME/.config/rofi/scripts/clipboard.sh" && exit 0
+        [[ "$CHOICE" == *"$BACK" ]] && bash "$HOME/.config/rofi/scripts/clipboard.sh" && exit 0
         echo "$CHOICE" | cliphist decode | wl-copy ;;
     "$ADD_FAV")
-        CHOICE=$( (echo "$BACK"; cliphist list | awk -F"	" "{print \$2}") | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -p "Add Favorite" -i -theme "$ROFI_THEME")
+        CHOICE=$( (printf "0\t%s\n" "$BACK"; cliphist list) | rofi -dmenu -hover-select -me-select-entry "" -me-accept-entry "MousePrimary" -display-columns 2 -p "Add Favorite" -i -theme "$ROFI_THEME")
         [ -z "$CHOICE" ] && exit 0
-        [ "$CHOICE" = "$BACK" ] && bash "$HOME/.config/rofi/scripts/clipboard.sh" && exit 0
+        [[ "$CHOICE" == *"$BACK" ]] && bash "$HOME/.config/rofi/scripts/clipboard.sh" && exit 0
         DECODED=$(echo "$CHOICE" | cliphist decode)
         if grep -qF "$DECODED" "$FAVORITES"; then notify-send "Clipboard" "Already in favorites" --icon=dialog-information
         else echo "$DECODED" >> "$FAVORITES"; notify-send "Clipboard" "Added to favorites" --icon=dialog-information; fi ;;

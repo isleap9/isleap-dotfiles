@@ -1,2 +1,4 @@
 systemctl --user restart pipewire wireplumber pipewire-pulse
 hyprctl reload
+qs -c noctalia-shell
+
