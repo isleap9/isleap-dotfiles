@@ -222,7 +222,7 @@ git clone git@github.com:isleap9/isleap-dotfiles.git ~/dotfiles
 2. Install packages (see above) with `yay`:
 ```bash
 yay -S \
-  hyprland hypridle blazinlock polkit-kde-agent hyprshot \
+  hyprland hypridle hyprpicker blazinlock polkit-kde-agent hyprshot \
   waybar-git swaync-git \
   awww matugen-bin \
   rofi rofimoji \
