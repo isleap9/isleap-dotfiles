@@ -14,6 +14,9 @@ cp -r ~/.config/matugen "$DOTFILES/"
 cp -r ~/.config/cliphist "$DOTFILES/"
 cp -r ~/.config/menus "$DOTFILES/"
 cp -r ~/.config/btop "$DOTFILES/"
+cp -r ~/.config/fastfetch "$DOTFILES/"
+cp -r ~/.config/fish "$DOTFILES/"
+cp ~/.config/starship.toml "$DOTFILES/"
 
 # Wallpapers
 mkdir -p "$DOTFILES/Wallpapers"

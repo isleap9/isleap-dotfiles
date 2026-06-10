@@ -1,1 +1,1 @@
-/home/isleap/.config/hypr/modules/themes/rosepine-moon.lua
+/home/isleap/.config/hypr/modules/themes/tokyo-night.lua
