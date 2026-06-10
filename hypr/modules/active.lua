@@ -1,1 +1,1 @@
-/home/isleap/.config/hypr/modules/themes/tokyo-night.lua
+/home/isleap/.config/hypr/modules/themes/dynamic.lua
