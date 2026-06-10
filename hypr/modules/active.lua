@@ -1,1 +1,1 @@
-/home/isleap/.config/hypr/modules/themes/dynamic.lua
+/home/isleap/.config/hypr/modules/themes/kanagawa-dark.lua
