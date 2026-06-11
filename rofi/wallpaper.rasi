@@ -93,7 +93,7 @@ element alternate.normal {
 }
 
 element-icon {
-    size:               160px;
+    size:               180px;
     background-color:   transparent;
     cursor:             inherit;
 }

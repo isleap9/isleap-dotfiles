@@ -3,6 +3,7 @@ ROFI_THEME="$HOME/.config/rofi/control-center.rasi"
 STATE_FILE="$HOME/.cache/dynamic-theme-enabled"
 SCHEME_FILE="$HOME/.cache/matugen-scheme"
 MODE_FILE="$HOME/.cache/matugen-mode"
+AWWW_CACHE=$(ls -d ~/.cache/awww/*/DP-3 2>/dev/null | head -1)
 
 if [[ -f "$STATE_FILE" ]]; then
     STATUS="● Dynamic Theme: ON"
@@ -57,7 +58,7 @@ case "$CHOICE" in
             notify-send "Dynamic Theme" "Enable dynamic theme first" --icon=dialog-warning --hint=int:transient:1
             exit 0
         fi
-        CURRENT=$(sed 's|^[^/]*||' ~/.cache/awww/0.12.0/DP-3 2>/dev/null | tr -d '\n')
+        CURRENT=$(sed 's|^[^/]*||' "$AWWW_CACHE" 2>/dev/null | tr -d '\n')
         if [[ -f "$CURRENT" ]]; then
             ~/.config/hypr/scripts/wallpaper-dynamic.sh "$CURRENT"
         else
@@ -77,7 +78,7 @@ case "$CHOICE" in
             echo "dark" > "$MODE_FILE"
             notify-send "Dynamic Theme" "Mode: Dark" --icon=weather-clear-night --hint=int:transient:1
         fi
-        CURRENT=$(sed 's|^[^/]*||' ~/.cache/awww/0.12.0/DP-3 2>/dev/null | tr -d '\n')
+        CURRENT=$(sed 's|^[^/]*||' "$AWWW_CACHE" 2>/dev/null | tr -d '\n')
         if [[ -f "$CURRENT" ]]; then
             ~/.config/hypr/scripts/wallpaper-dynamic.sh "$CURRENT"
         fi
