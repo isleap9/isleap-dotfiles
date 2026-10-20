@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Hyprland
 import qs
+import qs.components
 import qs.bar
 
 // Dashboard (like DankMaterialShell's): Overview cards, Media and Weather tabs.
@@ -12,7 +13,11 @@ import qs.bar
 // curved corners where they meet, and it slides out from under the bar.
 // Keys: 1/2/3 or Tab switch tabs, Space play/pause.
 LazyLoader {
-    active: Globals.dashboardOpen
+    id: loader
+
+    // Open/close animation (Settings → Animations)
+    property PanelMotion motion: PanelMotion { style: Config.animations.dashboard; open: Globals.dashboardOpen }
+    active: motion.needed
 
     PanelWindow {
         id: win
@@ -47,14 +52,31 @@ LazyLoader {
         margins.top: atBottom ? 0 : gap
         margins.bottom: atBottom ? gap : 0
         implicitWidth: panel.width + (attached ? 2 * r : 0)
-        implicitHeight: panel.height
+        // One tall size while open, so animations never resize the surface (that flickers).
+        // Only the panel takes clicks.
+        implicitHeight: Math.max(200, (screen?.height ?? 1080) - Theme.barHeight - Theme.barMargin * 2 - gap - 8)
+        mask: Region { item: hitBox }
         color: "transparent"
         WlrLayershell.layer: WlrLayer.Overlay
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+        WlrLayershell.keyboardFocus: Globals.dashboardOpen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
         WlrLayershell.namespace: "quickshell-dashboard"
 
+        readonly property var motion: loader.motion
+        // Attached + slide: comes out from under the bar, the full panel height
+        Binding {
+            target: loader.motion
+            property: "distance"
+            value: (win.atBottom ? 1 : -1) * (win.attached ? panel.height + 20 : 40)
+        }
+        Item {
+            id: hitBox
+            width: parent.width
+            y: panel.y
+            height: Globals.dashboardOpen ? panel.height : 0
+        }
+
         HyprlandFocusGrab {
-            active: true
+            active: Globals.dashboardOpen
             windows: [win]
             onCleared: Globals.dashboardOpen = false
         }
@@ -67,6 +89,7 @@ LazyLoader {
             y: win.atBottom ? parent.height - win.r : 0
             flipX: true; flipY: win.atBottom
             color: win.fill
+            opacity: Math.min(1, win.motion.progress * 3)
         }
         OuterCorner {
             visible: win.attached
@@ -75,36 +98,32 @@ LazyLoader {
             y: win.atBottom ? parent.height - win.r : 0
             flipY: win.atBottom
             color: win.fill
+            opacity: Math.min(1, win.motion.progress * 3)
         }
 
         Item {
             id: panel
             x: win.attached ? win.r : 0
+            y: win.atBottom ? win.height - height : 0
             width: content.implicitWidth + 32
-            height: content.implicitHeight + 32
+            // Hold the size while closing
+            Binding on height { when: Globals.dashboardOpen; value: content.implicitHeight + 32; restoreMode: Binding.RestoreNone }
             clip: win.attached
             focus: true
             Keys.forwardTo: [sheet]
 
-            Behavior on height { NumberAnimation { duration: Theme.animMs; easing.type: Easing.OutCubic } }
+            Behavior on height { enabled: win.motion.progress >= 1; NumberAnimation { duration: Theme.animMs; easing.type: Easing.OutCubic } }
 
             // Open animation: attached = slide out from behind the bar, otherwise fade + drop
             Item {
                 id: sheet
                 width: parent.width
                 height: parent.height
-                opacity: win.attached ? 1 : 0
-                // Start position is set once (not bound), so later height changes don't move it
-                transform: Translate { id: slide }
-                Component.onCompleted: {
-                    slide.y = win.attached ? (win.atBottom ? 1 : -1) * Math.max(panel.height, 400) : (win.atBottom ? 16 : -16);
-                    openAnim.start();
-                }
-                ParallelAnimation {
-                    id: openAnim
-                    NumberAnimation { target: sheet; property: "opacity"; to: 1; duration: Theme.animMs * 0.8; easing.type: Easing.OutCubic }
-                    NumberAnimation { target: slide; property: "y"; to: 0; duration: Theme.animMs * 1.3; easing.type: Easing.OutCubic }
-                }
+                opacity: win.attached && win.motion.style === "slide" ? 1 : win.motion.opacityValue
+                scale: win.motion.scaleValue
+                transformOrigin: win.atBottom ? Item.Bottom : Item.Top
+                transform: Translate { y: win.motion.offset }
+                visible: win.motion.progress > 0.001
 
                 // Background. Attached: square on the bar side (it reaches past the edge, clipped)
                 Rectangle {

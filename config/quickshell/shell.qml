@@ -15,6 +15,7 @@ import qs.quicksettings
 import qs.overview
 import qs.polkit
 import qs.desktop
+import qs.components
 
 ShellRoot {
     // A bar on every monitor
@@ -36,5 +37,6 @@ ShellRoot {
     Overview {}
     PolkitDialog {}
     TrayMenu {}
+    ClickCatcher {}
     DesktopWidgets {}
 }

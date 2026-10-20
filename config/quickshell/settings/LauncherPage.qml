@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import qs
+import qs.components
 
 Page {
     id: page
@@ -22,6 +23,16 @@ Page {
             Toggle { checked: Config.launcher.showDescriptions; onToggled: Config.launcher.showDescriptions = !checked }
         }
         Option {
+            label: "Wallpaper banner"
+            description: "Your current wallpaper on top, with the time and a greeting"
+            MSwitch { checked: Config.launcher.hero; onToggled: Config.launcher.hero = !checked }
+        }
+        Option {
+            visible: Config.launcher.hero
+            label: "Banner height"
+            Stepper { value: Config.launcher.heroHeight; from: 100; to: 400; step: 10; suffix: " px"; onChanged: v => Config.launcher.heroHeight = v }
+        }
+        Option {
             label: "Preview"
             PillButton { icon: "apps"; text: "Open launcher"; onClicked: Globals.launcherOpen = true }
         }
@@ -29,7 +40,7 @@ Page {
 
     Section {
         title: "Power menu"
-        description: "Opens with SUPER+M or the power button on the bar"
+        description: "Opens with SUPER+P or the power button on the bar"
         Option {
             label: "Ask before suspend, logout, reboot and shutdown"
             description: "Lock never asks"

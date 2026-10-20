@@ -10,16 +10,19 @@ Popout {
     id: root
 
     property var stack: []               // submenu handles, deepest last
-    readonly property var item: Globals.trayMenuItem
+    // Last opened tray item; kept while the menu slides away so it doesn't go blank
+    property var item: null
+    Binding on item { when: Globals.trayMenuItem !== null; value: Globals.trayMenuItem; restoreMode: Binding.RestoreNone }
     readonly property var menu: stack.length ? stack[stack.length - 1] : item?.menu
 
-    open: item !== null
+    open: Globals.trayMenuItem !== null
     screen: Globals.trayMenuScreen
     align: "at"
     atX: Globals.trayMenuX
     namespace: "quickshell-traymenu"
+    animStyle: Config.animations.trayMenu
     onClosed: Globals.trayMenuItem = null
-    onOpenChanged: stack = []
+    onOpenChanged: if (open) stack = []
     onKeyPressed: e => { if (e.key === Qt.Key_Backspace && stack.length) stack = stack.slice(0, -1); }
 
     content: Component {

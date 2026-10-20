@@ -24,6 +24,7 @@ Singleton {
     property alias session: adapter.session
     property alias icons: adapter.icons
     property alias panels: adapter.panels
+    property alias animations: adapter.animations
 
     // Put every setting back to its default
     function reset() {
@@ -104,6 +105,8 @@ Singleton {
                 property int width: 620
                 property int height: 520
                 property bool showDescriptions: true
+                property bool hero: true              // current wallpaper banner on top
+                property int heroHeight: 180          // added on top of `height`
             }
 
             property JsonObject powerMenu: JsonObject {
@@ -150,6 +153,21 @@ Singleton {
                 property string schedule: "sun"       // always, sun (sunset → sunrise), custom
                 property string from: "20:00"
                 property string to: "07:00"
+            }
+
+            // How each panel opens: slide, bounce, scale, fade or none (see Motion.qml)
+            property JsonObject animations: JsonObject {
+                property bool closing: true           // play a reverse animation when closing
+                property string popups: "bounce"      // notification popups
+                property string notifCenter: "slide"
+                property string dashboard: "slide"
+                property string quickSettings: "slide"
+                property string trayMenu: "slide"
+                property string launcher: "scale"
+                property string controlCenter: "scale"
+                property string powerMenu: "fade"
+                property string overview: "scale"
+                property string osd: "scale"
             }
 
             property JsonObject osd: JsonObject {

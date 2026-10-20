@@ -40,23 +40,29 @@ Scope {
         function onLayoutSwitched() { root.show("layout"); }
     }
 
-    // Keep the window a moment after hiding, so it can fade out
-    onShowingChanged: if (!showing) linger.restart()
-    Timer { id: linger; interval: 250 }
+    // Open/close animation (Settings → Animations); "slide" rises from the screen edge
+    PanelMotion {
+        id: motion
+        style: Config.animations.osd
+        open: root.showing
+        distance: Config.osd.position === "top" ? -40 : 40
+    }
 
     LazyLoader {
-        active: root.showing || linger.running
+        active: motion.needed
 
         PanelWindow {
             id: win
             screen: Globals.popupScreen
             anchors.bottom: Config.osd.position === "bottom"
             anchors.top: Config.osd.position === "top"
-            margins.bottom: 90
-            margins.top: 90
+            margins.bottom: 90 - pad
+            margins.top: 90 - pad
             exclusionMode: ExclusionMode.Ignore
-            implicitWidth: pill.width
-            implicitHeight: pill.height
+            // Room around the pill so animations aren't cut off
+            readonly property int pad: 40
+            implicitWidth: pill.width + pad * 2
+            implicitHeight: pill.height + pad * 2
             color: "transparent"
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
@@ -65,16 +71,16 @@ Scope {
 
             Rectangle {
                 id: pill
+                anchors.centerIn: parent
                 width: row.implicitWidth + 24
                 height: 64
                 radius: 32
                 color: Theme.bg1
                 border.width: 1
                 border.color: Theme.bg3
-                opacity: root.showing ? 1 : 0
-                scale: root.showing ? 1 : 0.92
-                Behavior on opacity { NumberAnimation { duration: 180 } }
-                Behavior on scale { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+                opacity: motion.opacityValue
+                scale: motion.scaleValue
+                transform: Translate { y: motion.offset }
 
                 readonly property bool isVolume: root.kind === "volume"
                 readonly property string icon: ({

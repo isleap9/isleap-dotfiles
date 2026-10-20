@@ -6,12 +6,17 @@ import Quickshell.Wayland
 import Quickshell.Widgets
 import Quickshell.Hyprland
 import qs
+import qs.components
 
 // Workspace overview (SUPER+TAB): every workspace with live previews of its windows.
 //   Click a window: focus it.  Click a workspace: go there.  Drag a window onto another
 //   workspace: move it there.  Middle click a window: close it.  Esc or 1–9 to jump.
 LazyLoader {
-    active: Globals.overviewOpen
+    id: loader
+
+    // Open/close animation (Settings → Animations)
+    property PanelMotion motion: PanelMotion { style: Config.animations.overview; open: Globals.overviewOpen }
+    active: motion.needed
 
     PanelWindow {
         id: win
@@ -63,16 +68,14 @@ LazyLoader {
         exclusionMode: ExclusionMode.Ignore
         color: "transparent"
         WlrLayershell.layer: WlrLayer.Overlay
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+        WlrLayershell.keyboardFocus: Globals.overviewOpen ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
         WlrLayershell.namespace: "quickshell-overview"
 
         // Scrim
         Rectangle {
             anchors.fill: parent
             color: Qt.rgba(Theme.bg0.r, Theme.bg0.g, Theme.bg0.b, 0.94)
-            opacity: 0
-            Component.onCompleted: opacity = 1
-            Behavior on opacity { NumberAnimation { duration: Theme.animMs } }
+            opacity: Math.min(1, Math.max(0, loader.motion.progress))
             MouseArea { anchors.fill: parent; onClicked: win.close() }
         }
 
@@ -90,11 +93,9 @@ LazyLoader {
             id: content
             anchors.centerIn: parent
             spacing: 24
-            scale: 0.94
-            opacity: 0
-            Component.onCompleted: { scale = 1; opacity = 1; }
-            Behavior on scale { NumberAnimation { duration: Theme.animMs; easing.type: Easing.OutCubic } }
-            Behavior on opacity { NumberAnimation { duration: Theme.animMs } }
+            opacity: loader.motion.opacityValue
+            scale: loader.motion.scaleValue
+            transform: Translate { y: loader.motion.offset }
 
             Text {
                 Layout.alignment: Qt.AlignHCenter

@@ -1,4 +1,17 @@
 {
+    "animations": {
+        "closing": true,
+        "controlCenter": "scale",
+        "dashboard": "slide",
+        "launcher": "scale",
+        "notifCenter": "slide",
+        "osd": "scale",
+        "overview": "scale",
+        "popups": "bounce",
+        "powerMenu": "fade",
+        "quickSettings": "slide",
+        "trayMenu": "slide"
+    },
     "appearance": {
         "animationSpeed": 1,
         "font": "Google Sans Display",
@@ -71,10 +84,15 @@
             ]
         },
         "look": {
-            "barRadius": 30,
+            "background": "",
+            "barRadius": 25,
+            "bubbles": true,
             "density": "default",
             "opacity": 75,
-            "solidGap": 18
+            "outerCorners": true,
+            "roundness": 100,
+            "solidGap": 18,
+            "solidWidth": "fit"
         },
         "minWorkspaces": 4,
         "modules": {
@@ -91,8 +109,8 @@
         },
         "position": "top",
         "preset": "custom",
-        "sideMargin": 20,
-        "spacing": 26,
+        "sideMargin": 24,
+        "spacing": 10,
         "style": "solid",
         "topMargin": 18,
         "weatherCity": "Bari"
@@ -175,7 +193,7 @@
         "enabled": true,
         "layout": true,
         "mic": true,
-        "position": "top",
+        "position": "bottom",
         "volume": true
     },
     "panels": {

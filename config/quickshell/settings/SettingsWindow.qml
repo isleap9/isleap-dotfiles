@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Hyprland
 import qs
 
 // The Settings app: a normal window (SUPER+COMMA, the app launcher, or Control Center → Settings).
@@ -17,6 +18,7 @@ LazyLoader {
             { id: "monitors",      icon: "monitor", title: "Monitors",      file: "MonitorsPage.qml" },
             { id: "notifications", icon: "notifications", title: "Notifications", file: "NotificationsPage.qml" },
             { id: "panels",        icon: "dashboard", title: "Panels & Icons", file: "PanelsPage.qml" },
+            { id: "animations",    icon: "animation", title: "Animations", file: "AnimationsPage.qml" },
             { id: "desktop",       icon: "desktop_windows", title: "Desktop & Night light", file: "DesktopPage.qml" },
             { id: "launcher",      icon: "apps", title: "Launcher & Power", file: "LauncherPage.qml" },
             { id: "wallpaper",     icon: "wallpaper", title: "Wallpaper & Colors", file: "WallpaperPage.qml" },
@@ -31,6 +33,17 @@ LazyLoader {
         color: Theme.bg0
 
         onVisibleChanged: if (!visible) Globals.settingsOpen = false
+
+        // Click outside to close: once Settings has had focus, focusing any other window closes it
+        property bool hadFocus: false
+        Connections {
+            target: Hyprland
+            function onActiveToplevelChanged() {
+                const mine = Hyprland.activeToplevel?.title === win.title;
+                if (mine) win.hadFocus = true;
+                else if (win.hadFocus) Globals.settingsOpen = false;
+            }
+        }
 
         RowLayout {
             anchors.fill: parent

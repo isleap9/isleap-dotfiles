@@ -1,1 +1,1 @@
-themes/eink-dark.lua
+themes/dynamic.lua

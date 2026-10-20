@@ -17,6 +17,21 @@ Singleton {
     // Apps whose popups replace each other instead of stacking
     readonly property var latestOnly: ["Spotify"]
 
+    // When each notification arrived (by id), for "Just now" / "5m ago"
+    property var arrived: ({})
+    property real now: Date.now()
+    Timer { interval: 30000; running: true; repeat: true; onTriggered: root.now = Date.now() }
+
+    function timeAgo(n) {
+        const t = n ? root.arrived[n.id] : undefined;
+        if (!t) return "";
+        const s = Math.max(0, (root.now - t) / 1000);
+        if (s < 60) return "Just now";
+        if (s < 3600) return Math.floor(s / 60) + "m ago";
+        if (s < 86400) return Math.floor(s / 3600) + "h ago";
+        return Math.floor(s / 86400) + "d ago";
+    }
+
     function removePopup(n) {
         popups = popups.filter(p => p !== n);
     }
@@ -51,6 +66,8 @@ Singleton {
 
         onNotification: n => {
             n.tracked = true;
+            root.now = Date.now();
+            root.arrived[n.id] = root.now;
             n.closed.connect(() => root.removePopup(n));
             if (!root.dnd || n.urgency === NotificationUrgency.Critical) {
                 // A popup identical to one already showing replaces it; music apps keep only

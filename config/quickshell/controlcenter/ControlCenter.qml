@@ -4,11 +4,16 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Hyprland
 import qs
+import qs.components
 
 // Control center (SUPER+SHIFT+E). Replaces the rofi control center and its sub-menus.
 // Esc / Backspace on an empty search goes back; Esc on the main page closes.
 LazyLoader {
-    active: Globals.controlCenterOpen
+    id: loader
+
+    // Open/close animation (Settings → Animations)
+    property PanelMotion motion: PanelMotion { style: Config.animations.controlCenter; open: Globals.controlCenterOpen }
+    active: motion.needed
 
     PanelWindow {
         id: win
@@ -36,22 +41,30 @@ LazyLoader {
         }
 
         screen: Globals.popupScreen
-        implicitWidth: 640
-        implicitHeight: 600
+        // Extra room around the card so animations aren't cut off; only the card takes clicks
+        readonly property int pad: 60
+        implicitWidth: 640 + pad * 2
+        implicitHeight: 600 + pad * 2
+        mask: Region { item: card }
         exclusionMode: ExclusionMode.Ignore
         color: "transparent"
         WlrLayershell.layer: WlrLayer.Overlay
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+        WlrLayershell.keyboardFocus: Globals.controlCenterOpen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
         WlrLayershell.namespace: "quickshell-control-center"
 
         HyprlandFocusGrab {
-            active: true
+            active: Globals.controlCenterOpen
             windows: [win]
             onCleared: Globals.controlCenterOpen = false
         }
 
         Rectangle {
+            id: card
             anchors.fill: parent
+            anchors.margins: win.pad
+            opacity: loader.motion.opacityValue
+            scale: loader.motion.scaleValue
+            transform: Translate { y: loader.motion.offset }
             radius: 24
             color: Theme.bg0
             border.color: Theme.bg3
