@@ -61,10 +61,7 @@ content = re.sub(r'rgb\((\d+),\s*(\d+),\s*(\d+)\)', r'\1,\2,\3', content)
 open(path, 'w').write(content)
 "
 
-# Force plasma to reload even if scheme name is the same
-plasma-apply-colorscheme BreezeLight 2>/dev/null || true
-sleep 0.2
-plasma-apply-colorscheme Dynamic
-qdbus org.kde.KWin /KWin reconfigure 2>/dev/null || true
+# Apply KDE colors (Dolphin etc.) without Plasma
+"$HOME/.config/hypr/scripts/apply-kde-colors.sh" Dynamic
 
 notify-send "Dynamic Theme" "Colors from $(basename "$WALLPAPER")" --icon=preferences-desktop-theme --hint=int:transient:1

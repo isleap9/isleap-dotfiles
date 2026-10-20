@@ -99,6 +99,7 @@ bibata-cursor-theme
 ```
 wl-clip-persist wlogout nwg-look hyprpicker  nwg-displays brightnessctl
 starship fastfetch htop nano git wget cliphist
+ffmpegthumbnailer jq curl libnotify
 ```
 
 ### 🎮 GPU (NVIDIA)
@@ -111,6 +112,12 @@ nvidia-open-dkms nvidia-settings libva-nvidia-driver
 firefox google-chrome visual-studio-code-bin
 pavucontrol dolphin
 ```
+
+### 🔐 Keyring & Qt Integration
+```
+gnome-keyring seahorse plasma-integration breeze
+```
+> `gnome-keyring` stores logins for apps like GitHub Desktop. `plasma-integration` lets Dolphin and other Qt apps use the KDE color schemes (no Plasma desktop needed).
 
 ---
 
@@ -234,9 +241,11 @@ yay -S \
   bibata-cursor-theme \
   wl-clip-persist wlogout nwg-look nwg-displays brightnessctl \
   cliphist fastfetch btop htop nano git wget \
+  ffmpegthumbnailer jq curl libnotify \
   nvidia-open-dkms nvidia-settings libva-nvidia-driver \
   firefox google-chrome visual-studio-code-bin \
   dolphin kde-cli-tools \
+  gnome-keyring seahorse plasma-integration breeze \
   cava
 ```
 
@@ -256,6 +265,19 @@ cp -r ~/dotfiles/cliphist ~/.config/
 ```bash
 mkdir -p ~/.local/share/color-schemes
 cp ~/dotfiles/color-schemes/*.colors ~/.local/share/color-schemes/
+```
+
+   Enable the keyring (needed by GitHub Desktop and other apps that save logins):
+```bash
+systemctl --user enable --now gnome-keyring-daemon.socket
+```
+
+   Set the icon theme (fixes the old-style nm-applet tray icon):
+```bash
+mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0
+cp ~/dotfiles/gtk-3.0/settings.ini ~/.config/gtk-3.0/
+cp ~/dotfiles/gtk-4.0/settings.ini ~/.config/gtk-4.0/
+gsettings set org.gnome.desktop.interface icon-theme 'breeze-dark'
 ```
 
 5. Create theme symlinks (defaults to One Dark):

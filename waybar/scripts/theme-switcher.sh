@@ -496,7 +496,7 @@ hyprctl keyword general:col.inactive_border "${HYPR_INACTIVE_BORDER[$CHOICE]}"
 
 # Apply plasma colorscheme
 
-plasma-apply-colorscheme "${KDE_THEME[$CHOICE]}"
+"$HOME/.config/hypr/scripts/apply-kde-colors.sh" "${KDE_THEME[$CHOICE]}"
 
 # Reload waybar
 LAYOUT=$(cat "$HOME/.config/waybar/current-layout" 2>/dev/null || echo "default")
