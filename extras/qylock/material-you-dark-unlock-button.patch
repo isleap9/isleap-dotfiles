@@ -1,0 +1,11 @@
+--- a/Main.qml	2026-10-20 16:47:52.757436368 +0200
++++ b/Main.qml	2026-10-20 16:58:36.196475621 +0200
+@@ -609,7 +609,7 @@
+                             }
+                             
+                             onAccepted: {
+-                                if (!root.isQuickshell && pwd.text !== "") {
++                                if (pwd.text !== "") {   // patched: also unlock in Quickshell (was SDDM-only)
+                                     let currentUser = userHelper.currentItem ? userHelper.currentItem.uLogin : userModel.lastUser;
+                                     sddm.login(currentUser, pwd.text, root.sessionIndex);
+                                 }

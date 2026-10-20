@@ -168,6 +168,8 @@ cp -r "$tmp/qylock/quickshell-lockscreen" "$LOCKDIR"
 mkdir -p "$LOCKDIR/themes_link"
 cp -r "$tmp/qylock/themes/material-you" "$tmp/qylock/themes/material-you-dark" "$LOCKDIR/themes_link/"
 cp "$tmp/qylock/LICENSE" "$LOCKDIR/"
+# Local fix: pressing Enter in the password field also unlocks the lock screen (upstream: login screen only)
+patch -s -d "$LOCKDIR/themes_link/material-you-dark" -p1 < "$REPO/extras/qylock/material-you-dark-unlock-button.patch"
 chmod +x "$LOCKDIR/lock.sh"
 # Upstream bug: the Material themes only check the password when running as an SDDM login
 # screen, so as a Quickshell lock screen Enter does nothing. Make Enter always check it.
@@ -178,7 +180,10 @@ for theme in material-you material-you-dark; do
         || warn "couldn't patch $theme — unlocking may not work, check $LOCKDIR/themes_link/$theme/Main.qml"
 done
 rm -rf "$tmp"
-note "installed to $LOCKDIR (SUPER+L, power menu, idle and sleep all use it)"
+note "installed to $LOCKDIR (SUPER+SHIFT+L, power menu, idle and sleep all use it)"
+if [[ $WANT_SDDM == y ]]; then
+    "$REPO/setup/sddm-theme.sh" material-you-dark   # same look for the login screen
+fi
 
 # ── Desktop integration ──────────────────────────────────────────────────────
 step "Home folders (Documents, Music, Videos…)"

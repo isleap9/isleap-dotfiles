@@ -38,6 +38,7 @@ A Hyprland rice with a **from-scratch Quickshell desktop**: bar, app launcher, n
 | **Files** | Dolphin, with Gwenview (images), Okular (PDF), Ark (archives), mpv (video/audio) |
 | **Updates** | [arch-update](https://github.com/Antiz96/arch-update) (tray icon + notifications) |
 | **Lock screen** | [qylock](https://github.com/Darkkal44/qylock) — Material You Dark (Quickshell, PAM) |
+| **Login screen** | SDDM with the same qylock Material You Dark theme |
 | **Idle** | hypridle: dim 2.5 min → lock 5 min → screens off 5.5 min → suspend 30 min |
 | **Cursor** | Bibata-Modern-Ice |
 | **GPU** | NVIDIA RTX 5070 (`nvidia-open`) — the installer handles other GPUs too |
@@ -99,6 +100,7 @@ No NVIDIA card? The installer comments out the NVIDIA variables in `~/.config/hy
 - **Weather city:** Settings (`Super + ,`) → Bar → Weather city.
 - **Video wallpapers** work out of the box (`mpvpaper` is installed).
 - **Lock screen theme:** put another qylock theme name in `~/.config/qylock/theme` (`material-you` is the light version).
+- **Login screen theme:** `./setup/sddm-theme.sh material-you` switches SDDM to the light version (or back with no argument).
 
 <details>
 <summary><b>Package list</b> (the installer installs all of this)</summary>
@@ -280,7 +282,9 @@ isleap-dotfiles/
 │   ├── kio/servicemenus/       # Dolphin right-click: Open in Kitty, Set as Wallpaper
 │   └── color-schemes/          # KDE color schemes for Dolphin and Qt apps
 ├── extras/qs-wallpaper-picker/ # Picker settings, local patch, pinned version
+├── extras/qylock/             # Small fix for the lock screen theme (Enter unlocks)
 ├── setup/dolphin-places.py     # Adds folders to Dolphin's sidebar
+├── setup/sddm-theme.sh        # Login screen theme (SDDM)
 ├── Wallpapers/                 # → ~/Pictures/Wallpapers
 └── screenshots/
 ```
