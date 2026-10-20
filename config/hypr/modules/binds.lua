@@ -9,10 +9,13 @@ hl.bind(mainMod .. " + T",           hl.dsp.exec_cmd("kitty"))                  
 hl.bind(mainMod .. " + Q",           hl.dsp.window.close())                                             -- kill active
 hl.bind(mainMod .. " + B",           hl.dsp.exec_cmd("google-chrome-stable"))                           -- browser
 hl.bind(mainMod .. " + C",           hl.dsp.exec_cmd("code"))                                           -- vscode
-hl.bind(mainMod .. " + M",           hl.dsp.exec_cmd("qs ipc call powermenu toggle"))       -- power menu
+hl.bind(mainMod .. " + P",           hl.dsp.exec_cmd("qs ipc call powermenu toggle"))       -- power menu
 hl.bind(mainMod .. " + E",           hl.dsp.exec_cmd("dolphin"))                                        -- file manager
 hl.bind(mainMod .. " + SPACE",       hl.dsp.exec_cmd("qs ipc call launcher toggle"))                                -- app launcher ($menu)
+hl.bind(mainMod .. " + A",           hl.dsp.exec_cmd("qs ipc call dashboard toggle"))                   -- dashboard
 hl.bind(mainMod .. " + R",           hl.dsp.exec_cmd("~/.config/quickshell/scripts/launch.sh"))         -- quickshell reload
+hl.bind(mainMod .. " + D",           hl.dsp.exec_cmd("discord"))								-- discord
+hl.bind(mainMod .. " + M",			 hl.dsp.exec_cmd("spotify"))								-- spotify
 
 -- Window management
 hl.bind(mainMod .. " + W",           hl.dsp.window.float({ action = "toggle" }))                        -- toggle floating
@@ -83,7 +86,7 @@ hl.bind(mainMod .. " + SHIFT + W",   hl.dsp.exec_cmd("~/.config/quickshell/scrip
 hl.bind(mainMod .. " + SHIFT + T",   hl.dsp.exec_cmd("qs ipc call controlcenter open themes"))
 
 -- Control center
-hl.bind(mainMod .. " + SHIFT + E",   hl.dsp.exec_cmd("qs ipc call controlcenter toggle"))
+hl.bind(mainMod .. " + ALT + SPACE",   hl.dsp.exec_cmd("qs ipc call controlcenter toggle"))
 
 -- Lock screen
 hl.bind(mainMod .. " + SHIFT + L",   hl.dsp.exec_cmd("loginctl lock-session"))   -- locks with qylock (via hypridle)

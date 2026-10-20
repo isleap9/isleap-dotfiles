@@ -1,49 +1,45 @@
 import QtQuick
 import Quickshell
-import Quickshell.Io
 import qs
 import qs.components
 
-// Reuses your existing Waybar weather script (wttr.in, Bari)
+// Weather: the same Open-Meteo data as the dashboard (WeatherData), so they always match.
+// Click: the dashboard's Weather tab. Right click: wttr.in in the browser. Hover: summary.
 Pill {
     id: root
 
-    property string text: "…"
-    property string tooltip: ""
-    readonly property string script: Quickshell.env("HOME") + "/.config/waybar/scripts/weather.py"
+    readonly property var w: WeatherData.current
+    property var screen: null
 
-    shown: Config.bar.modules.weather && text !== ""
-    onClicked: Quickshell.execDetached(["xdg-open", "https://wttr.in/" + encodeURIComponent(Config.bar.weatherCity)])
-
-    Process {
-        id: proc
-        command: ["python3", root.script, Config.bar.weatherCity]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: {
-                try {
-                    const data = JSON.parse(text);
-                    root.text = data.text ?? "";
-                    root.tooltip = data.tooltip ?? "";
-                } catch (e) {
-                    root.text = "";
-                }
-            }
-        }
+    readonly property string summary: {
+        if (!WeatherData.ready || !w) return "";
+        const d = WeatherData.daily;
+        const lines = [
+            `${WeatherData.place}`,
+            `${WeatherData.describe(w.code)}, feels like ${WeatherData.temp(w.feels)}`,
+            `Humidity ${Math.round(w.humidity)}% · Wind ${Math.round(w.wind)} ${WeatherData.windUnit}`,
+            ""
+        ];
+        d.slice(0, 3).forEach((day, i) => lines.push(
+            `${i === 0 ? "Today" : i === 1 ? "Tomorrow" : Qt.formatDate(day.date, "dddd")}: `
+            + `${WeatherData.temp(day.max)} / ${WeatherData.temp(day.min)}, ${WeatherData.describe(day.code)}, rain ${day.rain}%`));
+        return lines.join("\n");
     }
 
-    Timer {
-        interval: 5 * 60 * 1000
-        running: true
-        repeat: true
-        onTriggered: proc.running = true
+    shown: WeatherData.ready
+    onClicked: m => {
+        if (m.button === Qt.RightButton)
+            Quickshell.execDetached(["xdg-open", "https://wttr.in/" + encodeURIComponent(Config.bar.weatherCity)]);
+        else
+            Globals.toggleDashboard("weather", screen);
     }
 
-    BarText { text: root.text }
+    BarText { icon: true; text: WeatherData.icon(root.w?.code, root.w?.isDay) }
+    BarText { text: Math.round(root.w?.temp ?? 0) + WeatherData.tempUnit }
 
     Tooltip {
         target: root
-        show: root.hovered && root.tooltip !== ""
-        text: root.tooltip
+        show: root.hovered && root.summary !== "" && !Globals.dashboardOpen
+        text: root.summary
     }
 }

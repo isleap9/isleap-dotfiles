@@ -16,6 +16,8 @@ Singleton {
     property alias notifications: adapter.notifications
     property alias launcher: adapter.launcher
     property alias powerMenu: adapter.powerMenu
+    property alias monitors: adapter.monitors
+    property alias dashboard: adapter.dashboard
 
     // Put every setting back to its default
     function reset() {
@@ -23,12 +25,17 @@ Singleton {
         file.reload();
     }
 
+    // Several settings often change at once (e.g. a bar preset). Save them in one go, and only
+    // re-read the file a moment later, so a reload can't undo changes that weren't saved yet.
+    Timer { id: saveTimer; interval: 150; onTriggered: file.writeAdapter() }
+    Timer { id: reloadTimer; interval: 400; onTriggered: if (!saveTimer.running) file.reload() }
+
     FileView {
         id: file
         path: root.path
         watchChanges: true
-        onFileChanged: reload()
-        onAdapterUpdated: writeAdapter()
+        onFileChanged: reloadTimer.restart()
+        onAdapterUpdated: saveTimer.restart()
         onLoadFailed: error => {
             if (error === FileViewError.FileNotFound) writeAdapter();
         }
@@ -51,6 +58,22 @@ Singleton {
                 property bool clock24h: false
                 property string weatherCity: "Bari"
                 property int minWorkspaces: 4
+
+                // Which bar is shown: default, default2, minimal, sleek (imported from Waybar) or custom
+                property string preset: ""
+
+                // ── The Custom bar (the only editable one) ──
+                property string position: "top"       // top, bottom
+                property string style: "floating"     // floating (pills) or solid (attached bar)
+                // Widgets in each lane, in order: [{ type: "clock", ...widget options }]
+                property var lanes: ({ left: [], center: [], right: [] })
+                // Lanes drawn as one shared pill
+                property var grouped: ({ left: false, center: false, right: false })
+                property int customVersion: 0         // 1 = Custom bar already set up
+                // Custom bar look: colors, border, roundness, density, sizes (see BarConfig.lookDefaults)
+                property var look: ({})
+
+                // Old per-module switches (replaced by lanes; kept so old config files still load)
                 property JsonObject modules: JsonObject {
                     property bool weather: true
                     property bool clock: true
@@ -79,6 +102,18 @@ Singleton {
 
             property JsonObject powerMenu: JsonObject {
                 property bool confirm: true
+            }
+
+            property JsonObject dashboard: JsonObject {
+                // Overview cards in order: [{ id: "clock", w: 2, h: 1 }] (empty = the default layout)
+                property var cards: []
+                property string units: "metric"       // metric (°C, km/h) or imperial (°F, mph)
+            }
+
+            property JsonObject monitors: JsonObject {
+                property string main: ""              // connector name, e.g. "DP-3" ("" = the biggest screen)
+                property var barHidden: []            // monitors with no bar
+                property string popups: "focused"     // where popups open: "focused" or "main" monitor
             }
         }
     }

@@ -7,7 +7,7 @@ import qs
 PanelWindow {
     id: win
 
-    screen: Globals.focusedScreen
+    screen: Globals.popupScreen
     visible: Notifs.popups.length > 0 && !Globals.notifCenterOpen
 
     // Corner from Settings → Notifications

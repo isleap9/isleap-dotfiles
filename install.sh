@@ -170,6 +170,8 @@ cp -r "$tmp/qylock/themes/material-you" "$tmp/qylock/themes/material-you-dark" "
 cp "$tmp/qylock/LICENSE" "$LOCKDIR/"
 # Local fix: pressing Enter in the password field also unlocks the lock screen (upstream: login screen only)
 patch -s -d "$LOCKDIR/themes_link/material-you-dark" -p1 < "$REPO/extras/qylock/material-you-dark-unlock-button.patch"
+# Local fix: quit if Hyprland refuses the lock, so a stuck copy can't block the next lock
+patch -s -d "$LOCKDIR" -p1 < "$REPO/extras/qylock/lock-shell-quit-if-refused.patch"
 chmod +x "$LOCKDIR/lock.sh"
 # Upstream bug: the Material themes only check the password when running as an SDDM login
 # screen, so as a Quickshell lock screen Enter does nothing. Make Enter always check it.

@@ -15,9 +15,10 @@ PopupWindow {
 
     anchor.item: target
     anchor.rect.x: target.width / 2
-    anchor.rect.y: target.height + 8
+    // Open below the bar, or above it when the bar is at the bottom of the screen
+    anchor.rect.y: BarConfig.bottom ? -8 : target.height + 8
     anchor.edges: Edges.Top
-    anchor.gravity: Edges.Bottom
+    anchor.gravity: BarConfig.bottom ? Edges.Top : Edges.Bottom
 
     implicitWidth: bg.implicitWidth
     implicitHeight: bg.implicitHeight

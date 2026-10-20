@@ -12,7 +12,7 @@ Pill {
 
     required property var barWindow
 
-    shown: Config.bar.modules.tray && SystemTray.items.values.length > 0
+    shown: SystemTray.items.values.length > 0
     interactive: false
     spacing: 10
 
@@ -24,7 +24,7 @@ Pill {
             required property SystemTrayItem modelData
 
             Layout.alignment: Qt.AlignVCenter
-            implicitSize: 21
+            implicitSize: BarConfig.iconSize + 3
             source: modelData.icon
 
             MouseArea {

@@ -35,7 +35,7 @@ LazyLoader {
             Globals.run(cmd);
         }
 
-        screen: Globals.focusedScreen
+        screen: Globals.popupScreen
         implicitWidth: 640
         implicitHeight: 600
         exclusionMode: ExclusionMode.Ignore

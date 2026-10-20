@@ -7,7 +7,6 @@ import qs.components
 // Volume. Click: pavucontrol, right click: mute, scroll: ±1%.
 Pill {
     id: root
-    shown: Config.bar.modules.volume
 
     readonly property PwNode sink: Pipewire.defaultAudioSink
     readonly property bool muted: sink?.audio?.muted ?? false
@@ -38,5 +37,5 @@ Pill {
     }
 
     BarText { icon: true; text: root.icon }
-    BarText { text: root.muted ? "Muted" : root.volume + "%" }
+    BarText { visible: BarConfig.opt(root.settings, "label"); text: root.muted ? "Muted" : root.volume + "%" }
 }

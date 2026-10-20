@@ -7,7 +7,6 @@ import qs.components
 // Keyboard layout (UK / IT)
 Pill {
     id: root
-    shown: Config.bar.modules.language
 
     property string layout: ""
 
@@ -43,5 +42,5 @@ Pill {
     }
 
     BarText { icon: true; text: "󰌌" }
-    BarText { text: root.layout }
+    BarText { visible: BarConfig.opt(root.settings, "label"); text: root.layout }
 }

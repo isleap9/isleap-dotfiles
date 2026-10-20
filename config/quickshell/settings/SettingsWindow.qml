@@ -14,6 +14,7 @@ LazyLoader {
         readonly property var pages: [
             { id: "appearance",    icon: "󰏘", title: "Appearance",    file: "AppearancePage.qml" },
             { id: "bar",           icon: "\u{F0C7B}", title: "Bar",   file: "BarPage.qml" },
+            { id: "monitors",      icon: "󰍹", title: "Monitors",      file: "MonitorsPage.qml" },
             { id: "notifications", icon: "󰂚", title: "Notifications", file: "NotificationsPage.qml" },
             { id: "launcher",      icon: "󰀻", title: "Launcher & Power", file: "LauncherPage.qml" },
             { id: "wallpaper",     icon: "󰸉", title: "Wallpaper & Colors", file: "WallpaperPage.qml" },

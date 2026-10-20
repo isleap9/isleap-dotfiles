@@ -9,6 +9,7 @@ import qs.notifications
 import qs.powermenu
 import qs.controlcenter
 import qs.settings
+import qs.dashboard
 
 ShellRoot {
     // A bar on every monitor
@@ -24,4 +25,5 @@ ShellRoot {
     PowerMenu {}
     ControlCenter {}
     SettingsWindow {}
+    Dashboard {}
 }

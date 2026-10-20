@@ -13,7 +13,7 @@ LazyLoader {
     PanelWindow {
         id: win
 
-        screen: Globals.focusedScreen
+        screen: Globals.popupScreen
         anchors { top: true; bottom: true; left: true; right: true }
         exclusionMode: ExclusionMode.Ignore
         color: Qt.rgba(0, 0, 0, 0.45)

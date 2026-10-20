@@ -14,7 +14,10 @@ Pill {
     id: root
 
     required property ShellScreen screen
-    property string style: "default"
+    property string style: BarConfig.opt(settings, "style") ?? "default"
+
+    readonly property color activeColor: BarConfig.isCustom
+        ? BarConfig.color(BarConfig.opt(settings, "activeColor"), BarConfig.accentColor) : BarConfig.accentColor
 
     readonly property HyprlandMonitor monitor: Hyprland.monitorFor(screen)
     readonly property int activeId: monitor?.activeWorkspace?.id ?? -1
@@ -64,7 +67,7 @@ Pill {
                     implicitWidth: active ? root.size[2] : hover.containsMouse ? root.size[3] : root.size[1]
                     radius: height / 2
                     color: {
-                        if (active) return Theme.accent;
+                        if (active) return root.activeColor;
                         if (root.style === "classic") return Theme.fg2;
                         if (root.style === "sleek") return Theme.bg4;
                         return hover.containsMouse ? Theme.fg2 : occupied ? Theme.bg3 : Theme.bg2;

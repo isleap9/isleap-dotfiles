@@ -7,5 +7,5 @@ Pill {
     onClicked: m => m.button === Qt.RightButton
         ? Globals.openControlCenter("main")
         : Globals.launcherOpen = !Globals.launcherOpen
-    BarText { icon: true; text: "󰣇"; font.pixelSize: 20 }
+    BarText { icon: true; text: "󰣇"; font.pixelSize: BarConfig.iconSize + 2 }
 }

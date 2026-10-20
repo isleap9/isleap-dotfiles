@@ -11,6 +11,13 @@ A Hyprland rice with a **from-scratch Quickshell desktop**: bar, app launcher, n
 ![Bar layouts](screenshots/quickshell/bar-layouts.png)
 <p align="center"><i>The four bar layouts: Default, Default 2, Minimal and Sleek</i></p>
 
+![Dashboard: overview](screenshots/quickshell/dashboard-overview.png)
+<p align="center"><i>The dashboard (<code>Super + A</code> or click the clock), growing out of the bar</i></p>
+
+| Dashboard: media | Dashboard: weather |
+|---|---|
+| ![Dashboard: media](screenshots/quickshell/dashboard-media.png) | ![Dashboard: weather](screenshots/quickshell/dashboard-weather.png) |
+
 | Control center | Themes |
 |---|---|
 | ![Control center](screenshots/quickshell/control-center.png) | ![Themes](screenshots/quickshell/themes.png) |
@@ -163,6 +170,7 @@ google-chrome firefox visual-studio-code-bin github-desktop-bin discord
 | `Super + M` | Power menu |
 | `Super + Shift + L` | Lock screen |
 | `Super + N` | Notification center |
+| `Super + A` | Dashboard |
 | `Super + ,` | Settings |
 | `Super + .` | Emoji picker |
 | `Super + Shift + E` | Control center |
@@ -189,18 +197,19 @@ Also: right-click the Arch logo on the bar for the control center, and right-cli
 
 Everything lives in `~/.config/quickshell`. It reloads by itself when you save a file.
 
-- **Bar** — 4 layouts ported from my old Waybar setup (Default, Default 2, Minimal, Sleek). Weather, clock with calendar, cava visualizer, now playing, workspaces, tray, keyboard layout, volume, network, notifications, power.
+- **Bar** — five bars to choose from: the four fixed layouts from my old Waybar setup (Default, Default 2, Minimal, Sleek) and a **Custom** bar that's fully editable in Settings, Noctalia-style: left / center / right lanes of widgets you can add, remove, reorder and configure, top or bottom, floating pills or a solid bar. Custom starts as a copy of Default, and "Start over from…" resets it to any of the Waybar layouts. The Custom bar's look is editable too: background color and opacity, border, pill roundness, density, text/icon/accent colors, text and icon size, text weight, and per-widget color overrides. Three styles: separate pills, one floating bar (with an adjustable gap), or one bar attached to the screen edge (with optional curved outer corners); the one-piece bars can fit the widgets or span the full width. Widgets: app launcher, workspaces, clock (with calendar), weather, now playing (cover, title, artist, progress and buttons, like the dashboard), cava visualizer, tray, keyboard layout, volume, network, notifications, power, control center, settings, screenshot, spacer.
 - **App launcher** — type to search, arrows + Enter to launch.
 - **Notifications** — popups with action buttons, a notification center, Do Not Disturb.
 - **Power menu** — lock, suspend, logout, reboot, shutdown (asks before acting).
+- **Dashboard** (`Super + A`, or click the clock; click the weather for the forecast) — inspired by [DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell)'s. **Overview**: cards on a 6-column grid (clock, weather, calendar, now playing, notifications, user — click the picture to change it —, CPU, memory, GPU, disk, network) that you can reorder, resize, add and remove with Edit. **Media**: big player over a blurred cover, seek bar, shuffle/repeat, player and audio-output pickers, volume. **Weather**: now, a 24-hour chart, 7 days and details (humidity, wind, pressure, UV, visibility, clouds, sunrise/sunset), °C/°F. Weather comes from Open-Meteo, the same data the bar's weather widget uses. With a one-piece bar (Floating or Attached), the dashboard grows out of the bar itself: same color, no gap, curved corners where they meet.
 - **Control center** (`Super + Shift + E`) — bar layout, theme switcher, dynamic colors, wallpaper, clipboard (history + favorites + image previews), capture, emoji, cheatsheet.
-- **Settings app** (`Super + ,`, or search "Quickshell Settings") — theme, fonts, bar size and modules, 24h clock, weather city, notifications, launcher, power menu, wallpaper colors. Saved to `~/.config/quickshell/config.json`, applied instantly.
+- **Settings app** (`Super + ,`, or search "Quickshell Settings") — theme, fonts, the bar editor, **monitors** (main monitor, bar per monitor, popups on the main or focused monitor), notifications, launcher, power menu, wallpaper colors. Saved to `~/.config/quickshell/config.json`, applied instantly.
 
 Everything can also be scripted:
 ```bash
 qs ipc call launcher toggle
 qs ipc call controlcenter open clipboard     # main, themes, dynamic, clipboard, capture, emoji, cheatsheet, barlayout
-qs ipc call settings open bar                # appearance, bar, notifications, launcher, wallpaper, keybinds, system
+qs ipc call settings open bar                # appearance, bar, monitors, notifications, launcher, wallpaper, keybinds, system
 qs ipc call bar layout sleek                 # default, default2, minimal, sleek
 qs ipc call notifications toggleDnd
 ```

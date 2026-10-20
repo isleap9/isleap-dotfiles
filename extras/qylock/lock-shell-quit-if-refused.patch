@@ -1,0 +1,17 @@
+--- a/lock_shell.qml	2026-10-20 17:20:14.526602899 +0200
++++ b/lock_shell.qml	2026-10-20 17:20:14.537199532 +0200
+@@ -104,6 +104,14 @@
+         }
+     }
+ 
++    // Local fix: if Hyprland refused the lock (e.g. a previous lock screen was still closing),
++    // quit instead of idling forever — otherwise the next lock request thinks it's already locked.
++    Timer {
++        interval: 5000
++        running: shellRoot.isWayland && !shellRoot.isTesting
++        onTriggered: if (!(waylandLoader.item?.secure ?? false)) Qt.quit()
++    }
++
+     Loader {
+         id: x11Loader
+         active: !shellRoot.isWayland

@@ -12,7 +12,7 @@ LazyLoader {
     PanelWindow {
         id: win
 
-        screen: Globals.focusedScreen
+        screen: Globals.popupScreen
         anchors { top: true; right: true; bottom: true }
         margins { top: 8; right: Theme.barSideMargin; bottom: 16 }
         exclusiveZone: 0

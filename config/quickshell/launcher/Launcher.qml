@@ -13,7 +13,7 @@ LazyLoader {
     PanelWindow {
         id: win
 
-        screen: Globals.focusedScreen
+        screen: Globals.popupScreen
         // No anchors = centered on screen
         implicitWidth: Config.launcher.width
         implicitHeight: Config.launcher.height

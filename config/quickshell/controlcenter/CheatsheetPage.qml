@@ -24,7 +24,7 @@ MenuList {
         ["󰊓", "SUPER + SHIFT + F", "Fullscreen"],
         ["󰖲", "SUPER + S", "Scratchpad"],
         ["󰒅", "SUPER + R", "Restart Quickshell"],
-        ["󰒓", "SUPER + SHIFT + E", "Control center"],
+        ["󰒓", "SUPER + ALT + SPACE", "Control center"],
         ["󰧨", "SUPER + SHIFT + T", "Theme switcher"],
         ["󰸉", "SUPER + SHIFT + W", "Wallpaper picker"],
         ["󰅍", "SUPER + SHIFT + C", "Clipboard"],

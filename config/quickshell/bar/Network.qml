@@ -7,7 +7,6 @@ import qs.components
 // Network status via nmcli. Ethernet: 󰈀, Wi-Fi: SSID, offline: 󰈂
 Pill {
     id: root
-    shown: Config.bar.modules.network
 
     property string type: ""      // "ethernet", "wifi" or ""
     property string device: ""
@@ -41,7 +40,7 @@ Pill {
     }
 
     BarText { icon: true; text: root.icon }
-    BarText { visible: root.type === "wifi"; text: root.connection }
+    BarText { visible: root.type === "wifi" && BarConfig.opt(root.settings, "label"); text: root.connection }
 
     Tooltip {
         target: root

@@ -15,6 +15,9 @@ Singleton {
     property bool notifCenterOpen: false
     property bool controlCenterOpen: false
     property string controlCenterPage: "main"
+    property bool dashboardOpen: false
+    property string dashboardTab: "overview"     // overview, media, weather
+    property ShellScreen dashboardScreen: null   // the screen whose clock was clicked
     property bool settingsOpen: false
     property string settingsPage: "appearance"
 
@@ -24,11 +27,32 @@ Singleton {
         return Quickshell.screens.find(s => s.name === name) ?? Quickshell.screens[0];
     }
 
+    // Main monitor (Settings → Monitors), or the biggest screen if none is set / it's unplugged
+    readonly property ShellScreen mainScreen: {
+        const chosen = Quickshell.screens.find(s => s.name === Config.monitors.main);
+        if (chosen) return chosen;
+        return [...Quickshell.screens].sort((a, b) => b.width * b.height - a.width * a.height)[0] ?? null;
+    }
+
+    // Where the launcher, control center, notifications and power menu open
+    readonly property ShellScreen popupScreen: Config.monitors.popups === "main" ? mainScreen : focusedScreen
+
     function closeAll() {
         launcherOpen = false;
         powerMenuOpen = false;
         notifCenterOpen = false;
         controlCenterOpen = false;
+        dashboardOpen = false;
+    }
+
+    // Open the dashboard on a tab (again on the same tab closes it). screen: where to show it
+    function toggleDashboard(tab, screen) {
+        const t = tab || "overview";
+        const wasOpen = dashboardOpen && dashboardTab === t;
+        closeAll();
+        dashboardTab = t;
+        dashboardScreen = screen ?? null;
+        dashboardOpen = !wasOpen;
     }
 
     // Open the control center on a page: main, themes, dynamic, clipboard, capture, emoji, cheatsheet
@@ -101,6 +125,16 @@ Singleton {
         // qs ipc call settings open bar
         function open(page: string): void { root.openSettings(page); }
         function launch(): void { root.openSettings(""); }
+    }
+
+    // qs ipc call dashboard toggle  /  qs ipc call dashboard open weather
+    IpcHandler {
+        target: "dashboard"
+        function toggle(): void {
+            if (root.dashboardOpen) root.dashboardOpen = false;
+            else root.toggleDashboard(root.dashboardTab, null);
+        }
+        function open(tab: string): void { root.toggleDashboard(tab, null); }
     }
 
     IpcHandler {

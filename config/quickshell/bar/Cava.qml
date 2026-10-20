@@ -12,11 +12,10 @@ Pill {
     property var levels: Array(14).fill(0)
 
     interactive: false
-    shown: Config.bar.modules.cava
     spacing: 3
 
     Process {
-        running: root.shown
+        running: root.visible
         command: ["cava", "-p", Quickshell.shellDir + "/cava.conf"]
         stdout: SplitParser {
             onRead: line => {
@@ -35,7 +34,7 @@ Pill {
             implicitWidth: 4
             implicitHeight: 3 + (root.levels[index] ?? 0) * 2
             radius: 2
-            color: Theme.fg1
+            color: root.textColor
 
             Behavior on implicitHeight { NumberAnimation { duration: 60 } }
         }
