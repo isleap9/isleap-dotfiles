@@ -1,0 +1,11 @@
+[Desktop Entry]
+# Personal override of /usr/share/applications/arch-update.desktop:
+# opens in kitty (GLib doesn't know kitty, so Terminal=true found no terminal).
+# Used by the arch-update tray icon and its "Run Arch-Update" notification button.
+Name=Arch-Update
+Comment=An interactive update notifier & applier for Arch Linux
+Icon=arch-update-blue
+Type=Application
+Categories=Utility;
+Terminal=false
+Exec=kitty --class arch-update --title Arch-Update -e arch-update

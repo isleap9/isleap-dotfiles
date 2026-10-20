@@ -1,2 +1,0 @@
-@import "~/.config/rofi/control-center.rasi"
-window { width: 560px; }

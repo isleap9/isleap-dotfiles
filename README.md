@@ -1,369 +1,296 @@
 # 🌸 isleap's dotfiles
-A Hyprland rice with a dynamic theme switcher supporting multiple static themes and a live wallpaper-based color system powered by matugen.
 
-> **Note:** As of Hyprland 0.55, this config is fully migrated to **Lua**. The old hyprlang `.conf` format is no longer used.
+A Hyprland rice with a **from-scratch Quickshell desktop**: bar, app launcher, notifications, power menu, control center and a full Settings app. Pick from 24 color themes, or let the colors follow your wallpaper with matugen.
+
+> Hyprland is configured in **Lua** (Hyprland 0.55+). There is no `hyprland.conf`.
 
 ---
 
 ## 📸 Preview
-![Desktop](screenshots/1.png)
-![Desktop2](screenshots/2.png)
-![Desktop2](screenshots/3.png)
-![Desktop2](screenshots/4.png)
-![Desktop2](screenshots/5.png)
-![Desktop2](screenshots/6.png)
-![Desktop2](screenshots/7.png)
-![Desktop2](screenshots/8.png)
-![Desktop2](screenshots/9.png)
-![Desktop2](screenshots/10.png)
-![Desktop2](screenshots/11.png)
-![Desktop2](screenshots/12.png)
+
+![Bar layouts](screenshots/quickshell/bar-layouts.png)
+<p align="center"><i>The four bar layouts: Default, Default 2, Minimal and Sleek</i></p>
+
+| Control center | Themes |
+|---|---|
+| ![Control center](screenshots/quickshell/control-center.png) | ![Themes](screenshots/quickshell/themes.png) |
+| **Emoji picker** | **Power menu** |
+| ![Emoji](screenshots/quickshell/emoji.png) | ![Power menu](screenshots/quickshell/power-menu.png) |
+
+| Settings app |
+|---|
+| ![Settings: appearance](screenshots/quickshell/settings-appearance.png) |
+| ![Settings: bar](screenshots/quickshell/settings-bar.png) |
 
 ---
 
-## 🖥️ System Info
+## 🖥️ What's inside
+
 | | |
 |---|---|
 | **OS** | Arch Linux |
-| **WM** | Hyprland 0.55+ (Lua config) |
-| **Bar** | Waybar |
-| **Terminal** | Kitty |
-| **Shell** | Fish |
-| **Launcher** | Rofi |
-| **Notifications** | Swaync |
-| **File Manager** | Dolphin |
-| **Wallpaper** | awww |
-| **Color Extraction** | matugen |
-| **Idle Daemon** | Hypridle |
-| **Lock Screen** | BlazinLock |
+| **Window manager** | Hyprland (Lua config) |
+| **Desktop shell** | [Quickshell](https://quickshell.org) — bar, launcher, notifications, power menu, control center, settings (all in `config/quickshell`) |
+| **Wallpaper** | awww + [qs-wallpaper-picker](https://github.com/magetsu002/qs-wallpaper-picker) |
+| **Colors** | 24 hand-made themes, or matugen (Material You from the wallpaper) |
+| **Terminal / shell** | kitty + fish + starship |
+| **Editor** | micro |
+| **Files** | Dolphin, with Gwenview (images), Okular (PDF), Ark (archives), mpv (video/audio) |
+| **Updates** | [arch-update](https://github.com/Antiz96/arch-update) (tray icon + notifications) |
+| **Lock screen** | [qylock](https://github.com/Darkkal44/qylock) — Material You Dark (Quickshell, PAM) |
+| **Idle** | hypridle: dim 2.5 min → lock 5 min → screens off 5.5 min → suspend 30 min |
 | **Cursor** | Bibata-Modern-Ice |
-| **GPU** | NVIDIA (nvidia-open-dkms) |
+| **GPU** | NVIDIA RTX 5070 (`nvidia-open`) — the installer handles other GPUs too |
 
 ---
 
-## 📦 Packages
+## 🚀 Install
 
-### 🪟 Hyprland & WM
-```
-hyprland hypridle polkit-kde hyprshot blazinlock
-```
+On a fresh Arch Linux install (with a user account, internet and `git`):
 
-### 📊 Bar & Notifications
-```
-waybar-git swaync
+```bash
+git clone https://github.com/isleap9/isleap-dotfiles.git ~/GitHub/isleap-dotfiles
+cd ~/GitHub/isleap-dotfiles
+./install.sh
 ```
 
-### 🖼️ Wallpaper & Colors
+Then **reboot** and log into Hyprland. That's it.
+
+The script asks three questions at the start (apps, NVIDIA driver, login screen) and then runs on its own. Run it as your normal user — it asks for your password when needed. It's safe to run again.
+
+<details>
+<summary><b>What install.sh does</b></summary>
+
+1. Installs `yay` (AUR helper) if it's missing
+2. Installs every package below (official repos + AUR)
+3. Moves any existing configs it would replace to `~/.config-backup-<date>/`
+4. Copies `config/` → `~/.config/` and `local/share/` → `~/.local/share/`
+5. Copies the wallpapers to `~/Pictures/Wallpapers`
+6. Installs qs-wallpaper-picker (pinned version + this repo's settings and small patch) and the qylock lock screen (only the Material themes, pinned version)
+7. Creates the home folders (Documents, Music, Videos…) and sets up Dolphin: kitty as terminal, thumbnails for everything, folders in the sidebar, a working **Open With** menu
+8. Sets GTK apps to dark mode with Breeze icons
+9. Enables NetworkManager, Bluetooth, power profiles, the keyring, arch-update's update checks, and SDDM if you chose it
+
+</details>
+
+<details>
+<summary><b>NVIDIA</b></summary>
+
+RTX 50 series (Blackwell) cards **only** work with NVIDIA's open kernel modules, which is what the installer uses:
+
+| Package | Why |
+|---|---|
+| `nvidia-open` | driver for the stock `linux` kernel (`nvidia-open-dkms` + headers is picked automatically for `linux-zen`, `linux-lts`, …) |
+| `nvidia-utils`, `nvidia-settings` | driver tools |
+| `libva-nvidia-driver` | hardware video decoding (browsers, mpv) |
+| `lib32-nvidia-utils` | 32-bit driver for Steam / games (only if multilib is enabled) |
+
+Recent drivers turn on `nvidia_drm.modeset` and `fbdev` by default, so no kernel parameters are needed. Check with:
+```bash
+cat /sys/module/nvidia_drm/parameters/modeset   # should print Y
 ```
-awww matugen-bin (AUR)
+No NVIDIA card? The installer comments out the NVIDIA variables in `~/.config/hypr/modules/env.lua` for you.
+
+</details>
+
+### After installing
+
+- **Monitors:** `~/.config/hypr/modules/monitors.lua` is set for my two screens (DP-2 1080p 165 Hz + DP-3 1440p 180 Hz). Change it, or run `nwg-displays`.
+- **Weather city:** Settings (`Super + ,`) → Bar → Weather city.
+- **Video wallpapers** work out of the box (`mpvpaper` is installed).
+- **Lock screen theme:** put another qylock theme name in `~/.config/qylock/theme` (`material-you` is the light version).
+
+<details>
+<summary><b>Package list</b> (the installer installs all of this)</summary>
+
+```
+# Hyprland and Wayland basics
+hyprland hypridle hyprpicker hyprshot grim slurp uwsm
+qt6-5compat qt6-svg   # for the qylock lock screen
+xdg-desktop-portal-hyprland xdg-desktop-portal-kde xdg-desktop-portal-gtk
+polkit-kde-agent qt5-wayland qt6-wayland
+
+# Quickshell
+quickshell qt6-multimedia qt6-multimedia-ffmpeg cava playerctl
+
+# Wallpaper and colors
+awww imagemagick ffmpeg matugen-bin (AUR) mpvpaper (AUR)
+
+# Terminal and shell
+kitty fish starship micro fastfetch btop
+
+# Dolphin and file apps
+dolphin kio-extras kio-admin kde-cli-tools archlinux-xdg-menu plasma-integration breeze breeze-icons
+gwenview okular ark 7zip unrar unzip mpv
+kimageformats qt6-imageformats ffmpegthumbs kdegraphics-thumbnailers ffmpegthumbnailer
+
+# Clipboard and emoji
+wl-clipboard wl-clip-persist cliphist rofimoji
+
+# Audio, network, bluetooth, power
+pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber libpulse pavucontrol
+networkmanager network-manager-applet bluez bluez-utils brightnessctl power-profiles-daemon
+
+# System
+gnome-keyring seahorse xdg-user-dirs xdg-utils udisks2 libnotify jq curl wget git python glib2
+arch-update (AUR)
+
+# Fonts and cursor
+ttf-jetbrains-mono-nerd ttf-firacode-nerd ttf-nerd-fonts-symbols otf-font-awesome
+noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-google-sans (AUR) ttf-rubik-vf (AUR)
+bibata-cursor-theme (AUR)
+
+# Optional apps (the installer asks)
+google-chrome firefox visual-studio-code-bin github-desktop-bin discord
 ```
 
-### 🚀 App Launcher
-```
-rofi rofimoji
-```
+</details>
 
-### 💻 Terminal
-```
-kitty
-```
+---
 
-### 🔤 Fonts
-```
-ttf-rubik-vf
-ttf-jetbrains-mono-nerd
-ttf-google-sans (AUR)
-ttf-firacode-nerd
-ttf-nerd-fonts-symbols
-otf-font-awesome
-noto-fonts-cjk
-```
+## ⌨️ Keybinds
 
-### 🔊 Audio
-```
-pipewire pipewire-alsa pipewire-jack pipewire-pulse
-wireplumber pavucontrol libpulse
-```
+| Keys | Action |
+|---|---|
+| `Super + Space` | App launcher |
+| `Super + T` | Terminal (kitty) |
+| `Super + E` | Files (Dolphin) |
+| `Super + B` | Browser (Chrome) |
+| `Super + C` | VS Code |
+| `Super + Q` | Close window |
+| `Super + M` | Power menu |
+| `Super + Shift + L` | Lock screen |
+| `Super + N` | Notification center |
+| `Super + ,` | Settings |
+| `Super + .` | Emoji picker |
+| `Super + Shift + E` | Control center |
+| `Super + Shift + T` | Theme switcher |
+| `Super + Shift + W` | Wallpaper picker |
+| `Super + Shift + C` | Clipboard history |
+| `Super + Shift + V` | Capture menu (region / screen / window / color) |
+| `Super + Shift + S` | Screenshot a region |
+| `Super + Shift + P` | Color picker |
+| `Super + R` | Restart Quickshell |
+| `Super + W` | Toggle floating |
+| `Super + F` / `Super + Shift + F` | Maximize / true fullscreen |
+| `Super + S` | Scratchpad |
+| `Super + J / L / I / K` | Move focus left / right / up / down |
+| `Super + 1–0` | Switch workspace |
+| `Super + Shift + 1–0` | Move window to workspace |
+| `Super + scroll` | Cycle workspaces |
 
-### 📡 Bluetooth & Network
-```
-bluez bluez-utils network-manager-applet networkmanager
-```
+Also: right-click the Arch logo on the bar for the control center, and right-click the bell for Do Not Disturb.
 
-### 🖱️ Cursor
-```
-bibata-cursor-theme
-```
+---
 
-### 🛠️ Utilities
-```
-wl-clip-persist wlogout nwg-look hyprpicker  nwg-displays brightnessctl
-starship fastfetch htop nano git wget cliphist
-ffmpegthumbnailer jq curl libnotify
-```
+## 🧩 The Quickshell desktop
 
-### 🎮 GPU (NVIDIA)
-```
-nvidia-open-dkms nvidia-settings libva-nvidia-driver
-```
+Everything lives in `~/.config/quickshell`. It reloads by itself when you save a file.
 
-### 🌐 Apps
-```
-firefox google-chrome visual-studio-code-bin
-pavucontrol dolphin
-```
+- **Bar** — 4 layouts ported from my old Waybar setup (Default, Default 2, Minimal, Sleek). Weather, clock with calendar, cava visualizer, now playing, workspaces, tray, keyboard layout, volume, network, notifications, power.
+- **App launcher** — type to search, arrows + Enter to launch.
+- **Notifications** — popups with action buttons, a notification center, Do Not Disturb.
+- **Power menu** — lock, suspend, logout, reboot, shutdown (asks before acting).
+- **Control center** (`Super + Shift + E`) — bar layout, theme switcher, dynamic colors, wallpaper, clipboard (history + favorites + image previews), capture, emoji, cheatsheet.
+- **Settings app** (`Super + ,`, or search "Quickshell Settings") — theme, fonts, bar size and modules, 24h clock, weather city, notifications, launcher, power menu, wallpaper colors. Saved to `~/.config/quickshell/config.json`, applied instantly.
 
-### 🔐 Keyring & Qt Integration
+Everything can also be scripted:
+```bash
+qs ipc call launcher toggle
+qs ipc call controlcenter open clipboard     # main, themes, dynamic, clipboard, capture, emoji, cheatsheet, barlayout
+qs ipc call settings open bar                # appearance, bar, notifications, launcher, wallpaper, keybinds, system
+qs ipc call bar layout sleek                 # default, default2, minimal, sleek
+qs ipc call notifications toggleDnd
 ```
-gnome-keyring seahorse plasma-integration breeze
-```
-> `gnome-keyring` stores logins for apps like GitHub Desktop. `plasma-integration` lets Dolphin and other Qt apps use the KDE color schemes (no Plasma desktop needed).
 
 ---
 
 ## 🎨 Theming
 
-This rice has two theming systems that coexist independently.
+Two systems that work side by side:
 
-### 🖌️ Static Themes (`Super+Shift+T`)
+**Static themes** (`Super + Shift + T`) — 24 hand-made themes: One Dark, Catppuccin (Mocha, Frappé, Latte), Gruvbox Dark, Rosé Pine (Moon, Dawn), Tokyo Night / Day, Monokai Pro, Cyberdream, Oxocarbon, Dracula / Dracula Light, Kanagawa Dark / Light, Everforest Dark / Light, Crimson, Sakura, Papercolor, Sleepy, E-Ink / E-Ink Dark.
 
-Hand-crafted themes that instantly recolor every app via symlinks:
+**Dynamic colors** (Settings → Wallpaper & Colors) — when on, every wallpaper you pick generates a Material You palette with matugen. Choose dark/light and one of 9 scheme styles.
 
-| Theme | Type |
-|---|---|
-| **One Dark** | Dark |
-| **Catppuccin Mocha** | Dark |
-| **Catppuccin Frappé** | Dark |
-| **Catppuccin Latte** | Light |
-| **Gruvbox Dark** | Dark |
-| **Rosé Pine Moon** | Dark |
-| **Rosé Pine Dawn** | Light |
-| **Tokyo Night** | Dark |
-| **Tokyo Day** | Light |
-| **Monokai Pro** | Dark |
-| **Cyberdream** | Dark |
-| **Oxocarbon** | Dark |
-| **Dracula** | Dark |
-| **Dracula Light** | Light |
-| **Kanagawa Dark** | Dark |
-| **Kanagawa Light** | Light |
-| **Everforest Dark** | Dark |
-| **Everforest Light** | Light |
-| **Crimson** | Dark |
-| **Sakura** | Light |
-| **Papercolor** | Light |
-| **Sleepy** | Dark |
-| **E-Ink** | Light |
-| **E-Ink Dark** | Dark |
+Both recolor: the Quickshell desktop, kitty, Hyprland borders, btop, and Dolphin/KDE apps.
 
-Each theme simultaneously updates: Waybar, Rofi, Kitty, Swaync, Wlogout, Hyprland borders, Cava, and Dolphin (via KDE color schemes).
-
-### 🌈 Dynamic Wallpaper Theme (`Super+Shift+E` → Dynamic Theme)
-
-A live color extraction system powered by **matugen** (Material You). Every time you pick a wallpaper, colors are extracted and applied across all apps instantly.
-
-**Apps recolored:**
-- Waybar
-- Rofi
-- Kitty terminal
-- Swaync notifications
-- Wlogout
-- Hyprland borders
-- Dolphin (via KDE color scheme)
-
-**Options via control center:**
-- **ON/OFF toggle** — disable to use wallpaper picker without changing colors
-- **Scheme type** — 9 Material You palette variants (tonal-spot, vibrant, expressive, fidelity, content, neutral, monochrome, rainbow, fruit-salad)
-- **Light/Dark mode** — full light mode support across all apps
-- **Apply to current wallpaper** — re-extract colors without changing wallpaper
-
-**How it works:**
-Each app reads colors from an `active` symlink in its themes folder. Static themes point symlinks to hand-crafted files. Dynamic mode points them to `dynamic.*` files regenerated by matugen on every wallpaper change.
+**How it works:** each app reads an `active` symlink in its themes folder. A static theme points them at hand-made files; dynamic mode points them at `dynamic.*` files that matugen regenerates on every wallpaper change. Quickshell reads its colors from `~/.config/waybar/themes/active.css` (the folder name is left over from Waybar).
 
 ```
-wallpaper picked
-    → matugen extracts Material You palette
-    → generates dynamic.css / dynamic.lua / dynamic.conf for each app
-    → symlinks repointed to dynamic.*
-    → all apps reloaded
+wallpaper picked → matugen palette → dynamic.css / .conf / .lua / .colors → symlinks → apps reload
 ```
 
 ---
 
-## ⌨️ Keybinds
-| Keybind | Action |
-|---|---|
-| `Super + A` | Open app launcher (Rofi) |
-| `Super + T` | Open terminal (Kitty) |
-| `Super + E` | Open file manager (Dolphin) |
-| `Super + B` | Open browser (Chrome) |
-| `Super + C` | Open VSCode |
-| `Super + M` | Open power menu |
-| `Super + L` | Lock screen (BlazinLock) |
-| `Super + N` | Toggle notification center (Swaync) |
-| `Super + F` | Fullscreen (keep bar) |
-| `Super + Shift + F` | Fullscreen (true) |
-| `Super + W` | Toggle floating |
-| `Super + S` | Toggle scratchpad |
-| `Super + R` | Reload Waybar |
-| `Super + Shift + W` | Open wallpaper selector |
-| `Super + Shift + E` | Open control center |
-| `Super + Shift + T` | Open theme switcher |
-| `Super + Shift + S` | Screenshot region |
-| `Super + Shift + V` | Open capture menu |
-| `Super + Shift + C` | Open clipboard manager |
-| `Super + Shift + P` | Color picker |
-| `Super + j/l/i/k` | Move focus left/right/up/down |
-| `Super + 1-0` | Switch workspace |
-| `Super + Shift + 1-0` | Move window to workspace |
+## 📂 Dolphin
+
+Set up to work like a full desktop file manager without KDE Plasma:
+
+- **Open With** lists all apps (fixed with `archlinux-xdg-menu`)
+- Right-click: **Extract / Compress** (Ark), **Open as Administrator**, **Open in Kitty**, **Set as Wallpaper**
+- Thumbnails for videos, PDFs, ebooks, fonts, RAW photos, big GIFs
+- Sidebar with Desktop, Documents, Downloads, Music, Pictures, Videos, Projects, GitHub, dotfiles, Config, Wallpapers, Screenshots
+- Open/Save dialogs in other apps (Chrome…) use the KDE dialog too
+- Default apps: images → Gwenview, PDF → Okular, archives → Ark, video/audio → mpv, text/code → micro
 
 ---
 
-## 🚀 Installation
+## 🔄 Updating this repo
 
-1. Clone the repo:
+After changing configs on your machine:
 ```bash
-git clone git@github.com:isleap9/isleap-dotfiles.git ~/dotfiles
+./sync.sh
 ```
-
-2. Install packages (see above) with `yay`:
-```bash
-yay -S \
-  hyprland hypridle hyprpicker blazinlock polkit-kde-agent hyprshot \
-  waybar-git swaync-git \
-  awww matugen-bin \
-  rofi rofimoji \
-  kitty fish starship \
-  ttf-rubik-vf ttf-jetbrains-mono-nerd ttf-google-sans \
-  ttf-firacode-nerd ttf-nerd-fonts-symbols otf-font-awesome noto-fonts-cjk \
-  pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber pavucontrol libpulse \
-  bluez bluez-utils networkmanager network-manager-applet \
-  bibata-cursor-theme \
-  wl-clip-persist wlogout nwg-look nwg-displays brightnessctl \
-  cliphist fastfetch btop htop nano git wget \
-  ffmpegthumbnailer jq curl libnotify \
-  nvidia-open-dkms nvidia-settings libva-nvidia-driver \
-  firefox google-chrome visual-studio-code-bin \
-  dolphin kde-cli-tools \
-  gnome-keyring seahorse plasma-integration breeze \
-  cava
-```
-
-3. Copy configs:
-```bash
-cp -r ~/dotfiles/hypr ~/.config/
-cp -r ~/dotfiles/waybar ~/.config/
-cp -r ~/dotfiles/rofi ~/.config/
-cp -r ~/dotfiles/kitty ~/.config/
-cp -r ~/dotfiles/swaync ~/.config/
-cp -r ~/dotfiles/wlogout ~/.config/
-cp -r ~/dotfiles/matugen ~/.config/
-cp -r ~/dotfiles/cliphist ~/.config/
-```
-
-4. Copy KDE color schemes:
-```bash
-mkdir -p ~/.local/share/color-schemes
-cp ~/dotfiles/color-schemes/*.colors ~/.local/share/color-schemes/
-```
-
-   Enable the keyring (needed by GitHub Desktop and other apps that save logins):
-```bash
-systemctl --user enable --now gnome-keyring-daemon.socket
-```
-
-   Set the icon theme and dark mode (fixes the nm-applet tray icon and light-themed apps):
-```bash
-mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0
-cp ~/dotfiles/gtk-3.0/settings.ini ~/.config/gtk-3.0/
-cp ~/dotfiles/gtk-4.0/settings.ini ~/.config/gtk-4.0/
-gsettings set org.gnome.desktop.interface icon-theme 'breeze-dark'
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-```
-
-5. Create theme symlinks (defaults to One Dark):
-```bash
-ln -sf ~/.config/waybar/themes/onedark.css ~/.config/waybar/themes/active.css
-ln -sf ~/.config/rofi/colors/isleaponedark.rasi ~/.config/rofi/colors/active.rasi
-ln -sf ~/.config/swaync/themes-colors/onedark.css ~/.config/swaync/themes-colors/active.css
-ln -sf ~/.config/kitty/themes/onedark.conf ~/.config/kitty/themes/active.conf
-ln -sf ~/.config/wlogout/themes/onedark.css ~/.config/wlogout/style.css
-ln -sf ~/.config/hypr/modules/themes/onedark.lua ~/.config/hypr/modules/active.lua
-```
-
-6. Make scripts executable:
-```bash
-chmod +x ~/.config/waybar/scripts/theme-switcher.sh
-chmod +x ~/.config/waybar/scripts/launch.sh
-chmod +x ~/.config/hypr/scripts/wallpaper-dynamic.sh
-chmod +x ~/.config/rofi/scripts/wallpaper-picker.sh
-chmod +x ~/.config/rofi/scripts/dynamic-theme-menu.sh
-chmod +x ~/.config/rofi/scripts/matugen-scheme.sh
-chmod +x ~/.config/rofi/scripts/control-center.sh
-chmod +x ~/.config/rofi/scripts/powermenu.sh
-chmod +x ~/.config/rofi/scripts/capture.sh
-chmod +x ~/.config/rofi/scripts/cheatsheet.sh
-chmod +x ~/.config/rofi/scripts/clipboard.sh
-chmod +x ~/.config/rofi/scripts/waybar-layout.sh
-chmod +x ~/.config/rofi/scripts/rofi-layout.sh
-chmod +x ~/.config/rofi/scripts/emoji.sh
-```
-
-7. Log into Hyprland.
-
-> **Hyprland 0.55+ note:** This config uses `hyprland.lua` as the entry point. Do **not** create a `hyprland.conf` — Hyprland will prefer the `.lua` file automatically.
+It copies everything into the repo (removed files are removed here too). Then review and commit in GitHub Desktop.
 
 ---
 
 ## 📁 Structure
+
 ```
-dotfiles/
-├── hypr/                        # Hyprland config (Lua)
-│   ├── hyprland.lua             # Main entry point (replaces hyprland.conf)
-│   ├── modules/
-│   │   ├── monitors.lua         # Monitor config
-│   │   ├── binds.lua            # Keybindings
-│   │   ├── decoration.lua       # Borders, blur, shadows
-│   │   ├── animation.lua        # Animations
-│   │   ├── input.lua            # Input devices
-│   │   ├── layout.lua           # Dwindle/master layout
-│   │   ├── misc.lua             # Misc options
-│   │   ├── windowrules.lua      # Window rules
-│   │   ├── autostart.lua        # Startup apps
-│   │   ├── env.lua              # Environment variables
-│   │   ├── programs.lua         # Program variables
-│   │   ├── active.lua -> themes/xxx.lua  # Active theme symlink
-│   │   └── themes/              # Border color themes (.lua files)
-│   └── scripts/
-│       └── wallpaper-dynamic.sh # Dynamic wallpaper + matugen script
-├── waybar/                      # Waybar config + styles
-│   ├── configs/                 # Layout configs (default, default2, minimal)
-│   ├── styles/                  # Layout styles
-│   ├── themes/                  # Color themes (.css files)
-│   └── scripts/                 # launch.sh, theme-switcher.sh
-├── rofi/                        # Rofi launcher + styles
-│   ├── colors/                  # Color themes (.rasi files)
-│   └── scripts/
-│       ├── control-center.sh    # Main control center menu
-│       ├── dynamic-theme-menu.sh# Dynamic theme submenu
-│       ├── matugen-scheme.sh    # Scheme type picker
-│       ├── wallpaper-picker.sh  # Wallpaper picker with dynamic support
-│       ├── waybar-layout.sh     # Waybar layout switcher
-│       ├── rofi-layout.sh       # Rofi layout switcher
-│       ├── capture.sh           # Screenshot/capture menu
-│       ├── clipboard.sh         # Clipboard manager (cliphist)
-│       ├── cheatsheet.sh        # Keybind reference
-│       ├── emoji.sh             # Emoji picker (rofimoji)
-│       └── powermenu.sh         # Power menu
-├── kitty/                       # Kitty terminal config
-│   └── themes/                  # Color themes (.conf files)
-├── swaync/                      # Swaync notification center
-│   └── themes-colors/           # Color themes (.css files)
-├── wlogout/                     # Wlogout logout screen
-│   └── themes/                  # Color themes (.css files)
-├── matugen/                     # matugen config + templates
-│   └── templates/               # Color templates for each app
-├── color-schemes/               # KDE color schemes for Dolphin (.colors files)
-└── cliphist/                    # Cliphist favorites config
+isleap-dotfiles/
+├── install.sh                  # Set up everything on a fresh Arch install
+├── sync.sh                     # Copy configs from this machine into the repo
+├── config/                     # → ~/.config
+│   ├── hypr/                   # Hyprland (Lua): hyprland.lua + modules/, scripts/, hyprlock, hypridle
+│   ├── quickshell/             # The desktop shell
+│   │   ├── shell.qml           # Entry point
+│   │   ├── bar/                # Bar, its 4 layouts and modules
+│   │   ├── launcher/           # App launcher
+│   │   ├── notifications/      # Popups + notification center
+│   │   ├── powermenu/          # Power menu
+│   │   ├── controlcenter/      # Control center pages
+│   │   ├── settings/           # Settings app
+│   │   ├── components/         # Shared widgets
+│   │   ├── scripts/            # launch.sh, wallpaper picker + hooks
+│   │   ├── Theme.qml           # Colors (from the active theme)
+│   │   ├── Config.qml          # Settings (saved in config.json)
+│   │   └── config.json         # Your settings
+│   ├── qylock/                 # Which lock screen theme to use
+│   ├── waybar/                 # Only theme files + theme-switcher.sh + weather.py (used by Quickshell)
+│   ├── kitty/  fish/  starship.toml  fastfetch/  btop/
+│   ├── matugen/                # Dynamic color templates
+│   ├── cliphist/               # Clipboard favorites
+│   ├── gtk-3.0/  gtk-4.0/      # GTK dark mode + icons
+│   ├── xdg-desktop-portal/     # KDE file dialogs
+│   └── mimeapps.list           # Default apps
+├── local/share/                # → ~/.local/share
+│   ├── applications/           # arch-update (opens in kitty), Quickshell Settings
+│   ├── kio/servicemenus/       # Dolphin right-click: Open in Kitty, Set as Wallpaper
+│   └── color-schemes/          # KDE color schemes for Dolphin and Qt apps
+├── extras/qs-wallpaper-picker/ # Picker settings, local patch, pinned version
+├── setup/dolphin-places.py     # Adds folders to Dolphin's sidebar
+├── Wallpapers/                 # → ~/Pictures/Wallpapers
+└── screenshots/
 ```
+
+---
+
+## 🙏 Credits
+
+- [Quickshell](https://quickshell.org) — the toolkit the whole desktop is built with
+- [qs-wallpaper-picker](https://github.com/magetsu002/qs-wallpaper-picker) by Magetsu
+- [arch-update](https://github.com/Antiz96/arch-update) by Antiz96
+- [qylock](https://github.com/Darkkal44/qylock) by Darkkal44 — lock screen themes
+- [matugen](https://github.com/InioX/matugen) — Material You colors

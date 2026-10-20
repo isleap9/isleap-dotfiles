@@ -1,0 +1,23 @@
+[config]
+reload_apps = false
+set_wallpaper = false
+
+[templates.waybar]
+input_path  = "~/.config/matugen/templates/waybar-colors.css"
+output_path = "~/.config/waybar/themes/dynamic.css"
+
+[templates.kitty]
+input_path  = "~/.config/matugen/templates/kitty-colors.conf"
+output_path = "~/.config/kitty/themes/dynamic.conf"
+
+[templates.hypr]
+input_path  = "~/.config/matugen/templates/hypr-colors.conf"
+output_path = "~/.config/hypr/modules/themes/dynamic.lua"
+
+[templates.kde]
+input_path  = "~/.config/matugen/templates/kde-colors.colors"
+output_path = "~/.local/share/color-schemes/Dynamic.colors"
+
+[templates.btop]
+input_path  = "~/.config/matugen/templates/btop-colors.theme"
+output_path = "~/.config/btop/themes/dynamic.theme"

@@ -1,1 +1,0 @@
-/home/isleap/.config/kitty/themes/catppuccin-frappe.conf

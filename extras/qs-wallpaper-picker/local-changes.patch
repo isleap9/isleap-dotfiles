@@ -1,0 +1,13 @@
+diff --git a/scripts/matugen_reload.sh b/scripts/matugen_reload.sh
+index 1d00f0e..925bf54 100755
+--- a/scripts/matugen_reload.sh
++++ b/scripts/matugen_reload.sh
+@@ -67,7 +67,7 @@ if [ "$ENABLE_WAYBAR_RELOAD" = "1" ] && [ -x "$WAYBAR_LAUNCH_PATH" ]; then
+ fi
+ 
+ if [ -n "$EXTRA_RELOAD_COMMAND" ]; then
+-    bash -lc "$EXTRA_RELOAD_COMMAND" >/tmp/wallpaper-picker-extra-reload.log 2>&1 || true
++    WALL="$WALL" bash -lc "$EXTRA_RELOAD_COMMAND" >/tmp/wallpaper-picker-extra-reload.log 2>&1 || true
+ fi
+ 
+ after_hypr="$(grep -m1 '^\$source_color' "$HYPR_COLORS_PATH" 2>/dev/null || echo 'hypr:missing')"

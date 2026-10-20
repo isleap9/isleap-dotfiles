@@ -1,0 +1,42 @@
+{
+    "appearance": {
+        "animationSpeed": 1,
+        "font": "Google Sans Display",
+        "fontSize": 15,
+        "iconFont": "JetBrainsMono Nerd Font Propo"
+    },
+    "bar": {
+        "clock24h": false,
+        "height": 40,
+        "minWorkspaces": 4,
+        "modules": {
+            "cava": true,
+            "clock": true,
+            "language": true,
+            "media": true,
+            "network": true,
+            "notifications": true,
+            "power": true,
+            "tray": true,
+            "volume": true,
+            "weather": true
+        },
+        "sideMargin": 30,
+        "spacing": 18,
+        "topMargin": 16,
+        "weatherCity": "Bari"
+    },
+    "launcher": {
+        "height": 520,
+        "showDescriptions": true,
+        "width": 620
+    },
+    "notifications": {
+        "maxPopups": 4,
+        "position": "top-right",
+        "timeout": 5
+    },
+    "powerMenu": {
+        "confirm": true
+    }
+}

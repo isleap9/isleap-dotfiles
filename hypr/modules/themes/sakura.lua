@@ -1,6 +1,0 @@
-hl.config({
-    general = {
-        ["col.active_border"]   = "rgb(cc0044)",
-        ["col.inactive_border"] = "rgb(fff5f7)",
-    },
-})
