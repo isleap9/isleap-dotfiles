@@ -13,6 +13,8 @@ hl.bind(mainMod .. " + P",           hl.dsp.exec_cmd("qs ipc call powermenu togg
 hl.bind(mainMod .. " + E",           hl.dsp.exec_cmd("dolphin"))                                        -- file manager
 hl.bind(mainMod .. " + SPACE",       hl.dsp.exec_cmd("qs ipc call launcher toggle"))                                -- app launcher ($menu)
 hl.bind(mainMod .. " + A",           hl.dsp.exec_cmd("qs ipc call dashboard toggle"))                   -- dashboard
+hl.bind(mainMod .. " + X",           hl.dsp.exec_cmd("qs ipc call quicksettings toggle"))               -- quick settings
+hl.bind(mainMod .. " + TAB",         hl.dsp.exec_cmd("qs ipc call overview toggle"))                    -- workspace overview
 hl.bind(mainMod .. " + R",           hl.dsp.exec_cmd("~/.config/quickshell/scripts/launch.sh"))         -- quickshell reload
 hl.bind(mainMod .. " + D",           hl.dsp.exec_cmd("discord"))								-- discord
 hl.bind(mainMod .. " + M",			 hl.dsp.exec_cmd("spotify"))								-- spotify

@@ -6,6 +6,7 @@ import qs.components
 
 // Keyboard layout (UK / IT)
 Pill {
+    bubble: false
     id: root
 
     property string layout: ""
@@ -41,6 +42,25 @@ Pill {
         }
     }
 
-    BarText { icon: true; text: "󰌌" }
-    BarText { visible: BarConfig.opt(root.settings, "label"); text: root.layout }
+    stateLayer: BarConfig.opt(root.settings, "label") === false
+    // Material tonal chip with the layout code (UK / IT)
+    BarText { visible: BarConfig.opt(root.settings, "icon") === true; icon: true; text: "keyboard" }
+    Rectangle {
+        visible: BarConfig.opt(root.settings, "label") !== false
+        implicitWidth: code.implicitWidth + 16
+        implicitHeight: Math.min(26, Theme.barHeight - 12)
+        radius: 8
+        // Inside a shared bubble the bubble is the background; on its own it's a tonal chip
+        color: root.inGroup ? Qt.rgba(root.textColor.r, root.textColor.g, root.textColor.b, root.pressed ? 0.16 : root.hovered ? 0.08 : 0)
+            : Qt.rgba(BarConfig.accentColor.r, BarConfig.accentColor.g, BarConfig.accentColor.b, root.pressed ? 0.34 : root.hovered ? 0.26 : 0.18)
+        Behavior on color { ColorAnimation { duration: 120 } }
+        BarText {
+            id: code
+            anchors.centerIn: parent
+            text: root.layout
+            color: root.inGroup ? root.textColor : BarConfig.accentColor
+            font.pixelSize: root.inGroup ? BarConfig.textSize - 1 : BarConfig.textSize - 3
+            font.weight: Font.Bold
+        }
+    }
 }

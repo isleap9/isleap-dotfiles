@@ -57,13 +57,13 @@ LazyLoader {
                     }
 
                     HeaderButton {
-                        icon: Notifs.dnd ? "󰂛" : "󰂚"
+                        icon: Notifs.dnd ? "notifications_off" : "notifications"
                         label: "DND"
                         active: Notifs.dnd
                         onClicked: Notifs.dnd = !Notifs.dnd
                     }
                     HeaderButton {
-                        icon: "󰎟"
+                        icon: "clear_all"
                         label: "Clear"
                         onClicked: Notifs.clearAll()
                     }
@@ -83,14 +83,12 @@ LazyLoader {
                     }
 
                     // Empty state
-                    Text {
+                    Column {
                         anchors.centerIn: parent
                         visible: Notifs.count === 0
-                        text: "󰂚\nNo notifications"
-                        horizontalAlignment: Text.AlignHCenter
-                        color: Theme.fg2
-                        font.family: Theme.font
-                        font.pixelSize: Theme.fontSize + 2
+                        spacing: 6
+                        Text { anchors.horizontalCenter: parent.horizontalCenter; text: "notifications_none"; color: Theme.fg2; font.family: Theme.iconFont; font.variableAxes: Theme.iconAxes; font.pixelSize: 40 }
+                        Text { anchors.horizontalCenter: parent.horizontalCenter; text: "No notifications"; color: Theme.fg2; font.family: Theme.font; font.pixelSize: Theme.fontSize + 2 }
                     }
                 }
             }
@@ -117,6 +115,7 @@ LazyLoader {
                 text: btn.icon
                 color: btn.active ? Theme.bg1 : Theme.fg1
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: Theme.fontSize + 1
             }
             Text {

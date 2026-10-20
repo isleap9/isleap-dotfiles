@@ -23,7 +23,7 @@ Page {
         }
         Option {
             label: "Preview"
-            PillButton { icon: "󰀻"; text: "Open launcher"; onClicked: Globals.launcherOpen = true }
+            PillButton { icon: "apps"; text: "Open launcher"; onClicked: Globals.launcherOpen = true }
         }
     }
 

@@ -10,7 +10,7 @@ MenuList {
     placeholder: "Search themes…"
     emptyText: "Loading themes…"
     items: Themes.list.map(t => ({
-        icon: "󰏘",
+        icon: "palette",
         label: t.name,
         key: t.key,
         swatches: t.colors,

@@ -32,7 +32,7 @@ ColumnLayout {
         spacing: 8
 
         Repeater {
-            model: [["history", "󰅍", "History"], ["favorites", "󰋃", "Favorites"]]
+            model: [["history", "content_paste", "History"], ["favorites", "star", "Favorites"]]
             Tab {
                 required property var modelData
                 icon: modelData[1]
@@ -46,7 +46,7 @@ ColumnLayout {
 
         Tab {
             visible: root.tab === "history"
-            icon: "󰎟"
+            icon: "clear_all"
             label: root.confirmWipe ? "Click again to clear" : "Clear"
             danger: root.confirmWipe
             onClicked: {
@@ -74,15 +74,15 @@ ColumnLayout {
                 return img
                     ? { label: `Image ${img[3]}`, sub: `${img[2].toUpperCase()} · ${img[1]}`, line, isImage: true,
                         image: `file://${root.imgDir}/${id}.${img[2]}`,
-                        actions: [{ icon: "󰆴", id: "del" }] }
-                    : { icon: "󰅍", label: preview.trim(), line,
-                        actions: [{ icon: root.favorites.includes(preview) ? "󰓎" : "󰓒", id: "fav",
+                        actions: [{ icon: "delete", id: "del" }] }
+                    : { icon: "content_paste", label: preview.trim(), line,
+                        actions: [{ icon: root.favorites.includes(preview) ? "star" : "star_border", id: "fav",
                                     active: root.favorites.includes(preview) },
-                                  { icon: "󰆴", id: "del" }] };
+                                  { icon: "delete", id: "del" }] };
             })
             : root.favorites.map((text, i) => ({
-                icon: "󰓎", label: text, index: i,
-                actions: [{ icon: "󰆴", id: "unfav" }]
+                icon: "star", label: text, index: i,
+                actions: [{ icon: "delete", id: "unfav" }]
             }))
 
         onActivated: item => {
@@ -158,6 +158,7 @@ ColumnLayout {
                 text: tabBtn.icon
                 color: tabBtn.active || tabBtn.danger ? Theme.bg1 : Theme.fg1
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: Theme.fontSize + 1
             }
             Text {

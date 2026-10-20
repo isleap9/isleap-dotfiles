@@ -14,14 +14,14 @@ LazyLoader {
         id: win
 
         readonly property var pages: ({
-            main:       { title: "Control Center", icon: "󰒓", file: "MainPage.qml" },
-            barlayout:  { title: "Bar Layout",     icon: "\u{F0C7B}", file: "BarLayoutPage.qml" },
-            themes:     { title: "Theme Switcher", icon: "󰧨", file: "ThemesPage.qml" },
-            dynamic:    { title: "Dynamic Theme",  icon: "󰔎", file: "DynamicPage.qml" },
-            clipboard:  { title: "Clipboard",      icon: "󰅍", file: "ClipboardPage.qml" },
-            capture:    { title: "Capture",        icon: "󰄀", file: "CapturePage.qml" },
-            emoji:      { title: "Emoji",          icon: "󰞅", file: "EmojiPage.qml" },
-            cheatsheet: { title: "Cheatsheet",     icon: "󰌌", file: "CheatsheetPage.qml" }
+            main:       { title: "Control Center", icon: "settings", file: "MainPage.qml" },
+            barlayout:  { title: "Bar Layout",     icon: "toolbar", file: "BarLayoutPage.qml" },
+            themes:     { title: "Theme Switcher", icon: "palette", file: "ThemesPage.qml" },
+            dynamic:    { title: "Dynamic Theme",  icon: "contrast", file: "DynamicPage.qml" },
+            clipboard:  { title: "Clipboard",      icon: "content_paste", file: "ClipboardPage.qml" },
+            capture:    { title: "Capture",        icon: "photo_camera", file: "CapturePage.qml" },
+            emoji:      { title: "Emoji",          icon: "mood", file: "EmojiPage.qml" },
+            cheatsheet: { title: "Cheatsheet",     icon: "keyboard", file: "CheatsheetPage.qml" }
         })
         readonly property var page: pages[Globals.controlCenterPage] ?? pages.main
 
@@ -73,9 +73,10 @@ LazyLoader {
                         color: backArea.containsMouse ? Theme.bg3 : Theme.bg1
                         Text {
                             anchors.centerIn: parent
-                            text: "󰁍"
+                            text: "arrow_back"
                             color: Theme.fg1
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: Theme.fontSize + 2
                         }
                         MouseArea {
@@ -91,6 +92,7 @@ LazyLoader {
                         text: win.page.icon
                         color: Theme.accent
                         font.family: Theme.iconFont
+                        font.variableAxes: Theme.iconAxes
                         font.pixelSize: Theme.fontSize + 6
                     }
                     Text {

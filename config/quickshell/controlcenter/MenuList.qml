@@ -44,9 +44,10 @@ ColumnLayout {
             spacing: 10
 
             Text {
-                text: "󰍉"
+                text: "search"
                 color: Theme.fg2
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: Theme.fontSize + 2
             }
 
@@ -140,6 +141,7 @@ ColumnLayout {
                     text: row.modelData.icon ?? ""
                     color: row.modelData.checked ? Theme.accent : Theme.fg1
                     font.family: Theme.iconFont
+                    font.variableAxes: Theme.iconAxes
                     font.pixelSize: Theme.fontSize + 5
                 }
 
@@ -197,9 +199,10 @@ ColumnLayout {
 
                 Text {
                     visible: row.modelData.checked === true
-                    text: "󰄬"
+                    text: "check"
                     color: Theme.accent
                     font.family: Theme.iconFont
+                    font.variableAxes: Theme.iconAxes
                     font.pixelSize: Theme.fontSize + 4
                 }
 
@@ -216,6 +219,7 @@ ColumnLayout {
                             text: btn.modelData.icon
                             color: btn.modelData.active ? Theme.accent : Theme.fg2
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: Theme.fontSize + 2
                         }
                         MouseArea {

@@ -7,6 +7,7 @@ import qs.components
 
 // Audio visualizer bars from cava (raw output mode)
 Pill {
+    bubble: false
     id: root
 
     property var levels: Array(14).fill(0)

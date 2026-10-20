@@ -43,9 +43,10 @@ ColumnLayout {
             spacing: 10
 
             Text {
-                text: "󰍉"
+                text: "search"
                 color: Theme.fg2
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: Theme.fontSize + 2
             }
 

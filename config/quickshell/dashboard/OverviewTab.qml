@@ -17,17 +17,17 @@ Item {
 
     // All cards: name, icon, default size, and size limits
     readonly property var registry: ({
-        clock:         { name: "Clock",         icon: "\u{F0954}", w: 2, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: clockComp },
-        weather:       { name: "Weather",       icon: "\u{F0595}", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: weatherComp },
-        calendar:      { name: "Calendar",      icon: "\u{F00F0}", w: 3, h: 3, minW: 2, maxW: 4, minH: 3, maxH: 5, comp: calendarComp },
-        media:         { name: "Now playing",   icon: "\u{F075A}", w: 3, h: 1, minW: 2, maxW: 6, minH: 1, maxH: 4, comp: mediaComp },
-        notifications: { name: "Notifications", icon: "\u{F009A}", w: 3, h: 5, minW: 2, maxW: 6, minH: 2, maxH: 8, comp: notifComp },
-        user:          { name: "User",          icon: "\u{F0004}", w: 3, h: 1, minW: 2, maxW: 6, minH: 1, maxH: 1, comp: userComp },
-        cpu:           { name: "CPU",           icon: "\u{F0EE0}", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp },
-        memory:        { name: "Memory",        icon: "\u{F035B}", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp },
-        gpu:           { name: "GPU",           icon: "\u{F08AE}", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp },
-        disk:          { name: "Disk",          icon: "\u{F02CA}", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp },
-        network:       { name: "Network",       icon: "\u{F06F3}", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp }
+        clock:         { name: "Clock",         icon: "schedule", w: 2, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: clockComp },
+        weather:       { name: "Weather",       icon: "partly_cloudy_day", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: weatherComp },
+        calendar:      { name: "Calendar",      icon: "calendar_month", w: 3, h: 3, minW: 2, maxW: 4, minH: 3, maxH: 5, comp: calendarComp },
+        media:         { name: "Now playing",   icon: "music_note", w: 3, h: 1, minW: 2, maxW: 6, minH: 1, maxH: 4, comp: mediaComp },
+        notifications: { name: "Notifications", icon: "notifications", w: 3, h: 5, minW: 2, maxW: 6, minH: 2, maxH: 8, comp: notifComp },
+        user:          { name: "User",          icon: "person", w: 3, h: 1, minW: 2, maxW: 6, minH: 1, maxH: 1, comp: userComp },
+        cpu:           { name: "CPU",           icon: "memory", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp },
+        memory:        { name: "Memory",        icon: "memory_alt", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp },
+        gpu:           { name: "GPU",           icon: "developer_board", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp },
+        disk:          { name: "Disk",          icon: "hard_drive", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp },
+        network:       { name: "Network",       icon: "lan", w: 1, h: 1, minW: 1, maxW: 4, minH: 1, maxH: 3, comp: metricComp }
     })
     readonly property var order: ["clock", "weather", "calendar", "media", "notifications", "user", "cpu", "memory", "gpu", "disk", "network"]
 
@@ -155,13 +155,13 @@ Item {
                         width: Math.min(parent.width, 7 * 30)
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: 2
-                        DashButton { size: 28; icon: "\u{F0141}"; enabled: slot.index > 0; onClicked: root.move(slot.index, -1) }
-                        DashButton { size: 28; icon: "\u{F0142}"; enabled: slot.index < root.cards.length - 1; onClicked: root.move(slot.index, 1) }
-                        DashButton { size: 28; icon: "\u{F084C}"; enabled: slot.card.w > slot.info.minW; onClicked: root.resize(slot.index, -1, 0) }
-                        DashButton { size: 28; icon: "\u{F084E}"; enabled: slot.card.w < slot.info.maxW; onClicked: root.resize(slot.index, 1, 0) }
-                        DashButton { size: 28; icon: "\u{F084D}"; enabled: slot.card.h > slot.info.minH; onClicked: root.resize(slot.index, 0, -1) }
-                        DashButton { size: 28; icon: "\u{F084F}"; enabled: slot.card.h < slot.info.maxH; onClicked: root.resize(slot.index, 0, 1) }
-                        DashButton { size: 28; icon: "\u{F0156}"; onClicked: root.remove(slot.index) }
+                        DashButton { size: 28; icon: "chevron_left"; enabled: slot.index > 0; onClicked: root.move(slot.index, -1) }
+                        DashButton { size: 28; icon: "chevron_right"; enabled: slot.index < root.cards.length - 1; onClicked: root.move(slot.index, 1) }
+                        DashButton { size: 28; icon: "arrow_menu_close"; enabled: slot.card.w > slot.info.minW; onClicked: root.resize(slot.index, -1, 0) }
+                        DashButton { size: 28; icon: "arrow_menu_open"; enabled: slot.card.w < slot.info.maxW; onClicked: root.resize(slot.index, 1, 0) }
+                        DashButton { size: 28; icon: "unfold_less"; enabled: slot.card.h > slot.info.minH; onClicked: root.resize(slot.index, 0, -1) }
+                        DashButton { size: 28; icon: "unfold_more"; enabled: slot.card.h < slot.info.maxH; onClicked: root.resize(slot.index, 0, 1) }
+                        DashButton { size: 28; icon: "close"; onClicked: root.remove(slot.index) }
                     }
                 }
             }
@@ -181,13 +181,13 @@ Item {
 
             Chip {
                 required property string modelData
-                icon: "\u{F0415}  " + root.registry[modelData].icon
+                icon: "add  " + root.registry[modelData].icon
                 text: root.registry[modelData].name
                 onClicked: root.add(modelData)
             }
         }
         Chip {
-            icon: "\u{F0450}"
+            icon: "refresh"
             text: "Default layout"
             onClicked: Config.dashboard.cards = []
         }
@@ -210,6 +210,7 @@ Item {
                 text: chip.icon
                 color: chipArea.containsMouse ? Theme.bg0 : Theme.fg1
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: Theme.fontSize
             }
             Text {

@@ -36,9 +36,27 @@ PanelWindow {
     color: "transparent"
     WlrLayershell.namespace: "quickshell-bar"
 
+    // Where the bar starts on its screen (to place popouts under a widget)
+    readonly property real screenX: solid && !full ? ((screen?.width ?? 0) - width) / 2 : 0
+
+    // Popouts line up with the bar's width
+    // The bar's own width (without the outer corners beside it)
+    readonly property real bodyWidth: width - (cornersBeside ? 2 * r : 0)
+    onBodyWidthChanged: reportWidth()
+    function reportWidth() {
+        const w = Object.assign({}, Globals.barWidths);
+        w[screen.name] = bodyWidth;
+        Globals.barWidths = w;
+    }
+
+    // Keep awake (quick settings): no screen blanking or locking while on
+    IdleInhibitor {
+        window: bar
+        enabled: Globals.keepAwake
+    }
     // With corners under the bar, only reserve the bar itself, and let clicks through the corners
     function updateZone() { if (cornersBelow) exclusiveZone = Theme.barHeight; }
-    Component.onCompleted: updateZone()
+    Component.onCompleted: { updateZone(); reportWidth(); }
     Connections { target: Theme; function onBarHeightChanged() { bar.updateZone(); } }
     mask: cornersBelow ? bodyRegion : null
     Region { id: bodyRegion; item: body }
@@ -61,6 +79,13 @@ PanelWindow {
             y: bar.atBottom ? 0 : -overhang
             height: parent.height + overhang
             radius: bar.full && bar.attached ? 0 : bar.r
+            // A popout hanging flush from this end of the bar: square that corner so they join
+            readonly property bool joinLeft: Globals.barJoin === bar.screen.name + ":left"
+            readonly property bool joinRight: Globals.barJoin === bar.screen.name + ":right"
+            bottomLeftRadius: !bar.atBottom && joinLeft ? 0 : radius
+            bottomRightRadius: !bar.atBottom && joinRight ? 0 : radius
+            topLeftRadius: bar.atBottom && joinLeft ? 0 : radius
+            topRightRadius: bar.atBottom && joinRight ? 0 : radius
             color: BarConfig.solidColor
             border.width: BarConfig.borderWidth
             border.color: BarConfig.borderColor

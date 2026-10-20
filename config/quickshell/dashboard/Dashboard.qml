@@ -18,9 +18,10 @@ LazyLoader {
         id: win
 
         readonly property var tabs: [
-            { id: "overview", name: "Overview", icon: "\u{F056E}" },
-            { id: "media", name: "Media", icon: "\u{F075A}" },
-            { id: "weather", name: "Weather", icon: "\u{F0595}" }
+            { id: "overview", name: "Overview", icon: "dashboard" },
+            { id: "media", name: "Media", icon: "music_note" },
+            { id: "weather", name: "Weather", icon: "partly_cloudy_day" },
+            { id: "wallpaper", name: "Wallpapers", icon: "wallpaper" }
         ]
         readonly property string tab: tabs.some(t => t.id === Globals.dashboardTab) ? Globals.dashboardTab : "overview"
         property bool editMode: false
@@ -37,9 +38,9 @@ LazyLoader {
         // One-piece bar (floating or attached): the dashboard grows out of its bottom edge
         readonly property bool attached: BarConfig.solid
         readonly property bool atBottom: BarConfig.bottom
-        readonly property int r: 24          // outer corner size (attached)
+        readonly property int r: Config.panels.joint   // outer corner size (attached)
         readonly property int gap: attached ? 0 : 10
-        readonly property color fill: attached || BarConfig.solid ? BarConfig.solidColor : Theme.bg0
+        readonly property color fill: attached || BarConfig.solid ? BarConfig.solidColor : BarConfig.surface(Theme.bg0)
 
         // Respect the bar's reserved space, then leave the same gap as the bar
         exclusiveZone: 0
@@ -111,7 +112,7 @@ LazyLoader {
                     width: parent.width
                     y: win.atBottom ? 0 : -overhang
                     height: parent.height + overhang
-                    radius: 26
+                    radius: Config.panels.radius
                     color: win.fill
                     border.width: win.attached ? BarConfig.borderWidth : 1
                     border.color: win.attached ? BarConfig.borderColor : Theme.bg3
@@ -123,8 +124,8 @@ LazyLoader {
                     else Globals.dashboardOpen = false;
                 } else if (e.key === Qt.Key_Tab) win.cycle(1);
                 else if (e.key === Qt.Key_Backtab) win.cycle(-1);
-                else if (e.key >= Qt.Key_1 && e.key <= Qt.Key_3) Globals.dashboardTab = win.tabs[e.key - Qt.Key_1].id;
-                else if (e.key === Qt.Key_Space) Players.active?.togglePlaying();
+                else if (e.key >= Qt.Key_1 && e.key <= Qt.Key_4) Globals.dashboardTab = win.tabs[e.key - Qt.Key_1].id;
+                else if (e.key === Qt.Key_Space && win.tab !== "wallpaper") Players.active?.togglePlaying();
                 else return;
                 e.accepted = true;
             }
@@ -168,6 +169,9 @@ LazyLoader {
                                             text: tabBtn.modelData.icon
                                             color: tabBtn.current ? Theme.bg0 : Theme.fg1
                                             font.family: Theme.iconFont
+                                            property real fill: tabBtn.current ? 1 : 0
+                                            Behavior on fill { NumberAnimation { duration: 220; easing.type: Easing.OutCubic } }
+                                            font.variableAxes: Theme.iconAxesWith(fill)
                                             font.pixelSize: Theme.fontSize + 2
                                             anchors.verticalCenter: parent.verticalCenter
                                         }
@@ -205,9 +209,10 @@ LazyLoader {
                             anchors.centerIn: parent
                             spacing: 8
                             Text {
-                                text: win.editMode ? "\u{F012C}" : "\u{F03EB}"
+                                text: win.editMode ? "check" : "edit"
                                 color: win.editMode ? Theme.bg0 : Theme.fg1
                                 font.family: Theme.iconFont
+                                font.variableAxes: Theme.iconAxes
                                 font.pixelSize: Theme.fontSize + 1
                                 anchors.verticalCenter: parent.verticalCenter
                             }
@@ -229,7 +234,7 @@ LazyLoader {
                         }
                     }
                     DashButton {
-                        icon: "\u{F0156}"
+                        icon: "close"
                         size: 40
                         onClicked: Globals.dashboardOpen = false
                     }
@@ -240,7 +245,7 @@ LazyLoader {
                     id: page
                     Layout.preferredWidth: item?.implicitWidth ?? 0
                     Layout.preferredHeight: item?.implicitHeight ?? 0
-                    sourceComponent: ({ overview: overview, media: media, weather: weather })[win.tab]
+                    sourceComponent: ({ overview: overview, media: media, weather: weather, wallpaper: wallpaper })[win.tab]
                 }
             }
             }
@@ -249,5 +254,6 @@ LazyLoader {
         Component { id: overview; OverviewTab { editMode: win.editMode } }
         Component { id: media; MediaTab {} }
         Component { id: weather; WeatherTab {} }
+        Component { id: wallpaper; WallpaperTab {} }
     }
 }

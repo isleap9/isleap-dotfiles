@@ -1,5 +1,6 @@
 import QtQuick
 import qs
+import qs.components
 
 // Round icon button. filled = accent background (e.g. play/pause)
 Rectangle {
@@ -23,12 +24,11 @@ Rectangle {
     scale: area.pressed ? 0.92 : 1
     Behavior on scale { NumberAnimation { duration: 90 } }
 
-    Text {
-        anchors.centerIn: parent
+    CenteredIcon {
         text: root.icon
         color: root.filled ? Theme.bg0 : root.active ? Theme.accent : Theme.fg1
-        font.family: Theme.iconFont
-        font.pixelSize: Math.round(root.size * root.iconScale)
+        size: Math.round(root.size * root.iconScale)
+        fill: area.containsMouse || root.active || root.filled ? 1 : 0
     }
 
     MouseArea {

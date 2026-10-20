@@ -18,6 +18,12 @@ Singleton {
     property alias powerMenu: adapter.powerMenu
     property alias monitors: adapter.monitors
     property alias dashboard: adapter.dashboard
+    property alias osd: adapter.osd
+    property alias nightLight: adapter.nightLight
+    property alias desktop: adapter.desktop
+    property alias session: adapter.session
+    property alias icons: adapter.icons
+    property alias panels: adapter.panels
 
     // Put every setting back to its default
     function reset() {
@@ -108,6 +114,52 @@ Singleton {
                 // Overview cards in order: [{ id: "clock", w: 2, h: 1 }] (empty = the default layout)
                 property var cards: []
                 property string units: "metric"       // metric (°C, km/h) or imperial (°F, mph)
+                property string openOn: "last"        // tab SUPER+A opens: last, overview, media, weather, wallpaper
+            }
+
+            property JsonObject icons: JsonObject {
+                property bool filled: false           // always filled (otherwise outlined, filling on hover/active)
+                property int weight: 400              // 100–700
+            }
+
+            property JsonObject panels: JsonObject {
+                property int radius: 28               // corners of the dashboard, quick settings, menus
+                property int joint: 24                // curved joint where a panel meets the bar
+                property bool hoverCards: true        // clock calendar, weather forecast… on hover
+                property int hoverDelay: 350          // ms before a hover card opens
+            }
+
+            // Survives shell reloads and restarts
+            property JsonObject session: JsonObject {
+                property bool keepAwake: false        // no screen blanking / locking / suspend
+            }
+
+            property JsonObject desktop: JsonObject {
+                property bool enabled: true
+                property bool clock: true
+                property int clockSize: 140
+                property bool media: true
+                property bool weather: true
+                property string position: "top-left"   // top-left, top, center, bottom-left, bottom-right
+                property string screens: "main"        // main, all
+            }
+
+            property JsonObject nightLight: JsonObject {
+                property bool enabled: false
+                property int temperature: 4000        // Kelvin: lower = warmer
+                property string schedule: "sun"       // always, sun (sunset → sunrise), custom
+                property string from: "20:00"
+                property string to: "07:00"
+            }
+
+            property JsonObject osd: JsonObject {
+                property bool enabled: true           // volume / mic / caps lock / layout popups
+                property string position: "bottom"    // bottom, top, center
+                property int duration: 1600           // ms
+                property bool volume: true
+                property bool mic: true
+                property bool caps: true
+                property bool layout: true
             }
 
             property JsonObject monitors: JsonObject {

@@ -1,5 +1,6 @@
 import QtQuick
 import qs
+import qs.components
 
 // Round button for the bar's Now playing widget. filled = accent (play/pause)
 Rectangle {
@@ -19,12 +20,11 @@ Rectangle {
     scale: area.pressed ? 0.9 : 1
     Behavior on scale { NumberAnimation { duration: 90 } }
 
-    Text {
-        anchors.centerIn: parent
+    CenteredIcon {
         text: btn.icon
         color: btn.filled ? Theme.bg0 : btn.tint
-        font.family: Theme.iconFont
-        font.pixelSize: Math.round(btn.width * 0.55)
+        size: Math.round(btn.width * 0.55)
+        fill: area.containsMouse || btn.filled ? 1 : 0
     }
     MouseArea {
         id: area

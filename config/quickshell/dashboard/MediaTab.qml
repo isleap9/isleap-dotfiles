@@ -19,7 +19,7 @@ Item {
     ClippingRectangle {
         anchors.fill: parent
         radius: 18
-        color: Theme.bg1
+        color: BarConfig.surface(Theme.bg1)
 
         // Backdrop: the cover, blurred and darkened
         Image {
@@ -57,9 +57,10 @@ Item {
         spacing: 8
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "\u{F075B}"
+            text: "music_off"
             color: Theme.bg4
             font.family: Theme.iconFont
+            font.variableAxes: Theme.iconAxes
             font.pixelSize: 64
         }
         Text {
@@ -91,6 +92,7 @@ Item {
                 text: Players.playerIcon(root.p)
                 color: Theme.fg2
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: 96
             }
             Image {
@@ -130,6 +132,7 @@ Item {
                                 text: Players.playerIcon(chip.modelData)
                                 color: chip.current ? Theme.bg0 : Theme.fg1
                                 font.family: Theme.iconFont
+                                font.variableAxes: Theme.iconAxes
                                 font.pixelSize: Theme.fontSize
                             }
                             Text {
@@ -217,24 +220,24 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 spacing: 10
                 DashButton {
-                    icon: "\u{F049D}"
+                    icon: "shuffle"
                     visible: root.p?.shuffleSupported ?? false
                     active: root.p?.shuffle ?? false
                     size: 40
                     onClicked: root.p.shuffle = !root.p.shuffle
                 }
-                DashButton { icon: "\u{F04AE}"; size: 48; enabled: root.p?.canGoPrevious ?? false; onClicked: root.p.previous() }
+                DashButton { icon: "skip_previous"; size: 48; enabled: root.p?.canGoPrevious ?? false; onClicked: root.p.previous() }
                 DashButton {
-                    icon: root.p?.isPlaying ? "\u{F03E4}" : "\u{F040A}"
+                    icon: root.p?.isPlaying ? "pause" : "play_arrow"
                     filled: true
                     size: 64
                     onClicked: root.p.togglePlaying()
                 }
-                DashButton { icon: "\u{F04AD}"; size: 48; enabled: root.p?.canGoNext ?? false; onClicked: root.p.next() }
+                DashButton { icon: "skip_next"; size: 48; enabled: root.p?.canGoNext ?? false; onClicked: root.p.next() }
                 DashButton {
                     visible: root.p?.loopSupported ?? false
                     readonly property int loop: root.p?.loopState ?? MprisLoopState.None
-                    icon: loop === MprisLoopState.Track ? "\u{F0458}" : "\u{F0456}"
+                    icon: loop === MprisLoopState.Track ? "repeat_one" : "repeat"
                     active: loop !== MprisLoopState.None
                     size: 40
                     onClicked: root.p.loopState = loop === MprisLoopState.None ? MprisLoopState.Playlist
@@ -260,9 +263,10 @@ Item {
                         width: Math.min(implicitWidth, 236)
                         spacing: 8
                         Text {
-                            text: (Players.sink?.name ?? "").startsWith("bluez") ? "\u{F00B0}" : "\u{F04C3}"
+                            text: (Players.sink?.name ?? "").startsWith("bluez") ? "bluetooth_connected" : "speaker"
                             color: Theme.fg1
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: Theme.fontSize + 1
                         }
                         Text {
@@ -285,9 +289,10 @@ Item {
                 }
 
                 Text {
-                    text: (Players.sink?.audio?.muted ?? false) ? "\u{F075F}" : "\u{F057E}"
+                    text: (Players.sink?.audio?.muted ?? false) ? "volume_off" : "volume_up"
                     color: Theme.fg1
                     font.family: Theme.iconFont
+                    font.variableAxes: Theme.iconAxes
                     font.pixelSize: Theme.fontSize + 3
                     MouseArea {
                         anchors.fill: parent
@@ -343,10 +348,11 @@ Item {
                         x: 12
                         spacing: 10
                         Text {
-                            text: outItem.current ? "\u{F012C}" : ""
+                            text: outItem.current ? "check" : ""
                             width: 16
                             color: Theme.accent
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: Theme.fontSize
                         }
                         Text {

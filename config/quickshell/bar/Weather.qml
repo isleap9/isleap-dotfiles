@@ -37,9 +37,90 @@ Pill {
     BarText { icon: true; text: WeatherData.icon(root.w?.code, root.w?.isDay) }
     BarText { text: Math.round(root.w?.temp ?? 0) + WeatherData.tempUnit }
 
+    // Hover: now + the next 3 days (Material card)
     Tooltip {
         target: root
-        show: root.hovered && root.summary !== "" && !Globals.dashboardOpen
-        text: root.summary
+        show: (root.hovered || Globals.hoverPreview === "weather") && WeatherData.ready && !Globals.dashboardOpen
+
+        Column {
+            spacing: 12
+            Row {
+                spacing: 14
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: WeatherData.icon(root.w?.code, root.w?.isDay)
+                    color: Theme.accent
+                    font.family: Theme.iconFont
+                    font.variableAxes: Theme.iconAxes
+                    font.pixelSize: 44
+                }
+                Column {
+                    anchors.verticalCenter: parent.verticalCenter
+                    Text {
+                        text: `${WeatherData.temp(root.w?.temp)}  ${WeatherData.describe(root.w?.code)}`
+                        color: Theme.fg1
+                        font.family: Theme.font
+                        font.pixelSize: Theme.fontSize + 3
+                        font.weight: Font.Bold
+                    }
+                    Text {
+                        text: `Feels like ${WeatherData.temp(root.w?.feels)} · ${WeatherData.place}`
+                        color: Theme.fg2
+                        font.family: Theme.font
+                        font.pixelSize: Theme.fontSize - 3
+                    }
+                    Row {
+                        spacing: 4
+                        Text { text: "humidity_percentage"; color: Theme.fg2; font.family: Theme.iconFont; font.variableAxes: Theme.iconAxes; font.pixelSize: Theme.fontSize; anchors.verticalCenter: parent.verticalCenter }
+                        Text { text: `${Math.round(root.w?.humidity ?? 0)}%`; color: Theme.fg2; font.family: Theme.font; font.pixelSize: Theme.fontSize - 3; anchors.verticalCenter: parent.verticalCenter }
+                        Item { width: 8; height: 1 }
+                        Text { text: "air"; color: Theme.fg2; font.family: Theme.iconFont; font.variableAxes: Theme.iconAxes; font.pixelSize: Theme.fontSize; anchors.verticalCenter: parent.verticalCenter }
+                        Text { text: `${Math.round(root.w?.wind ?? 0)} ${WeatherData.windUnit}`; color: Theme.fg2; font.family: Theme.font; font.pixelSize: Theme.fontSize - 3; anchors.verticalCenter: parent.verticalCenter }
+                    }
+                }
+            }
+            Row {
+                spacing: 8
+                Repeater {
+                    model: WeatherData.daily.slice(0, 4)
+                    Rectangle {
+                        required property var modelData
+                        required property int index
+                        width: 74
+                        height: 88
+                        radius: 16
+                        color: index === 0 ? Qt.rgba(Theme.accent.r, Theme.accent.g, Theme.accent.b, 0.16) : BarConfig.surface(Theme.bg2)
+                        Column {
+                            anchors.centerIn: parent
+                            spacing: 2
+                            Text {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                text: parent.parent.index === 0 ? "Today" : Qt.formatDate(parent.parent.modelData.date, "ddd")
+                                color: parent.parent.index === 0 ? Theme.accent : Theme.fg1
+                                font.family: Theme.font
+                                font.pixelSize: Theme.fontSize - 3
+                                font.weight: Font.Bold
+                            }
+                            Text {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                text: WeatherData.icon(parent.parent.modelData.code, true)
+                                color: Theme.fg1
+                                font.family: Theme.iconFont
+                                font.variableAxes: Theme.iconAxes
+                                font.pixelSize: 24
+                            }
+                            Text {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                text: `${WeatherData.temp(parent.parent.modelData.max)} ${WeatherData.temp(parent.parent.modelData.min)}`
+                                color: Theme.fg1
+                                font.family: Theme.font
+                                font.pixelSize: Theme.fontSize - 4
+                                font.weight: Font.Bold
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

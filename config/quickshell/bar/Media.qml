@@ -11,6 +11,7 @@ import qs.components
 // Options (Settings → Bar → Now playing ⚙): max width, cover, artist line, progress, buttons.
 Pill {
     id: root
+    stateLayer: false     // its parts have their own hover highlights
 
     property var screen: null
     readonly property MprisPlayer p: Players.active
@@ -103,14 +104,14 @@ Pill {
         visible: root.showControls
         Layout.alignment: Qt.AlignVCenter
         spacing: 0
-        MediaButton { tint: root.iconColor; size: root.h - 14; icon: "\u{F04AE}"; enabled: root.p?.canGoPrevious ?? false; onClicked: root.p.previous() }
+        MediaButton { tint: root.iconColor; size: root.h - 14; icon: "skip_previous"; enabled: root.p?.canGoPrevious ?? false; onClicked: root.p.previous() }
         MediaButton {
             tint: root.iconColor
             size: root.h - 12
-            icon: root.p?.isPlaying ? "\u{F03E4}" : "\u{F040A}"
+            icon: root.p?.isPlaying ? "pause" : "play_arrow"
             filled: true
             onClicked: root.p.togglePlaying()
         }
-        MediaButton { tint: root.iconColor; size: root.h - 14; icon: "\u{F04AD}"; enabled: root.p?.canGoNext ?? false; onClicked: root.p.next() }
+        MediaButton { tint: root.iconColor; size: root.h - 14; icon: "skip_next"; enabled: root.p?.canGoNext ?? false; onClicked: root.p.next() }
     }
 }

@@ -35,11 +35,12 @@ hl.window_rule({
 hl.window_rule({ match = { class = "hyprpicker" }, float   = true })
 hl.window_rule({ match = { class = "hyprpicker" }, no_anim = true })
 
--- Layer rules
-hl.layer_rule({ match = { namespace = "swaync-control-center"    }, blur = true, ignore_alpha = 0.5 })
-hl.layer_rule({ match = { namespace = "swaync-notification-window" }, blur = true, ignore_alpha = 0.5 })
-hl.layer_rule({ match = { namespace = "logout_dialog"            }, blur = true, ignore_alpha = 0.0 })
-hl.layer_rule({ match = { namespace = "rofi"                     }, blur = true, ignore_alpha = 0.1 })
+-- Layer rules: frosted blur behind the Quickshell bar and its panels (they follow the bar's opacity)
+for _, ns in ipairs({ "quickshell-bar", "quickshell-dashboard", "quickshell-quicksettings",
+                      "quickshell-traymenu", "quickshell-hovercard", "quickshell-osd", "quickshell-overview", "quickshell-polkit" }) do
+    -- xray: blur only the wallpaper (not windows), so panels over windows match the bar over the wallpaper
+    hl.layer_rule({ match = { namespace = ns }, blur = true, blur_popups = true, xray = true, ignore_alpha = 0.3 })
+end
 
 
 

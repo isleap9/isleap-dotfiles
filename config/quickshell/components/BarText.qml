@@ -12,8 +12,13 @@ Text {
         return p;
     }
 
+    // Fluid fill: outlined at rest, fills in while hovered or when the widget is active (e.g. keep awake on)
+    property real fill: icon && pill && ((pill.interactive && pill.hovered) || pill.active === true) ? 1 : 0
+    Behavior on fill { NumberAnimation { duration: 220; easing.type: Easing.OutCubic } }
+
     color: pill ? (icon ? pill.iconColor : pill.textColor) : BarConfig.textColor
     font.family: icon ? Theme.iconFont : Theme.font
+    font.variableAxes: icon ? Theme.iconAxesWith(fill) : ({})
     font.pixelSize: icon ? BarConfig.iconSize : BarConfig.textSize
     font.weight: icon ? Font.Normal : BarConfig.textWeight
     verticalAlignment: Text.AlignVCenter

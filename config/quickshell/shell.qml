@@ -10,6 +10,11 @@ import qs.powermenu
 import qs.controlcenter
 import qs.settings
 import qs.dashboard
+import qs.osd
+import qs.quicksettings
+import qs.overview
+import qs.polkit
+import qs.desktop
 
 ShellRoot {
     // A bar on every monitor
@@ -26,4 +31,10 @@ ShellRoot {
     ControlCenter {}
     SettingsWindow {}
     Dashboard {}
+    Osd {}
+    QuickSettings {}
+    Overview {}
+    PolkitDialog {}
+    TrayMenu {}
+    DesktopWidgets {}
 }

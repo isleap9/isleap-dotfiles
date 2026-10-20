@@ -4,6 +4,7 @@ import qs.components
 
 // Empty space between widgets
 Pill {
+    bubble: false
     interactive: false
     color: "transparent"
     padding: 0

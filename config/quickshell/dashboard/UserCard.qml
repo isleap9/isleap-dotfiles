@@ -51,9 +51,10 @@ DashCard {
                 visible: faceArea.containsMouse
                 Text {
                     anchors.centerIn: parent
-                    text: "\u{F0100}"
+                    text: "photo_camera"
                     color: "white"
                     font.family: Theme.iconFont
+                    font.variableAxes: Theme.iconAxes
                     font.pixelSize: parent.width * 0.4
                 }
             }
@@ -92,12 +93,12 @@ DashCard {
         RowLayout {
             visible: card.width >= 300
             spacing: 2
-            DashButton { icon: "\u{F0493}"; onClicked: { Globals.dashboardOpen = false; Globals.openSettings(""); } }
+            DashButton { icon: "settings"; onClicked: { Globals.dashboardOpen = false; Globals.openSettings(""); } }
             DashButton {
-                icon: "\u{F033E}"
+                icon: "lock"
                 onClicked: { Globals.dashboardOpen = false; Globals.run(Quickshell.env("HOME") + "/.config/quickshell/scripts/lock.sh"); }
             }
-            DashButton { icon: "\u{F0425}"; onClicked: { Globals.closeAll(); Globals.powerMenuOpen = true; } }
+            DashButton { icon: "power_settings_new"; onClicked: { Globals.closeAll(); Globals.powerMenuOpen = true; } }
         }
     }
 }

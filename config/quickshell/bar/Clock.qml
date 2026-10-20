@@ -44,7 +44,7 @@ Pill {
 
     Tooltip {
         target: root
-        show: root.hovered && root.showCalendar && !Globals.dashboardOpen
+        show: (root.hovered || Globals.hoverPreview === "clock") && root.showCalendar && !Globals.dashboardOpen
 
         Calendar {}
     }

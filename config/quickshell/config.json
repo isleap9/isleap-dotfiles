@@ -13,7 +13,7 @@
             "left": true,
             "right": true
         },
-        "height": 40,
+        "height": 45,
         "lanes": {
             "center": [
                 {
@@ -46,16 +46,21 @@
                     "type": "tray"
                 },
                 {
+                    "joinNext": true,
                     "label": true,
                     "type": "language"
                 },
                 {
+                    "joinNext": true,
                     "label": true,
                     "type": "volume"
                 },
                 {
                     "label": true,
                     "type": "network"
+                },
+                {
+                    "type": "keepawake"
                 },
                 {
                     "type": "notifications"
@@ -66,12 +71,10 @@
             ]
         },
         "look": {
-            "barRadius": 15,
-            "density": "compact",
-            "outerCorners": true,
-            "solidGap": 16,
-            "solidWidth": "fit",
-            "textWeight": "black"
+            "barRadius": 30,
+            "density": "default",
+            "opacity": 75,
+            "solidGap": 18
         },
         "minWorkspaces": 4,
         "modules": {
@@ -89,7 +92,7 @@
         "position": "top",
         "preset": "custom",
         "sideMargin": 20,
-        "spacing": 14,
+        "spacing": 26,
         "style": "solid",
         "topMargin": 18,
         "weatherCity": "Bari"
@@ -127,7 +130,21 @@
                 "w": 3
             }
         ],
+        "openOn": "last",
         "units": "metric"
+    },
+    "desktop": {
+        "clock": true,
+        "clockSize": 140,
+        "enabled": true,
+        "media": true,
+        "position": "bottom-left",
+        "screens": "main",
+        "weather": true
+    },
+    "icons": {
+        "filled": false,
+        "weight": 400
     },
     "launcher": {
         "height": 520,
@@ -140,12 +157,37 @@
         "main": "DP-3",
         "popups": "main"
     },
+    "nightLight": {
+        "enabled": false,
+        "from": "20:00",
+        "schedule": "sun",
+        "temperature": 4000,
+        "to": "07:00"
+    },
     "notifications": {
         "maxPopups": 4,
         "position": "top-right",
         "timeout": 5
     },
+    "osd": {
+        "caps": true,
+        "duration": 1600,
+        "enabled": true,
+        "layout": true,
+        "mic": true,
+        "position": "top",
+        "volume": true
+    },
+    "panels": {
+        "hoverCards": true,
+        "hoverDelay": 350,
+        "joint": 24,
+        "radius": 28
+    },
     "powerMenu": {
         "confirm": true
+    },
+    "session": {
+        "keepAwake": false
     }
 }

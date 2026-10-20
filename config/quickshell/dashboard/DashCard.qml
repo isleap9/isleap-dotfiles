@@ -16,7 +16,7 @@ Rectangle {
     signal clicked
 
     radius: 18
-    color: clickable && hover.hovered ? Theme.bg2 : Theme.bg1
+    color: BarConfig.surface(clickable && hover.hovered ? Theme.bg2 : Theme.bg1)
     Behavior on color { ColorAnimation { duration: 120 } }
 
     HoverHandler { id: hover }
@@ -36,6 +36,7 @@ Rectangle {
             text: card.icon
             color: Theme.accent
             font.family: Theme.iconFont
+            font.variableAxes: Theme.iconAxes
             font.pixelSize: Theme.fontSize + 1
             anchors.verticalCenter: parent.verticalCenter
         }

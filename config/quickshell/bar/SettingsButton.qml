@@ -5,5 +5,5 @@ import qs.components
 // Opens the Settings app
 Pill {
     onClicked: Globals.openSettings("")
-    BarText { icon: true; text: "\u{F0493}" }
+    BarText { icon: true; text: "settings" }
 }

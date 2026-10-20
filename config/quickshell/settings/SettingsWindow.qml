@@ -12,14 +12,16 @@ LazyLoader {
         id: win
 
         readonly property var pages: [
-            { id: "appearance",    icon: "󰏘", title: "Appearance",    file: "AppearancePage.qml" },
-            { id: "bar",           icon: "\u{F0C7B}", title: "Bar",   file: "BarPage.qml" },
-            { id: "monitors",      icon: "󰍹", title: "Monitors",      file: "MonitorsPage.qml" },
-            { id: "notifications", icon: "󰂚", title: "Notifications", file: "NotificationsPage.qml" },
-            { id: "launcher",      icon: "󰀻", title: "Launcher & Power", file: "LauncherPage.qml" },
-            { id: "wallpaper",     icon: "󰸉", title: "Wallpaper & Colors", file: "WallpaperPage.qml" },
-            { id: "keybinds",      icon: "󰌌", title: "Keybinds",      file: "KeybindsPage.qml" },
-            { id: "system",        icon: "󰒓", title: "System",        file: "SystemPage.qml" }
+            { id: "appearance",    icon: "palette", title: "Appearance",    file: "AppearancePage.qml" },
+            { id: "bar",           icon: "toolbar", title: "Bar",   file: "BarPage.qml" },
+            { id: "monitors",      icon: "monitor", title: "Monitors",      file: "MonitorsPage.qml" },
+            { id: "notifications", icon: "notifications", title: "Notifications", file: "NotificationsPage.qml" },
+            { id: "panels",        icon: "dashboard", title: "Panels & Icons", file: "PanelsPage.qml" },
+            { id: "desktop",       icon: "desktop_windows", title: "Desktop & Night light", file: "DesktopPage.qml" },
+            { id: "launcher",      icon: "apps", title: "Launcher & Power", file: "LauncherPage.qml" },
+            { id: "wallpaper",     icon: "wallpaper", title: "Wallpaper & Colors", file: "WallpaperPage.qml" },
+            { id: "keybinds",      icon: "keyboard", title: "Keybinds",      file: "KeybindsPage.qml" },
+            { id: "system",        icon: "settings", title: "System",        file: "SystemPage.qml" }
         ]
         readonly property var page: pages.find(p => p.id === Globals.settingsPage) ?? pages[0]
 
@@ -51,9 +53,9 @@ LazyLoader {
                         Layout.topMargin: 6
                         spacing: 10
                         Text {
-                            text: "󰣇"
+                            text: "󰣇"   // Arch logo (brand, so Nerd Font)
                             color: Theme.accent
-                            font.family: Theme.iconFont
+                            font.family: Theme.brandFont
                             font.pixelSize: 26
                         }
                         Text {
@@ -89,6 +91,9 @@ LazyLoader {
                                     text: navItem.modelData.icon
                                     color: navItem.active ? Theme.bg1 : Theme.fg1
                                     font.family: Theme.iconFont
+                                    property real fill: navItem.active ? 1 : 0
+                                    Behavior on fill { NumberAnimation { duration: 220; easing.type: Easing.OutCubic } }
+                                    font.variableAxes: Theme.iconAxesWith(fill)
                                     font.pixelSize: Theme.fontSize + 3
                                 }
                                 Text {

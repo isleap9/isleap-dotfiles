@@ -31,7 +31,7 @@ Item {
                 font.pixelSize: Theme.fontSize
                 font.weight: Font.Bold
             }
-            DashButton { anchors.horizontalCenter: parent.horizontalCenter; icon: "\u{F0450}"; onClicked: WeatherData.refresh() }
+            DashButton { anchors.horizontalCenter: parent.horizontalCenter; icon: "refresh"; onClicked: WeatherData.refresh() }
         }
     }
 
@@ -55,6 +55,7 @@ Item {
                     text: WeatherData.icon(root.w?.code, root.w?.isDay)
                     color: Theme.accent
                     font.family: Theme.iconFont
+                    font.variableAxes: Theme.iconAxes
                     font.pixelSize: 96
                 }
                 ColumnLayout {
@@ -85,13 +86,18 @@ Item {
                         font.pixelSize: Theme.fontSize + 6
                         font.weight: Font.Bold
                     }
-                    Text {
+                    RowLayout {
                         Layout.fillWidth: true
-                        text: `\u{F034E} ${WeatherData.place}`
-                        elide: Text.ElideRight
-                        color: Theme.fg2
-                        font.family: Theme.font
-                        font.pixelSize: Theme.fontSize - 1
+                        spacing: 4
+                        Text { text: "location_on"; color: Theme.fg2; font.family: Theme.iconFont; font.variableAxes: Theme.iconAxes; font.pixelSize: Theme.fontSize + 1 }
+                        Text {
+                            Layout.fillWidth: true
+                            text: WeatherData.place
+                            elide: Text.ElideRight
+                            color: Theme.fg2
+                            font.family: Theme.font
+                            font.pixelSize: Theme.fontSize - 1
+                        }
                     }
                     Text {
                         text: `H ${WeatherData.temp(root.today?.max)}   L ${WeatherData.temp(root.today?.min)}`
@@ -121,7 +127,7 @@ Item {
                         }
                         DashButton {
                             size: 28
-                            icon: "\u{F0450}"
+                            icon: "refresh"
                             enabled: !WeatherData.loading
                             onClicked: WeatherData.refresh()
                         }
@@ -135,7 +141,7 @@ Item {
             Layout.fillWidth: true
             implicitHeight: 170
             title: "Next 24 hours"
-            icon: "\u{F0954}"
+            icon: "schedule"
 
             Item {
                 id: chart
@@ -229,6 +235,7 @@ Item {
                             text: WeatherData.icon(mark.h.code, mark.h.isDay)
                             color: Theme.fg1
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: Theme.fontSize + 2
                         }
                         Text {
@@ -256,7 +263,7 @@ Item {
                     required property int index
                     Layout.fillWidth: true
                     implicitHeight: 120
-                    color: index === 0 ? Theme.bg2 : Theme.bg1
+                    color: BarConfig.surface(index === 0 ? Theme.bg2 : Theme.bg1)
 
                     Column {
                         anchors.centerIn: parent
@@ -274,6 +281,7 @@ Item {
                             text: WeatherData.icon(day.modelData.code, true)
                             color: Theme.fg1
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: 28
                         }
                         Text {
@@ -284,12 +292,11 @@ Item {
                             font.pixelSize: Theme.fontSize - 3
                             font.weight: Font.Bold
                         }
-                        Text {
+                        Row {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text: `\u{F058C} ${day.modelData.rain}%`
-                            color: day.modelData.rain >= 50 ? Theme.blue : Theme.fg2
-                            font.family: Theme.font
-                            font.pixelSize: Theme.fontSize - 4
+                            spacing: 2
+                            Text { text: "water_drop"; color: day.modelData.rain >= 50 ? Theme.blue : Theme.fg2; font.family: Theme.iconFont; font.variableAxes: Theme.iconAxes; font.pixelSize: Theme.fontSize - 2; anchors.verticalCenter: parent.verticalCenter }
+                            Text { text: day.modelData.rain + "%"; color: day.modelData.rain >= 50 ? Theme.blue : Theme.fg2; font.family: Theme.font; font.pixelSize: Theme.fontSize - 4; anchors.verticalCenter: parent.verticalCenter }
                         }
                     }
                 }
@@ -303,27 +310,27 @@ Item {
             rowSpacing: 8
             columnSpacing: 8
 
-            Detail { icon: "\u{F058E}"; label: "Humidity"; value: Math.round(root.w?.humidity ?? 0) + "%" }
+            Detail { icon: "humidity_percentage"; label: "Humidity"; value: Math.round(root.w?.humidity ?? 0) + "%" }
             Detail {
-                icon: "\u{F059D}"; label: "Wind"
+                icon: "air"; label: "Wind"
                 value: `${Math.round(root.w?.wind ?? 0)} ${WeatherData.windUnit}`
                 extra: WeatherData.compass(root.w?.windDir ?? 0)
                 arrow: root.w?.windDir ?? -1
             }
-            Detail { icon: "\u{F029A}"; label: "Pressure"; value: Math.round(root.w?.pressure ?? 0) + " hPa" }
+            Detail { icon: "speed"; label: "Pressure"; value: Math.round(root.w?.pressure ?? 0) + " hPa" }
             Detail {
-                icon: "\u{F0F2F}"; label: "UV index"
+                icon: "brightness_high"; label: "UV index"
                 readonly property real uv: root.today?.uv ?? root.w?.uv ?? 0
                 value: uv.toFixed(0)
                 extra: uv < 3 ? "Low" : uv < 6 ? "Moderate" : uv < 8 ? "High" : uv < 11 ? "Very high" : "Extreme"
             }
             Detail {
-                icon: "\u{F0208}"; label: "Visibility"
+                icon: "visibility"; label: "Visibility"
                 value: WeatherData.imperial ? ((root.w?.visibility ?? 0) / 5280).toFixed(1) + " mi" : ((root.w?.visibility ?? 0) / 1000).toFixed(1) + " km"
             }
-            Detail { icon: "\u{F0590}"; label: "Clouds"; value: Math.round(root.w?.clouds ?? 0) + "%" }
-            Detail { icon: "\u{F059C}"; label: "Sunrise"; value: root.today ? root.clock(root.today.sunrise) : "--" }
-            Detail { icon: "\u{F059B}"; label: "Sunset"; value: root.today ? root.clock(root.today.sunset) : "--" }
+            Detail { icon: "cloud"; label: "Clouds"; value: Math.round(root.w?.clouds ?? 0) + "%" }
+            Detail { icon: "wb_twilight"; label: "Sunrise"; value: root.today ? root.clock(root.today.sunrise) : "--" }
+            Detail { icon: "wb_twilight_2"; label: "Sunset"; value: root.today ? root.clock(root.today.sunset) : "--" }
         }
     }
 
@@ -344,6 +351,7 @@ Item {
                 text: d.icon
                 color: Theme.accent
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: 26
             }
             ColumnLayout {
@@ -370,10 +378,11 @@ Item {
                     Text {
                         visible: d.arrow >= 0
                         // Arrow points where the wind blows to
-                        text: "\u{F005D}"
+                        text: "arrow_upward"
                         rotation: d.arrow + 180
                         color: Theme.fg1
                         font.family: Theme.iconFont
+                        font.variableAxes: Theme.iconAxes
                         font.pixelSize: Theme.fontSize
                     }
                     Text {

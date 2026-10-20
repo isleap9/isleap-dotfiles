@@ -7,5 +7,5 @@ Pill {
     onClicked: m => m.button === Qt.RightButton
         ? Globals.openControlCenter("capture")
         : Globals.run("hyprshot -m region --output-folder ~/Pictures/Screenshots")
-    BarText { icon: true; text: "󰹑" }
+    BarText { icon: true; text: "screenshot_monitor" }
 }

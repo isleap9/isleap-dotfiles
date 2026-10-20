@@ -8,7 +8,7 @@ Page {
     Section {
         title: "Wallpaper"
         Option {
-            icon: "󰸉"
+            icon: "wallpaper"
             label: "Wallpaper picker"
             description: "Browse ~/Pictures/Wallpapers or search Wallhaven (SUPER+SHIFT+W)"
             PillButton {
@@ -24,13 +24,13 @@ Page {
         description: "Generate the color theme from your wallpaper (matugen)"
 
         Option {
-            icon: "󰔎"
+            icon: "contrast"
             label: "Use wallpaper colors"
             description: "When on, picking a wallpaper recolors everything"
             Toggle { checked: DynamicTheme.enabled; onToggled: DynamicTheme.setEnabled(!DynamicTheme.enabled) }
         }
         Option {
-            icon: "󰖔"
+            icon: "clear_night"
             label: "Mode"
             Segmented {
                 options: [["dark", "Dark"], ["light", "Light"]]
@@ -39,7 +39,7 @@ Page {
             }
         }
         Option {
-            icon: "󰑐"
+            icon: "refresh"
             label: "Apply to current wallpaper"
             description: "Regenerate colors now"
             PillButton { text: "Apply"; onClicked: DynamicTheme.applyNow() }

@@ -10,14 +10,12 @@ DashCard {
     readonly property var p: Players.active
     readonly property bool tall: height >= 200
 
-    Text {
+    Row {
         visible: !Players.hasTrack
         anchors.centerIn: parent
-        text: "\u{F075B}  Nothing playing"
-        color: Theme.fg2
-        font.family: Theme.font
-        font.pixelSize: Theme.fontSize - 1
-        font.weight: Font.Bold
+        spacing: 8
+        Text { text: "music_off"; color: Theme.fg2; font.family: Theme.iconFont; font.variableAxes: Theme.iconAxes; font.pixelSize: Theme.fontSize + 3; anchors.verticalCenter: parent.verticalCenter }
+        Text { text: "Nothing playing"; color: Theme.fg2; font.family: Theme.font; font.pixelSize: Theme.fontSize - 1; font.weight: Font.Bold; anchors.verticalCenter: parent.verticalCenter }
     }
 
     GridLayout {
@@ -80,14 +78,14 @@ DashCard {
         RowLayout {
             Layout.alignment: card.tall ? Qt.AlignHCenter : Qt.AlignVCenter
             spacing: 2
-            DashButton { icon: "\u{F04AE}"; enabled: card.p?.canGoPrevious ?? false; onClicked: card.p.previous() }
+            DashButton { icon: "skip_previous"; enabled: card.p?.canGoPrevious ?? false; onClicked: card.p.previous() }
             DashButton {
-                icon: card.p?.isPlaying ? "\u{F03E4}" : "\u{F040A}"
+                icon: card.p?.isPlaying ? "pause" : "play_arrow"
                 filled: true
                 size: 40
                 onClicked: card.p.togglePlaying()
             }
-            DashButton { icon: "\u{F04AD}"; enabled: card.p?.canGoNext ?? false; onClicked: card.p.next() }
+            DashButton { icon: "skip_next"; enabled: card.p?.canGoNext ?? false; onClicked: card.p.next() }
         }
     }
 }

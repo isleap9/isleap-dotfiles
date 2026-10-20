@@ -1,7 +1,7 @@
 -- AUTOSTART --
 hl.on("hyprland.start", function()
     hl.exec_cmd("hyprctl setcursor Bibata-Modern-Ice 20")
-    hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
+    -- Polkit password prompts come from Quickshell (polkit/PolkitDialog.qml), not the KDE agent
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("~/.config/quickshell/scripts/launch.sh")
     hl.exec_cmd("wl-paste --type text --watch cliphist store")

@@ -50,19 +50,19 @@ Singleton {
     // Nerd Font (Material Design) weather icon
     function icon(code, isDay) {
         const day = isDay !== false;
-        if (code === 0 || code === 1) return day ? "\u{F0599}" : "\u{F0594}";
-        if (code === 2) return day ? "\u{F0595}" : "\u{F0F31}";
-        if (code === 3) return "\u{F0590}";
-        if (code === 45 || code === 48) return "\u{F0591}";
-        if (code >= 51 && code <= 57) return "\u{F0597}";
-        if (code === 61 || code === 80) return "\u{F0597}";
-        if (code === 63 || code === 65 || code === 81 || code === 82) return "\u{F0596}";
-        if (code === 66 || code === 67) return "\u{F067F}";
-        if (code === 71 || code === 77 || code === 85) return "\u{F0598}";
-        if (code === 73 || code === 75 || code === 86) return "\u{F0F36}";
-        if (code === 95) return "\u{F0593}";
-        if (code === 96 || code === 99) return "\u{F067E}";
-        return "\u{F0590}";
+        if (code === 0 || code === 1) return day ? "sunny" : "clear_night";
+        if (code === 2) return day ? "partly_cloudy_day" : "partly_cloudy_night";
+        if (code === 3) return "cloud";
+        if (code === 45 || code === 48) return "foggy";
+        if (code >= 51 && code <= 57) return "rainy";
+        if (code === 61 || code === 80) return "rainy";
+        if (code === 63 || code === 65 || code === 81 || code === 82) return "rainy_heavy";
+        if (code === 66 || code === 67) return "weather_mix";
+        if (code === 71 || code === 77 || code === 85) return "weather_snowy";
+        if (code === 73 || code === 75 || code === 86) return "snowing_heavy";
+        if (code === 95) return "thunderstorm";
+        if (code === 96 || code === 99) return "thunderstorm";
+        return "cloud";
     }
 
     function temp(v) { return v === undefined || v === null ? "--" : Math.round(v) + "°"; }

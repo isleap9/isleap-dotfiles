@@ -28,6 +28,7 @@ Item {
             text: root.icon
             color: Theme.fg1
             font.family: Theme.iconFont
+            font.variableAxes: Theme.iconAxes
             font.pixelSize: Theme.fontSize + 4
         }
 

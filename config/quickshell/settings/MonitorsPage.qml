@@ -95,9 +95,10 @@ Page {
                         spacing: 2
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text: (screenBox.isMain ? "󰓎  " : "") + screenBox.mon.name
+                            text: (screenBox.isMain ? "star  " : "") + screenBox.mon.name
                             color: Theme.fg1
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: Theme.fontSize + 2
                             font.weight: Font.Bold
                         }
@@ -143,7 +144,7 @@ Page {
     Section {
         title: "Main monitor"
         Option {
-            icon: "󰓎"
+            icon: "star"
             label: "Main monitor"
             description: Config.monitors.main === "" ? "Not set — using the biggest screen" : ""
             Segmented {
@@ -153,7 +154,7 @@ Page {
             }
         }
         Option {
-            icon: "󰍜"
+            icon: "menu"
             label: "Open popups on"
             description: Config.monitors.popups === "main"
                 ? "Launcher, control center, notifications and power menu always open on the main monitor"
@@ -176,7 +177,7 @@ Page {
             Option {
                 id: barRow
                 required property var modelData
-                icon: "\u{F0C7B}"
+                icon: "toolbar"
                 label: `${modelData.name} — ${page.label(modelData)}`
                 description: modelData.name === page.mainName ? "Main monitor" : ""
                 Toggle {
@@ -200,13 +201,13 @@ Page {
 
             Option {
                 required property var modelData
-                icon: "󰍹"
+                icon: "monitor"
                 label: `${modelData.name} — ${page.label(modelData)}`
                 description: `${modelData.width}×${modelData.height} at ${modelData.refreshRate.toFixed(0)} Hz · scale ${modelData.scale} · position ${modelData.x}, ${modelData.y}`
             }
         }
         Option {
-            icon: "󰒓"
+            icon: "settings"
             label: "Change resolution or arrangement"
             description: "Opens monitors.lua in micro. Hyprland applies it when you save."
             PillButton {

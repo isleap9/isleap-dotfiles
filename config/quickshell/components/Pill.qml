@@ -18,7 +18,11 @@ Rectangle {
     // This widget's options from Settings → Bar (e.g. { type: "clock", format: "hour" })
     property var settings: ({})
     visible: shown
-    property int padding: flat ? BarConfig.flatPadding : BarConfig.pillPadding
+    // Widget bubbles (Settings → Bar → Look): a tonal capsule behind the widget
+    property bool bubble: true
+    property bool inGroup: false          // sharing a bubble with its neighbours (set by the lane)            // false for widgets with their own shape (power, chip, tray…)
+    readonly property bool showBubble: flat && bubble && BarConfig.bubbles && ownBackground === ""
+    property int padding: flat ? (showBubble ? Math.max(10, BarConfig.flatPadding) : BarConfig.flatPadding) : BarConfig.pillPadding
     property bool interactive: true
     readonly property alias hovered: mouse.containsMouse
 
@@ -31,6 +35,8 @@ Rectangle {
     signal scrolled(var wheel)
 
     implicitHeight: Theme.barHeight
+    scale: mouse.pressed && interactive ? 0.96 : 1
+    Behavior on scale { NumberAnimation { duration: 90 } }
     implicitWidth: row.implicitWidth + padding * 2
     radius: height / 2 * BarConfig.roundness
     color: ownBackground !== ""
@@ -41,6 +47,32 @@ Rectangle {
 
     Behavior on implicitWidth { NumberAnimation { duration: Theme.animMs; easing.type: Easing.OutCubic } }
     Behavior on color { ColorAnimation { duration: Theme.animMs } }
+
+    Rectangle {
+        visible: pill.showBubble
+        anchors.centerIn: parent
+        width: parent.width
+        height: Math.min(parent.height - 6, 34)
+        radius: height / 2
+        color: BarConfig.bubbleColor
+    }
+
+    // Material state layer: a soft highlight on hover, stronger while pressed.
+    // Own pill: fills it. Flat (shared pill / one-piece bar): a capsule centered on the content,
+    // with even padding and the same height for every widget (it may spill into the gap beside it).
+    property bool stateLayer: true
+    property bool active: false            // e.g. keep awake on: its icon stays filled
+    readonly property alias pressed: mouse.pressed
+    Rectangle {
+        readonly property int h: Math.min(pill.height - 6, 32)
+        anchors.centerIn: row
+        width: pill.showBubble ? pill.width : pill.flat ? Math.max(h, row.implicitWidth + 16) : pill.width
+        height: pill.showBubble ? Math.min(pill.height - 6, 34) : pill.flat ? h : pill.height
+        radius: pill.flat ? h / 2 : pill.radius
+        color: pill.textColor
+        opacity: !pill.interactive || !pill.stateLayer ? 0 : mouse.pressed ? 0.16 : mouse.containsMouse ? 0.08 : 0
+        Behavior on opacity { NumberAnimation { duration: 120 } }
+    }
 
     // Declared before the row so child items with their own MouseArea (tray) win
     MouseArea {

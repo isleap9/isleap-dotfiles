@@ -22,11 +22,11 @@ LazyLoader {
         WlrLayershell.namespace: "quickshell-powermenu"
 
         readonly property var actions: [
-            { icon: "󰌾", label: "Lock",     confirm: false, cmd: "loginctl lock-session" },
-            { icon: "󰒲", label: "Suspend",  confirm: true,  cmd: "systemctl suspend" },
-            { icon: "󰍃", label: "Logout",   confirm: true,  cmd: "killall Hyprland" },
-            { icon: "󰜉", label: "Reboot",   confirm: true,  cmd: "systemctl reboot" },
-            { icon: "󰐥", label: "Shutdown", confirm: true,  cmd: "systemctl poweroff" }
+            { icon: "lock", label: "Lock",     confirm: false, cmd: "loginctl lock-session" },
+            { icon: "bedtime", label: "Suspend",  confirm: true,  cmd: "systemctl suspend" },
+            { icon: "logout", label: "Logout",   confirm: true,  cmd: "killall Hyprland" },
+            { icon: "restart_alt", label: "Reboot",   confirm: true,  cmd: "systemctl reboot" },
+            { icon: "power_settings_new", label: "Shutdown", confirm: true,  cmd: "systemctl poweroff" }
         ]
         property int selected: 0
         property int confirming: -1   // index waiting for "are you sure?"
@@ -125,6 +125,7 @@ LazyLoader {
                                 text: btn.modelData.icon
                                 color: btn.isSelected || btn.isConfirming ? Theme.bg1 : Theme.fg1
                                 font.family: Theme.iconFont
+                                font.variableAxes: Theme.iconAxes
                                 font.pixelSize: 40
                             }
 

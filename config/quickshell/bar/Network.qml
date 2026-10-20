@@ -4,7 +4,7 @@ import Quickshell.Io
 import qs
 import qs.components
 
-// Network status via nmcli. Ethernet: 󰈀, Wi-Fi: SSID, offline: 󰈂
+// Network status via nmcli. Ethernet: lan, Wi-Fi: SSID, offline: lan
 Pill {
     id: root
 
@@ -12,9 +12,14 @@ Pill {
     property string device: ""
     property string connection: ""
 
-    readonly property string icon: type === "ethernet" ? "󰈀" : type === "wifi" ? "󰖩" : "󰈂"
+    readonly property string icon: type === "ethernet" ? "lan" : type === "wifi" ? "wifi" : "public_off"
 
-    onClicked: Quickshell.execDetached(["kitty", "-e", "nmtui"])
+    property var screen: null
+    // Click: quick settings (network). Right click: quick settings main page. Middle click: nmtui.
+    onClicked: m => {
+        if (m.button === Qt.MiddleButton) Quickshell.execDetached(["kitty", "-e", "nmtui"]);
+        else Globals.toggleQuickSettings(m.button === Qt.RightButton ? "main" : "wifi", screen);
+    }
 
     Process {
         id: proc

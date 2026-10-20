@@ -83,9 +83,10 @@ LazyLoader {
                         spacing: 12
 
                         Text {
-                            text: "󰍉"
+                            text: "search"
                             color: Theme.fg2
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: Theme.fontSize + 4
                         }
 

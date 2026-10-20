@@ -26,6 +26,7 @@ Rectangle {
             text: root.icon
             color: root.primary || root.danger ? Theme.bg1 : Theme.fg1
             font.family: Theme.iconFont
+            font.variableAxes: Theme.iconAxes
             font.pixelSize: Theme.fontSize + 1
         }
         Text {

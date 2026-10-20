@@ -45,7 +45,8 @@ Singleton {
         textWeight: "black",   // regular, bold, black
         solidGap: 0,           // solid bar: gap from the screen edge, px
         solidWidth: "fit",     // solid bar: fit (around the widgets) or full (screen width)
-        outerCorners: false    // solid bar touching the edge: curved corners blending into it
+        outerCorners: false,   // solid bar touching the edge: curved corners blending into it
+        bubbles: true          // each widget in its own tonal bubble (on one-piece bars / shared pills)
     })
     readonly property var customLook: Config.bar.look ?? {}
     function look(key) {
@@ -76,11 +77,14 @@ Singleton {
         return Theme[name] ?? fallback;
     }
     function withOpacity(c, percent) { return Qt.rgba(c.r, c.g, c.b, c.a * percent / 100); }
+    // Panels (dashboard, quick settings, menus, hover cards) and the cards inside them follow the
+    // bar's opacity, so everything that drops out of the bar matches it
+    function surface(c) { return withOpacity(c, bgOpacity); }
 
     readonly property string density: look("density")
     readonly property int pillPadding: ({ compact: 11, comfortable: 26 })[density] ?? 18
     readonly property int sharedPadding: ({ compact: 10, comfortable: 22 })[density] ?? 16
-    readonly property int solidSpacing: ({ compact: 2, comfortable: 10 })[density] ?? 4
+    readonly property int solidSpacing: bubbles ? (({ compact: 4, comfortable: 10 })[density] ?? 6) : (({ compact: 2, comfortable: 10 })[density] ?? 4)
     // Padding for widgets without their own pill (inside a shared pill, or on the solid bar)
     readonly property int flatPadding: solid ? (({ compact: 3, comfortable: 9 })[density] ?? 5) : 0
 
@@ -100,60 +104,92 @@ Singleton {
     readonly property int solidGap: solid ? look("solidGap") : 0
     readonly property bool solidFull: solid && look("solidWidth") === "full"
     readonly property bool outerCorners: solid && solidGap === 0 && look("outerCorners") === true
+    // Widget bubbles: only for the Custom bar (Waybar layouts stay as imported)
+    readonly property bool bubbles: isCustom && look("bubbles") === true
+    readonly property color bubbleColor: Qt.rgba(accentColor.r, accentColor.g, accentColor.b, 0.14)
 
     // ── Widget catalog ──────────────────────────────────────────────────────
     // options: what the ⚙ button in Settings shows for that widget
     //   { key, label, type: "toggle" | "choice" | "number", choices: [[value, label]], from, to, step, default }
     readonly property var catalog: ({
-        arch: { name: "App launcher", icon: "󰣇", desc: "Arch logo — click: apps, right-click: control center", options: [] },
-        weather: { name: "Weather", icon: "󰖐", desc: "Temperature; click: forecast, hover: summary", options: [] },
-        clock: { name: "Clock", icon: "󰥔", desc: "Time; click: dashboard, right-click: full date, hover: calendar", options: [
+        arch: { name: "App launcher", icon: "apps", desc: "Arch logo — click: apps, right-click: control center", options: [] },
+        weather: { name: "Weather", icon: "cloud", desc: "Temperature; click: forecast, hover: summary", options: [] },
+        clock: { name: "Clock", icon: "schedule", desc: "Time; click: dashboard, right-click: full date, hover: calendar", options: [
             { key: "format", label: "Shows", type: "choice", default: "auto", choices: [
                 ["auto", "Time"], ["date", "Date + time"], ["hour", "Hour only"], ["minutes", "Minutes only"]] },
             { key: "calendar", label: "Calendar on hover", type: "toggle", default: true },
             { key: "large", label: "Big text", type: "toggle", default: false }] },
-        cava: { name: "Audio visualizer", icon: "󰎈", desc: "Bars that move with your music (cava)", options: [] },
-        media: { name: "Now playing", icon: "󰝚", desc: "Cover, song and buttons; click: dashboard, scroll: skip", options: [
+        cava: { name: "Audio visualizer", icon: "graphic_eq", desc: "Bars that move with your music (cava)", options: [] },
+        media: { name: "Now playing", icon: "music_note", desc: "Cover, song and buttons; click: dashboard, scroll: skip", options: [
             { key: "maxWidth", label: "Max title width", type: "number", from: 80, to: 600, step: 20, suffix: " px", default: 220 },
             { key: "cover", label: "Album cover", type: "toggle", default: true },
             { key: "artist", label: "Artist on a second line", type: "toggle", default: true },
             { key: "progress", label: "Progress line", type: "toggle", default: true },
             { key: "controls", label: "Previous / play / next buttons", type: "toggle", default: true }] },
-        workspaces: { name: "Workspaces", icon: "󰍹", desc: "Click to switch, scroll to cycle", options: [
+        workspaces: { name: "Workspaces", icon: "monitor", desc: "Click to switch, scroll to cycle", options: [
             { key: "style", label: "Style", type: "choice", default: "default", choices: [
                 ["default", "Pills"], ["classic", "Classic"], ["sleek", "Dots"]] },
             { key: "activeColor", label: "Active workspace color", type: "color", default: "" }] },
-        tray: { name: "System tray", icon: "󰀻", desc: "App icons (Discord, Steam…)", options: [] },
-        language: { name: "Keyboard layout", icon: "󰌌", desc: "UK / IT", options: [
-            { key: "label", label: "Show text", type: "toggle", default: true }] },
-        volume: { name: "Volume", icon: "󰕾", desc: "Click: mixer, right-click: mute, scroll: volume", options: [
-            { key: "label", label: "Show percentage", type: "toggle", default: true }] },
-        network: { name: "Network", icon: "󰈀", desc: "Ethernet / Wi-Fi; click to open nmtui", options: [
+        tray: { name: "System tray", icon: "apps", desc: "App icons (Discord, Steam…)", options: [
+            { key: "bubble", label: "Icons in a bubble", type: "toggle", default: true }] },
+        language: { name: "Keyboard layout", icon: "keyboard", desc: "UK / IT chip", options: [
+            { key: "label", label: "Show the layout chip", type: "toggle", default: true },
+            { key: "icon", label: "Keyboard icon", type: "toggle", default: false }] },
+        volume: { name: "Volume", icon: "volume_up", desc: "Click: sound menu, right-click: mute, scroll: volume", options: [
+            { key: "label", label: "Show percentage", type: "toggle", default: true },
+            { key: "level", label: "Level bar under the percentage", type: "toggle", default: true }] },
+        network: { name: "Network", icon: "lan", desc: "Ethernet / Wi-Fi; click: network menu, right-click: quick settings", options: [
             { key: "label", label: "Show Wi-Fi name", type: "toggle", default: true }] },
-        notifications: { name: "Notifications", icon: "󰂚", desc: "Click: notification center, right-click: do not disturb", options: [] },
-        power: { name: "Power menu", icon: "󰐥", desc: "Lock, suspend, logout, reboot, shutdown", options: [] },
-        controlcenter: { name: "Control center", icon: "󰒓", desc: "Opens the control center", options: [] },
-        settings: { name: "Settings", icon: "󰒓", desc: "Opens this Settings app", options: [] },
-        screenshot: { name: "Screenshot", icon: "󰹑", desc: "Click: region, right-click: capture menu", options: [] },
-        spacer: { name: "Spacer", icon: "󰇘", desc: "Empty space", options: [
+        notifications: { name: "Notifications", icon: "notifications", desc: "Click: notification center, right-click: do not disturb", options: [] },
+        power: { name: "Power menu", icon: "power_settings_new", desc: "Lock, suspend, logout, reboot, shutdown", options: [] },
+        controlcenter: { name: "Control center", icon: "settings", desc: "Opens the control center", options: [] },
+        settings: { name: "Settings", icon: "settings", desc: "Opens this Settings app", options: [] },
+        screenshot: { name: "Screenshot", icon: "screenshot_monitor", desc: "Click: region, right-click: capture menu", options: [] },
+        cpu: { name: "CPU", icon: "memory", desc: "CPU usage; click: dashboard", options: [
+            { key: "graph", label: "Mini graph", type: "toggle", default: false }] },
+        memory: { name: "Memory", icon: "memory_alt", desc: "RAM in use; click: dashboard", options: [
+            { key: "unit", label: "Show", type: "choice", default: "percent", choices: [["percent", "Percent"], ["gb", "GB"]] },
+            { key: "graph", label: "Mini graph", type: "toggle", default: false }] },
+        temp: { name: "CPU temperature", icon: "thermostat", desc: "Turns red at 80°C", options: [] },
+        gpu: { name: "GPU", icon: "developer_board", desc: "NVIDIA GPU usage; click: dashboard", options: [
+            { key: "graph", label: "Mini graph", type: "toggle", default: false }] },
+        window: { name: "Window title", icon: "web_asset", desc: "The focused window's icon and title", options: [
+            { key: "show", label: "Shows", type: "choice", default: "title", choices: [["title", "Window title"], ["app", "App name"]] },
+            { key: "icon", label: "App icon", type: "toggle", default: true },
+            { key: "maxWidth", label: "Max width", type: "number", from: 80, to: 600, step: 20, suffix: " px", default: 300 }] },
+        taskbar: { name: "Taskbar", icon: "dock_to_bottom", desc: "Open apps; click: focus, middle-click: close", options: [
+            { key: "monitor", label: "Only this monitor's windows", type: "toggle", default: true }] },
+        keepawake: { name: "Keep awake", icon: "coffee", desc: "Stop the screen from sleeping", options: [] },
+        mic: { name: "Microphone", icon: "mic", desc: "Click: mute, scroll: volume, right-click: sound menu", options: [
+            { key: "label", label: "Show volume", type: "toggle", default: false }] },
+        quicksettings: { name: "Quick settings", icon: "settings", desc: "Opens quick settings", options: [] },
+        custom: { name: "Custom command", icon: "terminal", desc: "Shows a command's output", options: [
+            { key: "icon", label: "Icon (Nerd Font glyph)", type: "text", default: "terminal" },
+            { key: "command", label: "Command (first line is shown)", type: "text", default: "" },
+            { key: "interval", label: "Run every", type: "number", from: 1, to: 3600, step: 5, suffix: " s", default: 10 },
+            { key: "click", label: "On click, run", type: "text", default: "" }] },
+        spacer: { name: "Spacer", icon: "more_horiz", desc: "Empty space", options: [
             { key: "width", label: "Width", type: "number", from: 4, to: 200, step: 4, suffix: " px", default: 24 }] }
     })
     readonly property var catalogOrder: ["arch", "workspaces", "clock", "weather", "media", "cava", "tray",
-        "language", "volume", "network", "notifications", "power", "controlcenter", "settings", "screenshot", "spacer"]
+        "language", "volume", "mic", "network", "notifications", "power", "controlcenter", "quicksettings", "settings",
+        "screenshot", "cpu", "memory", "temp", "gpu", "window", "taskbar", "keepawake", "custom", "spacer"]
 
     // Look options every widget gets under ⚙ ("" = use the bar's Look setting)
     readonly property var commonOptions: [
         { key: "textColor", label: "Text color", type: "color", default: "" },
         { key: "iconColor", label: "Icon color", type: "color", default: "" },
-        { key: "background", label: "Background", type: "color", default: "", pillOnly: true }
+        { key: "background", label: "Background", type: "color", default: "", pillOnly: true },
+        { key: "joinNext", label: "Share a bubble with the next widget", type: "toggle", default: false }
     ]
     function optionsFor(type) {
         if (type === "spacer") return catalog.spacer.options;
+        const join = commonOptions.find(o => o.key === "joinNext");
         const own = catalog[type]?.options ?? [];
         // cava and workspaces draw shapes, not text: only the background applies
         let common = commonOptions;
-        if (type === "workspaces" || type === "tray") common = commonOptions.filter(o => o.key === "background");
-        if (type === "cava") common = [Object.assign({}, commonOptions[0], { label: "Bars color" }), commonOptions[2]];
+        if (type === "workspaces" || type === "tray" || type === "taskbar") common = commonOptions.filter(o => o.key === "background" || o.key === "joinNext");
+        if (type === "cava") common = [Object.assign({}, commonOptions[0], { label: "Bars color" }), commonOptions[2], join];
         return [...own, ...common];
     }
 

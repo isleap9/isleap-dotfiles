@@ -18,7 +18,7 @@ Rectangle {
     implicitWidth: 380
     implicitHeight: content.implicitHeight + 28
     radius: 18
-    color: Theme.bg1
+    color: BarConfig.surface(Theme.bg1)
     border.width: critical ? 2 : 1
     border.color: critical ? Theme.red : Theme.bg3
 
@@ -74,9 +74,10 @@ Rectangle {
 
                 // Close button
                 Text {
-                    text: "󰅖"
+                    text: "close"
                     color: closeArea.containsMouse ? Theme.red : Theme.fg2
                     font.family: Theme.iconFont
+                    font.variableAxes: Theme.iconAxes
                     font.pixelSize: Theme.fontSize + 1
                     MouseArea {
                         id: closeArea

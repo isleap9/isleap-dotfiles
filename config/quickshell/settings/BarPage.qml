@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import qs
+import qs.components
 
 Page {
     id: page
@@ -9,7 +10,7 @@ Page {
         title: "Bar"
         description: "Your four Waybar layouts are kept exactly as imported. Custom is your own bar — the only one you can edit."
         Option {
-            icon: "\u{F0C7B}"
+            icon: "toolbar"
             label: "Show"
             description: ({
                 default: "Waybar: separate pills, with cava",
@@ -31,7 +32,7 @@ Page {
         visible: !BarConfig.isCustom
         title: "Custom bar"
         Option {
-            icon: "\u{F03EB}"
+            icon: "edit"
             label: "Want to build your own?"
             description: "Switch to Custom to add, remove and arrange widgets, and choose top/bottom and floating/solid."
             PillButton { text: "Edit Custom bar"; primary: true; onClicked: BarConfig.set("custom") }
@@ -105,6 +106,11 @@ Page {
         }
 
         Option {
+            label: "Widget bubbles"
+            description: "Each widget in a tonal bubble (one-piece bar or shared pills). Use a widget's ⚙ → \"Share a bubble with the next widget\" to group them."
+            MSwitch { checked: BarConfig.customLook.bubbles ?? true; onToggled: BarConfig.setLook("bubbles", !checked) }
+        }
+        Option {
             label: "Density"
             description: "Padding inside pills, and between widgets on a one-piece bar"
             Segmented {
@@ -177,7 +183,7 @@ Page {
         Option {
             id: resetLook
             property bool pending: false
-            icon: "󰦛"
+            icon: "settings_backup_restore"
             label: "Reset the look"
             description: pending ? "Click again to reset colors, sizes and shape" : "Colors, sizes and shape back to the defaults. Widgets stay as they are."
             PillButton {
@@ -194,7 +200,7 @@ Page {
     Section {
         visible: BarConfig.isCustom
         title: "Custom bar — widgets"
-        description: "󰁝󰁅 reorder · 󰁍󰁔 move to another lane · ⚙ widget options · 󰅖 remove. Changes show on the bar right away."
+        description: "Use the arrows to reorder or move a widget to another lane, the gear for its options, and × to remove it. Changes show on the bar right away."
 
         ColumnLayout {
             Layout.fillWidth: true
@@ -214,7 +220,7 @@ Page {
         property string pending: ""   // layout clicked once, waiting for a second click
 
         Option {
-            icon: "󰦛"
+            icon: "settings_backup_restore"
             label: "Replace the Custom bar with a copy of a Waybar layout"
             description: startOver.pending !== ""
                 ? "Click it again to replace your Custom widgets"

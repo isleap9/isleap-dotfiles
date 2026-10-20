@@ -62,9 +62,10 @@ Page {
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
                         anchors.margins: 10
-                        text: "󰄬"
+                        text: "check"
                         color: card.modelData.colors[2] ?? Theme.accent
                         font.family: Theme.iconFont
+                        font.variableAxes: Theme.iconAxes
                         font.pixelSize: Theme.fontSize + 4
                     }
                     MouseArea {

@@ -33,9 +33,10 @@ PKGS=(
     hyprland hypridle hyprpicker hyprshot grim slurp uwsm
     qt6-5compat qt6-svg   # needed by the qylock lock screen
     xdg-desktop-portal-hyprland xdg-desktop-portal-kde xdg-desktop-portal-gtk
-    polkit-kde-agent qt5-wayland qt6-wayland
+    polkit hyprsunset qt5-wayland qt6-wayland   # polkit prompts come from Quickshell; hyprsunset = night light
     # Quickshell (bar, launcher, notifications, control center, settings)
     quickshell qt6-multimedia qt6-multimedia-ffmpeg cava playerctl
+    ttf-material-symbols-variable   # Material Symbols: every icon in the shell
     # Wallpaper and colors
     awww imagemagick ffmpeg
     # Terminal and shell
@@ -219,10 +220,13 @@ sudo systemctl enable NetworkManager.service bluetooth.service power-profiles-da
 [[ $WANT_SDDM == y ]] && sudo systemctl enable sddm.service
 systemctl --user enable gnome-keyring-daemon.socket   # saved logins (GitHub Desktop, Chrome…)
 systemctl --user enable arch-update.timer             # checks for updates at boot and every 6 hours
+# The bar and quick settings handle networking: don't also start NetworkManager's tray icon
+mkdir -p "$HOME/.config/autostart"
+printf '[Desktop Entry]\nType=Application\nName=Network (disabled)\nHidden=true\n' > "$HOME/.config/autostart/nm-applet.desktop"
 
 # ── Done ─────────────────────────────────────────────────────────────────────
 step "All done!"
 note "Reboot, then log into Hyprland."
 [[ -d "$BACKUP" ]] && note "Your previous configs are in $BACKUP"
-note "SUPER+SPACE apps · SUPER+SHIFT+E control center · SUPER+, settings · SUPER+SHIFT+W wallpapers"
+note "SUPER+SPACE apps · SUPER+A dashboard · SUPER+X quick settings · SUPER+TAB overview · SUPER+, settings"
 note "Monitors: edit ~/.config/hypr/modules/monitors.lua (or run nwg-displays) — it's set for isleap's two screens."

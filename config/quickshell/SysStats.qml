@@ -5,11 +5,14 @@ import Quickshell
 import Quickshell.Io
 
 // CPU, memory, temperature, GPU, disk and network numbers for the dashboard.
-// Only polls while the dashboard is open.
+// Only polls while the dashboard is open or a bar widget shows a number (see use()/release()).
 Singleton {
     id: root
 
-    readonly property bool active: Globals.dashboardOpen
+    property int users: 0
+    function use() { users++; }
+    function release() { users = Math.max(0, users - 1); }
+    readonly property bool active: Globals.dashboardOpen || users > 0
     readonly property int historyLength: 30
 
     // CPU

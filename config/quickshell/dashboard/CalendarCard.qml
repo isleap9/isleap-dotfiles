@@ -33,8 +33,8 @@ DashCard {
                 font.weight: Font.Bold
                 MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: card.offset = 0 }
             }
-            DashButton { icon: "\u{F0141}"; size: 30; onClicked: card.offset-- }
-            DashButton { icon: "\u{F0142}"; size: 30; onClicked: card.offset++ }
+            DashButton { icon: "chevron_left"; size: 30; onClicked: card.offset-- }
+            DashButton { icon: "chevron_right"; size: 30; onClicked: card.offset++ }
         }
 
         GridLayout {

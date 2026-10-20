@@ -98,6 +98,7 @@ Rectangle {
                             text: entry.info.icon
                             color: Theme.accent
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: Theme.fontSize + 3
                         }
                         ColumnLayout {
@@ -122,26 +123,26 @@ Rectangle {
                             }
                         }
 
-                        IconButton { icon: "󰁝"; enabled: entry.index > 0; onClicked: BarConfig.move(root.lane, entry.index, -1) }
-                        IconButton { icon: "󰁅"; enabled: entry.index < root.widgets.length - 1; onClicked: BarConfig.move(root.lane, entry.index, 1) }
+                        IconButton { icon: "arrow_upward"; enabled: entry.index > 0; onClicked: BarConfig.move(root.lane, entry.index, -1) }
+                        IconButton { icon: "arrow_downward"; enabled: entry.index < root.widgets.length - 1; onClicked: BarConfig.move(root.lane, entry.index, 1) }
                         IconButton {
-                            icon: "󰁍"   // to the lane on the left
+                            icon: "arrow_back"   // to the lane on the left
                             enabled: root.laneIndex > 0
                             onClicked: BarConfig.moveToLane(root.lane, entry.index, BarConfig.laneNames[root.laneIndex - 1])
                         }
                         IconButton {
-                            icon: "󰁔"   // to the lane on the right
+                            icon: "arrow_forward"   // to the lane on the right
                             enabled: root.laneIndex < 2
                             onClicked: BarConfig.moveToLane(root.lane, entry.index, BarConfig.laneNames[root.laneIndex + 1])
                         }
                         IconButton {
-                            icon: "\u{F0493}"
+                            icon: "settings"
                             visible: entry.options.length > 0
                             active: entry.optionsOpen
                             onClicked: root.openOptions = entry.optionsOpen ? -1 : entry.index
                         }
                         IconButton {
-                            icon: "󰅖"
+                            icon: "close"
                             danger: true
                             onClicked: {
                                 root.openOptions = -1;
@@ -188,6 +189,13 @@ Rectangle {
                                 current: optRow.value
                                 onSelected: v => BarConfig.setOption(root.lane, entry.index, optRow.modelData.key, v)
                             }
+                            TextBox {
+                                visible: optRow.modelData.type === "text"
+                                implicitWidth: 260
+                                text: optRow.value ?? ""
+                                placeholder: optRow.modelData.placeholder ?? ""
+                                onAccepted: v => BarConfig.setOption(root.lane, entry.index, optRow.modelData.key, v)
+                            }
                             ColorChoice {
                                 visible: optRow.modelData.type === "color"
                                 value: optRow.value ?? ""
@@ -212,7 +220,7 @@ Rectangle {
         // Add a widget
         PillButton {
             Layout.topMargin: 2
-            icon: root.adding ? "󰅖" : "󰐕"
+            icon: root.adding ? "close" : "add"
             text: root.adding ? "Cancel" : "Add widget"
             onClicked: root.adding = !root.adding
         }
@@ -242,6 +250,7 @@ Rectangle {
                             text: chip.info.icon
                             color: chipArea.containsMouse ? Theme.bg1 : Theme.fg1
                             font.family: Theme.iconFont
+                            font.variableAxes: Theme.iconAxes
                             font.pixelSize: Theme.fontSize
                         }
                         Text {

@@ -37,6 +37,7 @@ DashCard {
                 text: WeatherData.icon(card.w?.code, card.w?.isDay)
                 color: Theme.accent
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: Math.min(34, card.height * 0.36)
             }
             Text {
@@ -68,6 +69,7 @@ DashCard {
             text: WeatherData.icon(card.w?.code, card.w?.isDay)
             color: Theme.accent
             font.family: Theme.iconFont
+            font.variableAxes: Theme.iconAxes
             font.pixelSize: Math.min(72, card.height * 0.55)
         }
         ColumnLayout {

@@ -15,22 +15,22 @@ DashCard {
         const s = SysStats;
         switch (kind) {
         case "cpu": return {
-            label: "CPU", icon: "\u{F0EE0}", usage: s.cpu / 100, value: Math.round(s.cpu) + "%",
+            label: "CPU", icon: "memory", usage: s.cpu / 100, value: Math.round(s.cpu) + "%",
             detail: s.cpuTemp >= 0 ? Math.round(s.cpuTemp) + "°C" : "", sub: s.cpuName, history: s.cpuHistory, max: 100 };
         case "memory": return {
-            label: "Memory", icon: "\u{F035B}", usage: s.memPercent / 100, value: Math.round(s.memPercent) + "%",
+            label: "Memory", icon: "memory_alt", usage: s.memPercent / 100, value: Math.round(s.memPercent) + "%",
             detail: s.bytes(s.memUsed), sub: `${s.bytes(s.memUsed)} of ${s.bytes(s.memTotal, 0)}`, history: s.memHistory, max: 100 };
         case "gpu": return {
-            label: "GPU", icon: "\u{F08AE}", usage: s.gpu / 100, value: s.gpuAvailable ? Math.round(s.gpu) + "%" : "--",
+            label: "GPU", icon: "developer_board", usage: s.gpu / 100, value: s.gpuAvailable ? Math.round(s.gpu) + "%" : "--",
             detail: s.gpuTemp >= 0 ? Math.round(s.gpuTemp) + "°C" : "",
             sub: s.gpuAvailable ? `${s.gpuName} · ${(s.vramUsed / 1024).toFixed(1)} / ${(s.vramTotal / 1024).toFixed(0)} GB` : "No NVIDIA GPU found",
             history: s.gpuHistory, max: 100 };
         case "disk": return {
-            label: "Disk", icon: "\u{F02CA}", usage: s.diskPercent / 100, value: Math.round(s.diskPercent) + "%",
+            label: "Disk", icon: "hard_drive", usage: s.diskPercent / 100, value: Math.round(s.diskPercent) + "%",
             detail: s.bytes(s.diskTotal - s.diskUsed, 0) + " free", sub: `${s.bytes(s.diskUsed, 0)} of ${s.bytes(s.diskTotal, 0)} used`, history: [], max: 100 };
         default: return {
-            label: "Network", icon: "\u{F06F3}", usage: -1, value: s.rate(s.netDown),
-            detail: "", sub: `\u{F0045} ${s.rate(s.netDown)}   \u{F005D} ${s.rate(s.netUp)}`, history: s.netHistory, max: 0 };
+            label: "Network", icon: "lan", usage: -1, value: s.rate(s.netDown),
+            detail: "", sub: `↓ ${s.rate(s.netDown)}   ↑ ${s.rate(s.netUp)}`, history: s.netHistory, max: 0 };
         }
     }
     // Green → yellow → red as it fills up
@@ -65,6 +65,7 @@ DashCard {
                 text: card.info.icon
                 color: Theme.fg1
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: parent.width * 0.42
             }
         }
@@ -73,6 +74,7 @@ DashCard {
             text: card.info.icon
             color: Theme.accent
             font.family: Theme.iconFont
+            font.variableAxes: Theme.iconAxes
             font.pixelSize: 24
         }
         ColumnLayout {

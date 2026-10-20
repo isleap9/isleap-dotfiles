@@ -10,15 +10,15 @@ MenuList {
 
     placeholder: pickingScheme ? "Search schemes…" : "Search…"
     items: pickingScheme
-        ? DynamicTheme.schemes.map(([id, desc]) => ({ icon: "󰸀", label: id, sub: desc, scheme: id, checked: id === DynamicTheme.scheme }))
+        ? DynamicTheme.schemes.map(([id, desc]) => ({ icon: "auto_awesome", label: id, sub: desc, scheme: id, checked: id === DynamicTheme.scheme }))
         : [
-            { icon: DynamicTheme.enabled ? "󰔡" : "󰨙",
+            { icon: DynamicTheme.enabled ? "toggle_on" : "toggle_off",
               label: DynamicTheme.enabled ? "Dynamic theme is ON" : "Dynamic theme is OFF",
               sub: DynamicTheme.enabled ? "Click to turn off" : "Click to turn on — then pick a wallpaper",
               id: "toggle", checked: DynamicTheme.enabled },
-            { icon: "󰔎", label: "Apply to current wallpaper", sub: "Regenerate colors now", id: "apply" },
-            { icon: "󰸀", label: "Scheme type", sub: DynamicTheme.scheme, id: "scheme" },
-            { icon: DynamicTheme.mode === "dark" ? "󰖔" : "󰖨", label: "Mode: " + DynamicTheme.mode,
+            { icon: "contrast", label: "Apply to current wallpaper", sub: "Regenerate colors now", id: "apply" },
+            { icon: "auto_awesome", label: "Scheme type", sub: DynamicTheme.scheme, id: "scheme" },
+            { icon: DynamicTheme.mode === "dark" ? "clear_night" : "light_mode", label: "Mode: " + DynamicTheme.mode,
               sub: "Switch to " + (DynamicTheme.mode === "dark" ? "light" : "dark"), id: "mode" }
         ]
 

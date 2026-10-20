@@ -42,7 +42,16 @@ Singleton {
 
     // Fonts and sizes — set in the Settings app (Config.qml / config.json)
     readonly property string font: Config.appearance.font
-    readonly property string iconFont: Config.appearance.iconFont
+    // Icons: Google's Material Symbols (Rounded), by name, e.g. text: "volume_up".
+    // brandFont (Nerd Font) only for logos Material doesn't have (Arch, Waybar classic workspaces).
+    readonly property string iconFont: "Material Symbols Rounded"
+    readonly property string brandFont: Config.appearance.iconFont
+    // Material 3 "fluid" icons: outlined at rest, filling in smoothly on hover / when active.
+    // iconAxesWith(fill): fill 0–1 (animate it); "Always filled" in Settings forces 1.
+    function iconAxesWith(fill) {
+        return { "FILL": Config.icons.filled ? 1 : fill, "wght": Config.icons.weight, "GRAD": 0, "opsz": 24 };
+    }
+    readonly property var iconAxes: iconAxesWith(0)
     readonly property int fontSize: Config.appearance.fontSize
     readonly property int barHeight: Config.bar.height
     readonly property int barMargin: Config.bar.topMargin

@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
+import Quickshell.Services.SystemTray
 
 // Shared open/closed state for the popups, plus IPC so Hyprland binds can
 // toggle them:  qs ipc call launcher toggle
@@ -18,6 +19,27 @@ Singleton {
     property bool dashboardOpen: false
     property string dashboardTab: "overview"     // overview, media, weather
     property ShellScreen dashboardScreen: null   // the screen whose clock was clicked
+    property bool quickSettingsOpen: false
+    property string quickSettingsPage: "main"    // main, wifi, bluetooth, audio
+    property ShellScreen quickSettingsScreen: null
+    // Keep awake (saved in config.json, so a shell reload doesn't turn it off)
+    readonly property bool keepAwake: Config.session.keepAwake
+    function setKeepAwake(on) { Config.session.keepAwake = on; }
+    // Backup for suspend: hold a systemd sleep/idle block while keep awake is on
+    Process {
+        running: root.keepAwake
+        // Ends by itself when the shell exits (waits on the shell's process), so it can't get stuck
+        command: ["systemd-inhibit", "--what=sleep:idle", "--who=Quickshell", "--why=Keep awake is on",
+            "sh", "-c", "exec tail --pid=\"$(ps -o ppid= -p $PPID | tr -d ' ')\" -f /dev/null"]
+    }
+    property bool overviewOpen: false
+    // Tray menu (drops out of the bar under the icon)
+    property var trayMenuItem: null
+    property ShellScreen trayMenuScreen: null
+    property real trayMenuX: 0               // stop the screen from sleeping / locking
+    property var barWidths: ({})                 // screen name → bar width (for lining popouts up with it)
+    // A popout flush with one end of the bar ("screen:left" / "screen:right"): that bar corner goes square
+    property string barJoin: ""
     property bool settingsOpen: false
     property string settingsPage: "appearance"
 
@@ -43,6 +65,18 @@ Singleton {
         notifCenterOpen = false;
         controlCenterOpen = false;
         dashboardOpen = false;
+        quickSettingsOpen = false;
+        trayMenuItem = null;
+    }
+
+    // Quick settings on a page (again on the same page closes it)
+    function toggleQuickSettings(page, screen) {
+        const p = page || "main";
+        const wasOpen = quickSettingsOpen && quickSettingsPage === p;
+        closeAll();
+        quickSettingsPage = p;
+        quickSettingsScreen = screen ?? null;
+        quickSettingsOpen = !wasOpen;
     }
 
     // Open the dashboard on a tab (again on the same tab closes it). screen: where to show it
@@ -70,6 +104,42 @@ Singleton {
 
     function goToWorkspace(id) {
         dispatch(`hl.dsp.focus({ workspace = "${id}" })`);
+    }
+
+    // Icon for an app id / window class. Tries the .desktop entry's icon, then common variants
+    // (Spotify's entry asks for "spotify-client" but the theme has "spotify").
+    function appIcon(appId) {
+        const id = appId ?? "";
+        const entry = DesktopEntries.heuristicLookup(id);
+        const last = id.split(".").pop();
+        const tries = [entry?.icon, id, id.toLowerCase(), last, last.toLowerCase(),
+            id.toLowerCase().replace(/ /g, "-"), (entry?.icon ?? "").replace(/-client$/, ""),
+            last.toLowerCase() === "vscode" ? "visual-studio-code" : ""];
+        for (const t of tries) {
+            if (!t) continue;
+            const p = Quickshell.iconPath(t, true);
+            if (p) return p;
+        }
+        // Some apps only put their icon in /usr/share/pixmaps
+        for (const t of tries) {
+            if (t && pixmaps[t]) return "file:///usr/share/pixmaps/" + pixmaps[t];
+        }
+        return Quickshell.iconPath("application-x-executable");
+    }
+    property var pixmaps: ({})       // icon name → file in /usr/share/pixmaps
+    Process {
+        running: true
+        command: ["ls", "/usr/share/pixmaps"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const m = {};
+                for (const f of text.split("\n")) {
+                    const n = f.replace(/\.(png|svg|xpm)$/, "");
+                    if (n && n !== f) m[n] = f;
+                }
+                root.pixmaps = m;
+            }
+        }
     }
 
     function run(cmd) {
@@ -132,9 +202,64 @@ Singleton {
         target: "dashboard"
         function toggle(): void {
             if (root.dashboardOpen) root.dashboardOpen = false;
-            else root.toggleDashboard(root.dashboardTab, null);
+            else root.toggleDashboard(Config.dashboard.openOn === "last" ? root.dashboardTab : Config.dashboard.openOn, null);
         }
         function open(tab: string): void { root.toggleDashboard(tab, null); }
+    }
+
+    // qs ipc call hovercard preview clock — show a widget's hover card for 4 s (clock, weather)
+    property string hoverPreview: ""
+    Timer { id: previewTimer; interval: 4000; onTriggered: root.hoverPreview = "" }
+    IpcHandler {
+        target: "hovercard"
+        function preview(name: string): void { root.hoverPreview = name; previewTimer.restart(); }
+    }
+
+    // qs ipc call panels closeAll — close every popup/panel
+    IpcHandler {
+        target: "panels"
+        function closeAll(): void { root.closeAll(); }
+    }
+
+    // qs ipc call keepawake on / off / toggle
+    IpcHandler {
+        target: "keepawake"
+        function on(): void { root.setKeepAwake(true); }
+        function off(): void { root.setKeepAwake(false); }
+        function toggle(): void { root.setKeepAwake(!root.keepAwake); }
+    }
+
+    // qs ipc call traymenu open discord 3300  — open a tray app's menu (name match) under screen x
+    IpcHandler {
+        target: "traymenu"
+        function open(name: string, x: real): void {
+            const item = SystemTray.items.values.find(i => `${i.id} ${i.title}`.toLowerCase().includes(name.toLowerCase()));
+            if (!item) return;
+            root.closeAll();
+            root.trayMenuScreen = root.focusedScreen;
+            root.trayMenuX = x;
+            root.trayMenuItem = item;
+        }
+    }
+
+    // qs ipc call overview toggle
+    IpcHandler {
+        target: "overview"
+        function toggle(): void {
+            const open = !root.overviewOpen;
+            root.closeAll();
+            root.overviewOpen = open;
+        }
+    }
+
+    // qs ipc call quicksettings toggle  /  qs ipc call quicksettings open audio
+    IpcHandler {
+        target: "quicksettings"
+        function toggle(): void {
+            if (root.quickSettingsOpen) root.quickSettingsOpen = false;
+            else root.toggleQuickSettings("main", null);
+        }
+        function open(page: string): void { root.toggleQuickSettings(page, null); }
     }
 
     IpcHandler {

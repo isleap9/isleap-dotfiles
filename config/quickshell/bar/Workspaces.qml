@@ -12,6 +12,8 @@ import qs.components
 //   "sleek"   — Waybar sleek: tiny bg4 dots, accent active
 Pill {
     id: root
+    stateLayer: false     // its parts have their own hover highlights
+    bubble: false
 
     required property ShellScreen screen
     property string style: BarConfig.opt(settings, "style") ?? "default"
@@ -82,7 +84,7 @@ Pill {
                         visible: root.style === "classic"
                         text: dot.active ? "\u{F0BAF}" : ""
                         color: dot.active ? Theme.bg1 : Theme.fg1
-                        font.family: Theme.iconFont
+                        font.family: Theme.brandFont
                         font.pixelSize: 15
                     }
 

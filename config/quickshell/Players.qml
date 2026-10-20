@@ -34,11 +34,11 @@ Singleton {
 
     function playerIcon(p) {
         const id = (p?.identity ?? "").toLowerCase();
-        if (id.includes("spotify")) return "\u{F04C7}";
-        if (id.includes("firefox")) return "\u{F0239}";
-        if (id.includes("chrom")) return "\u{F02AF}";
-        if (id.includes("mpv") || id.includes("vlc")) return "\u{F0381}";
-        return "\u{F075A}";
+        if (id.includes("spotify")) return "music_note";
+        if (id.includes("firefox")) return "public";
+        if (id.includes("chrom")) return "public";
+        if (id.includes("mpv") || id.includes("vlc")) return "movie";
+        return "music_note";
     }
 
     // ── Audio outputs (PipeWire) ──

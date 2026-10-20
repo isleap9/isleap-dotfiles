@@ -15,9 +15,10 @@ DashCard {
             Layout.fillWidth: true
             spacing: 4
             Text {
-                text: "\u{F009A}"
+                text: "notifications"
                 color: Theme.accent
                 font.family: Theme.iconFont
+                font.variableAxes: Theme.iconAxes
                 font.pixelSize: Theme.fontSize + 2
             }
             Text {
@@ -31,13 +32,13 @@ DashCard {
                 font.weight: Font.Bold
             }
             DashButton {
-                icon: Notifs.dnd ? "\u{F009B}" : "\u{F009A}"
+                icon: Notifs.dnd ? "notifications_off" : "notifications"
                 active: Notifs.dnd
                 size: 32
                 onClicked: Notifs.dnd = !Notifs.dnd
             }
             DashButton {
-                icon: "\u{F0A7A}"
+                icon: "delete"
                 size: 32
                 enabled: Notifs.count > 0
                 onClicked: Notifs.clearAll()
@@ -65,9 +66,10 @@ DashCard {
                 spacing: 6
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: Notifs.dnd ? "\u{F009B}" : "\u{F0E1F}"
+                    text: Notifs.dnd ? "notifications_off" : "done_all"
                     color: Theme.bg4
                     font.family: Theme.iconFont
+                    font.variableAxes: Theme.iconAxes
                     font.pixelSize: 44
                 }
                 Text {
