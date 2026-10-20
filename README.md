@@ -272,12 +272,14 @@ cp ~/dotfiles/color-schemes/*.colors ~/.local/share/color-schemes/
 systemctl --user enable --now gnome-keyring-daemon.socket
 ```
 
-   Set the icon theme (fixes the old-style nm-applet tray icon):
+   Set the icon theme and dark mode (fixes the nm-applet tray icon and light-themed apps):
 ```bash
 mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0
 cp ~/dotfiles/gtk-3.0/settings.ini ~/.config/gtk-3.0/
 cp ~/dotfiles/gtk-4.0/settings.ini ~/.config/gtk-4.0/
 gsettings set org.gnome.desktop.interface icon-theme 'breeze-dark'
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 ```
 
 5. Create theme symlinks (defaults to One Dark):
