@@ -11,6 +11,7 @@ hl.bind(mainMod .. " + B",           hl.dsp.exec_cmd("google-chrome-stable"))   
 hl.bind(mainMod .. " + C",           hl.dsp.exec_cmd("code"))                                           -- vscode
 hl.bind(mainMod .. " + P",           hl.dsp.exec_cmd("qs ipc call powermenu toggle"))       -- power menu
 hl.bind(mainMod .. " + E",           hl.dsp.exec_cmd("dolphin"))                                        -- file manager
+hl.bind(mainMod .. " + ALT + E",     hl.dsp.exec_cmd("qs ipc call files toggle"))                       -- Quickshell Files (testing)
 hl.bind(mainMod .. " + SPACE",       hl.dsp.exec_cmd("qs ipc call launcher toggle"))                                -- app launcher ($menu)
 hl.bind(mainMod .. " + A",           hl.dsp.exec_cmd("qs ipc call dashboard toggle"))                   -- dashboard
 hl.bind(mainMod .. " + X",           hl.dsp.exec_cmd("qs ipc call quicksettings toggle"))               -- quick settings

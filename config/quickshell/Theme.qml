@@ -43,9 +43,10 @@ Singleton {
     // Fonts and sizes — set in the Settings app (Config.qml / config.json)
     readonly property string font: Config.appearance.font
     // Icons: Google's Material Symbols (Rounded), by name, e.g. text: "volume_up".
-    // brandFont (Nerd Font) only for logos Material doesn't have (Arch, Waybar classic workspaces).
-    readonly property string iconFont: "Material Symbols Rounded"
-    readonly property string brandFont: Config.appearance.iconFont
+    // No Nerd Font anywhere: the Arch logo is an SVG (components/ArchLogo.qml).
+    // Style picked in Settings → Appearance (Rounded / Outlined / Sharp); Rounded if it's not one of those
+    readonly property string iconFont: Config.appearance.iconFont.startsWith("Material Symbols")
+        && Qt.fontFamilies().includes(Config.appearance.iconFont) ? Config.appearance.iconFont : "Material Symbols Rounded"
     // Material 3 "fluid" icons: outlined at rest, filling in smoothly on hover / when active.
     // iconAxesWith(fill): fill 0–1 (animate it); "Always filled" in Settings forces 1.
     function iconAxesWith(fill) {

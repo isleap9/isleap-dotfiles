@@ -77,8 +77,15 @@ Item {
         onPositionChanged: m => { if (pressed) { dragValue = at(m.x); root.moved(dragValue); } }
         onReleased: root.released()
     }
+    // Inside a page that scrolls, the wheel scrolls the page instead of changing the value
+    readonly property Item scroller: {
+        for (let p = parent; p; p = p.parent)
+            if (p.visibleArea !== undefined && p.contentHeight !== undefined) return p;
+        return null;
+    }
+    readonly property bool wheelChanges: !scroller || scroller.contentHeight <= scroller.height + 1
     WheelHandler {
-        enabled: root.interactive
+        enabled: root.interactive && root.wheelChanges
         onWheel: e => root.moved(Math.max(0, Math.min(1, root.value + (e.angleDelta.y > 0 ? 0.02 : -0.02))))
     }
 }

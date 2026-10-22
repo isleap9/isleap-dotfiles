@@ -20,6 +20,9 @@ ColumnLayout {
     }
 
     Flickable {
+        id: audioFlick
+        SmoothWheel { flick: audioFlick }
+        MScrollBar { flick: audioFlick }
         Layout.fillWidth: true
         Layout.preferredHeight: Math.min(content.implicitHeight, 560)
         contentHeight: content.implicitHeight

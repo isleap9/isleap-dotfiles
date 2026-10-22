@@ -25,6 +25,7 @@ Singleton {
     property alias icons: adapter.icons
     property alias panels: adapter.panels
     property alias animations: adapter.animations
+    property alias files: adapter.files
 
     // Put every setting back to its default
     function reset() {
@@ -52,7 +53,7 @@ Singleton {
 
             property JsonObject appearance: JsonObject {
                 property string font: "Google Sans Display"
-                property string iconFont: "JetBrainsMono Nerd Font Propo"
+                property string iconFont: "Material Symbols Rounded"   // icon style: Material Symbols Rounded / Outlined / Sharp
                 property int fontSize: 15
                 property real animationSpeed: 1.0   // 0 = off, 0.5 = fast, 1 = normal, 2 = slow
             }
@@ -130,6 +131,17 @@ Singleton {
                 property int joint: 24                // curved joint where a panel meets the bar
                 property bool hoverCards: true        // clock calendar, weather forecast… on hover
                 property int hoverDelay: 350          // ms before a hover card opens
+            }
+
+            // File explorer (qs ipc call files toggle)
+            property JsonObject files: JsonObject {
+                property string view: "grid"          // grid, list
+                property bool showHidden: false
+                property string sortBy: "name"        // name, modified, size, type
+                property bool sortReversed: false
+                property int iconSize: 72             // grid icon size, Ctrl+scroll to zoom
+                property bool thumbnails: true        // image / video previews
+                property var pinned: []               // folders pinned to the sidebar
             }
 
             // Survives shell reloads and restarts

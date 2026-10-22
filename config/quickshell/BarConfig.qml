@@ -164,7 +164,7 @@ Singleton {
             { key: "label", label: "Show volume", type: "toggle", default: false }] },
         quicksettings: { name: "Quick settings", icon: "settings", desc: "Opens quick settings", options: [] },
         custom: { name: "Custom command", icon: "terminal", desc: "Shows a command's output", options: [
-            { key: "icon", label: "Icon (Nerd Font glyph)", type: "text", default: "terminal" },
+            { key: "icon", label: "Icon (Material Symbols name, e.g. terminal)", type: "text", default: "terminal" },
             { key: "command", label: "Command (first line is shown)", type: "text", default: "" },
             { key: "interval", label: "Run every", type: "number", from: 1, to: 3600, step: 5, suffix: " s", default: 10 },
             { key: "click", label: "On click, run", type: "text", default: "" }] },

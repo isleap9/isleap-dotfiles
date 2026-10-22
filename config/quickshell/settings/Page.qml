@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import qs
+import qs.components
 
 // Scrollable page body for the Settings app
 Flickable {
@@ -21,14 +22,6 @@ Flickable {
         spacing: 26
     }
 
-    // Thin scroll indicator
-    Rectangle {
-        visible: root.contentHeight > root.height
-        x: root.width - 6
-        y: root.visibleArea.yPosition * root.height
-        width: 4
-        height: root.visibleArea.heightRatio * root.height
-        radius: 2
-        color: Theme.bg3
-    }
+    SmoothWheel { flick: root }
+    MScrollBar { flick: root }
 }

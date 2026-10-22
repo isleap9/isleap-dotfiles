@@ -78,14 +78,22 @@ Pill {
                     Behavior on implicitWidth { NumberAnimation { duration: Theme.animMs; easing.type: Easing.OutCubic } }
                     Behavior on color { ColorAnimation { duration: Theme.animMs } }
 
-                    // Classic style shows icons like the old Waybar config
-                    Text {
+                    // Classic style, like the old Waybar config: Pac-Man on the active workspace
+                    // (he takes a few bites when you switch to it), a pellet on the others
+                    PacMan {
                         anchors.centerIn: parent
-                        visible: root.style === "classic"
-                        text: dot.active ? "\u{F0BAF}" : ""
-                        color: dot.active ? Theme.bg1 : Theme.fg1
-                        font.family: Theme.brandFont
-                        font.pixelSize: 15
+                        visible: root.style === "classic" && dot.active
+                        color: Theme.bg1
+                        size: 13
+                        onVisibleChanged: if (visible) chomp()
+                    }
+                    Rectangle {
+                        anchors.centerIn: parent
+                        visible: root.style === "classic" && !dot.active
+                        width: 9
+                        height: 9
+                        radius: 4.5
+                        color: Theme.fg1
                     }
 
                     MouseArea {

@@ -47,7 +47,7 @@ Singleton {
         return "Unknown";
     }
 
-    // Nerd Font (Material Design) weather icon
+    // Material Symbols weather icon name
     function icon(code, isDay) {
         const day = isDay !== false;
         if (code === 0 || code === 1) return day ? "sunny" : "clear_night";

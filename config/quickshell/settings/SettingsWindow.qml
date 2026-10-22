@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
 import qs
+import qs.components
 
 // The Settings app: a normal window (SUPER+COMMA, the app launcher, or Control Center → Settings).
 // Every change is saved to ~/.config/quickshell/config.json and applies immediately.
@@ -42,8 +43,22 @@ LazyLoader {
             onCleared: Globals.settingsOpen = false
         }
 
+        WindowTitleBar {
+            id: titleBar
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            windowTitle: win.title
+            sidebarWidth: 240
+            sidebarColor: Theme.bg1
+            onCloseRequested: Globals.settingsOpen = false
+        }
+
         RowLayout {
-            anchors.fill: parent
+            anchors.top: titleBar.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
             spacing: 0
 
             // Sidebar
@@ -62,11 +77,9 @@ LazyLoader {
                         Layout.leftMargin: 8
                         Layout.topMargin: 6
                         spacing: 10
-                        Text {
-                            text: "󰣇"   // Arch logo (brand, so Nerd Font)
+                        ArchLogo {
+                            size: 24
                             color: Theme.accent
-                            font.family: Theme.brandFont
-                            font.pixelSize: 26
                         }
                         Text {
                             text: "Settings"
@@ -163,6 +176,8 @@ LazyLoader {
                 }
             }
         }
+
+        WindowResizeHandles { active: !titleBar.maximized }
 
         // Esc closes the window
         Shortcut {

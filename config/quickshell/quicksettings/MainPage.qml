@@ -440,6 +440,8 @@ ColumnLayout {
             }
 
             ListView {
+                SmoothWheel { flick: notifList }
+                MScrollBar { flick: notifList }
                 id: notifList
                 visible: Notifs.count > 0
                 Layout.fillWidth: true

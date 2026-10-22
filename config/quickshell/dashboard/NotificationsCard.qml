@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import qs
+import qs.components
 import qs.notifications
 
 // Recent notifications, with Do Not Disturb and Clear all
@@ -46,6 +47,8 @@ DashCard {
         }
 
         ListView {
+            SmoothWheel { flick: list }
+            MScrollBar { flick: list }
             id: list
             Layout.fillWidth: true
             Layout.fillHeight: true

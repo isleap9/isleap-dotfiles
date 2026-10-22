@@ -42,6 +42,10 @@ Singleton {
     property string barJoin: ""
     property bool settingsOpen: false
     property string settingsPage: "appearance"
+    // File explorer window
+    property bool filesOpen: false
+    property string filesPath: ""                // folder to open (empty = home)
+    signal filesNavigate(string path)
 
     // The screen the user is working on (where popups should appear)
     readonly property ShellScreen focusedScreen: {
@@ -184,6 +188,24 @@ Singleton {
         if (page) settingsPage = page;
         controlCenterOpen = false;
         settingsOpen = true;
+    }
+
+    // Files is a normal window too
+    function openFiles(path) {
+        filesPath = path || "";
+        controlCenterOpen = false;
+        if (filesOpen && path) filesNavigate(path);
+        filesOpen = true;
+    }
+
+    // qs ipc call files toggle  /  qs ipc call files open ~/Downloads
+    IpcHandler {
+        target: "files"
+        function toggle(): void {
+            if (root.filesOpen) root.filesOpen = false;
+            else root.openFiles("");
+        }
+        function open(path: string): void { root.openFiles(path); }
     }
 
     IpcHandler {

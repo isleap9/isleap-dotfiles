@@ -16,7 +16,7 @@
         "animationSpeed": 1,
         "font": "Google Sans Display",
         "fontSize": 15,
-        "iconFont": "JetBrainsMono Nerd Font Propo"
+        "iconFont": "Material Symbols Rounded"
     },
     "bar": {
         "clock24h": false,
@@ -162,6 +162,16 @@
         "position": "bottom-left",
         "screens": "main",
         "weather": true
+    },
+    "files": {
+        "iconSize": 72,
+        "pinned": [
+        ],
+        "showHidden": false,
+        "sortBy": "name",
+        "sortReversed": false,
+        "thumbnails": true,
+        "view": "grid"
     },
     "icons": {
         "filled": false,

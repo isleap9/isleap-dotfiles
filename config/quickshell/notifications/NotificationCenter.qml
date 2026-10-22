@@ -104,6 +104,8 @@ LazyLoader {
                 }
 
                 ListView {
+                    SmoothWheel { flick: list }
+                    MScrollBar { flick: list }
                     id: list
                     Layout.fillWidth: true
                     Layout.fillHeight: true

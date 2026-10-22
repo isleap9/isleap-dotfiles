@@ -44,7 +44,7 @@ PKGS=(
     # Dolphin and the apps it opens files with
     dolphin kio-extras kio-admin kde-cli-tools archlinux-xdg-menu plasma-integration breeze breeze-icons
     gwenview okular ark 7zip unrar unzip mpv
-    kimageformats qt6-imageformats ffmpegthumbs kdegraphics-thumbnailers ffmpegthumbnailer
+    kimageformats qt6-imageformats ffmpegthumbs kdegraphics-thumbnailers ffmpegthumbnailer papirus-icon-theme
     # Clipboard and emoji
     wl-clipboard wl-clip-persist cliphist rofimoji
     # Audio, network, bluetooth, power

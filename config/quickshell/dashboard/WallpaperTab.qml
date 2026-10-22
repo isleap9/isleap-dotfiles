@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Widgets
 import qs
+import qs.components
 
 // Wallpapers: your ~/Pictures/Wallpapers as a grid. Click one to apply it (with the fade,
 // and new colors if the Dynamic theme is on). Type to search by file name.
@@ -92,6 +93,8 @@ Item {
         }
 
         GridView {
+            SmoothWheel { flick: grid }
+            MScrollBar { flick: grid }
             id: grid
             Layout.fillWidth: true
             Layout.fillHeight: true

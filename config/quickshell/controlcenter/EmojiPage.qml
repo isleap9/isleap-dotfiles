@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
 import qs
+import qs.components
 
 // Emoji picker (data from rofimoji). Type to search, ↑/↓/Tab to move, Enter or click to copy.
 ColumnLayout {
@@ -85,6 +86,8 @@ ColumnLayout {
     }
 
     GridView {
+        SmoothWheel { flick: grid }
+        MScrollBar { flick: grid }
         id: grid
         Layout.fillWidth: true
         Layout.fillHeight: true

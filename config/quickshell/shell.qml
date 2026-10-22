@@ -1,5 +1,5 @@
 //@ pragma UseQApplication
-//@ pragma IconTheme breeze-dark
+//@ pragma IconTheme Papirus-Dark
 
 import QtQuick
 import Quickshell
@@ -9,6 +9,7 @@ import qs.notifications
 import qs.powermenu
 import qs.controlcenter
 import qs.settings
+import qs.files
 import qs.dashboard
 import qs.osd
 import qs.quicksettings
@@ -31,6 +32,7 @@ ShellRoot {
     PowerMenu {}
     ControlCenter {}
     SettingsWindow {}
+    FileExplorer {}
     Dashboard {}
     Osd {}
     QuickSettings {}

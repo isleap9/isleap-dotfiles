@@ -25,7 +25,14 @@ Rectangle {
     radius: 17
     color: Theme.bg2
 
-    WheelHandler { onWheel: e => root.bump(e.angleDelta.y > 0 ? 1 : -1) }
+    // Inside a page that scrolls, the wheel scrolls the page instead of changing the value
+    readonly property Item scroller: {
+        for (let p = parent; p; p = p.parent)
+            if (p.visibleArea !== undefined && p.contentHeight !== undefined) return p;
+        return null;
+    }
+    readonly property bool wheelChanges: !scroller || scroller.contentHeight <= scroller.height + 1
+    WheelHandler { enabled: root.wheelChanges; onWheel: e => root.bump(e.angleDelta.y > 0 ? 1 : -1) }
 
     RowLayout {
         anchors.fill: parent

@@ -86,20 +86,35 @@ Page {
         Option {
             label: "Font"
             description: Qt.fontFamilies().includes(Config.appearance.font)
-                ? "Used for all text" : "Font not found — check the name"
-            TextBox {
-                text: Config.appearance.font
-                valid: Qt.fontFamilies().includes(text)
-                onAccepted: v => Config.appearance.font = v
+                ? "Used for all text" : "Not installed — pick another font"
+            Dropdown {
+                searchable: true
+                placeholder: "Search fonts"
+                current: Config.appearance.font
+                // Every installed font, each drawn in itself. Icon / emoji fonts are left out, and
+                // the many Noto fonts for specific scripts only show up when you search.
+                options: {
+                    const skip = /^(Material Symbols|Font Awesome|Noto Color Emoji|Noto Music|Symbols Nerd Font)/;
+                    const core = /^Noto (Sans|Serif|Sans Mono|Serif Display|Sans Display)$/;
+                    return Qt.fontFamilies()
+                        .filter((f, i, all) => all.indexOf(f) === i && !skip.test(f) && !f.startsWith("."))
+                        .sort((a, b) => a.localeCompare(b))
+                        .map(f => ({ value: f, label: f, font: f, hidden: f.startsWith("Noto ") && !core.test(f) }));
+                }
+                onSelected: v => Config.appearance.font = v
             }
         }
         Option {
-            label: "Icon font"
-            description: "A Nerd Font, used for icons"
-            TextBox {
-                text: Config.appearance.iconFont
-                valid: Qt.fontFamilies().includes(text)
-                onAccepted: v => Config.appearance.iconFont = v
+            label: "Icon style"
+            description: "Google's Material Symbols, used for every icon in the shell"
+            Dropdown {
+                current: Theme.iconFont
+                options: [
+                    { value: "Material Symbols Rounded", label: "Rounded", description: "Soft corners (default)", preview: "Material Symbols Rounded" },
+                    { value: "Material Symbols Outlined", label: "Outlined", description: "Classic Material look", preview: "Material Symbols Outlined" },
+                    { value: "Material Symbols Sharp", label: "Sharp", description: "Square corners", preview: "Material Symbols Sharp" }
+                ].filter(o => Qt.fontFamilies().includes(o.value))
+                onSelected: v => Config.appearance.iconFont = v
             }
         }
         Option {

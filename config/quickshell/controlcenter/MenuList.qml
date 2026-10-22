@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import qs
+import qs.components
 
 // Searchable, keyboard-driven list used by most control center pages.
 // items: [{ icon, label, sub, swatches: [colors], checked, image, actions: [{ icon, id, tip }] }]
@@ -92,6 +93,8 @@ ColumnLayout {
     }
 
     ListView {
+        SmoothWheel { flick: list }
+        MScrollBar { flick: list }
         id: list
         Layout.fillWidth: true
         Layout.fillHeight: true

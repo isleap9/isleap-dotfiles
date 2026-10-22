@@ -76,3 +76,11 @@ hl.window_rule({
     center = true,
     size   = { 1100, 700 },
 })
+
+-- Quickshell Files window: float centered
+hl.window_rule({
+    name   = "quickshell-files",
+    match  = { title = "^Files$", class = "^org.quickshell$" },
+    float  = true,
+    center = true,
+})

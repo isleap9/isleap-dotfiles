@@ -57,6 +57,9 @@ ColumnLayout {
         font.pixelSize: Theme.fontSize - 2
     }
     Flickable {
+        id: wifiFlick
+        SmoothWheel { flick: wifiFlick }
+        MScrollBar { flick: wifiFlick }
         visible: root.wifi !== null && Networking.wifiEnabled
         Layout.fillWidth: true
         Layout.preferredHeight: Math.min(list.implicitHeight, 380)
