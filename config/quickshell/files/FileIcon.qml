@@ -27,10 +27,20 @@ Item {
     implicitWidth: size
     implicitHeight: size
 
-    // Tonal tile with the symbol (also shown while a thumbnail loads)
+    // Icon theme (Papirus) style: the theme's icon for this file type / folder
+    readonly property bool systemStyle: Config.files.iconStyle !== "material"
+    IconImage {
+        anchors.centerIn: parent
+        visible: root.systemStyle && !thumb.visible
+        implicitSize: root.size
+        asynchronous: true
+        source: visible ? FileTypes.systemIcon(root.name, root.isDir, root.path) : ""
+    }
+
+    // Material style: tonal tile with a symbol (also shown while a thumbnail loads)
     Rectangle {
         anchors.fill: parent
-        visible: !thumb.visible
+        visible: !root.systemStyle && !thumb.visible
         radius: Math.round(root.size * 0.28)
         color: root.isDir ? Qt.rgba(Theme.accent.r, Theme.accent.g, Theme.accent.b, root.active ? 0.22 : 0.13)
             : root.active ? Theme.bg2 : Theme.bg1

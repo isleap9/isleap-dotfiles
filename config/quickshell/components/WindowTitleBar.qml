@@ -15,10 +15,19 @@ Item {
     property color color: Theme.bg0
     signal closeRequested
 
-    // Our Hyprland window (matched by title), for the maximized state
+    // Our Hyprland window, for the maximized state. Matched by title, and by size when several
+    // windows share the title (e.g. two Files windows)
     property string windowTitle: ""
-    readonly property var toplevel: Hyprland.toplevels.values.find(t => t.title === bar.windowTitle
-        && (t.lastIpcObject?.class ?? "org.quickshell") === "org.quickshell") ?? null
+    readonly property var toplevel: {
+        const mine = Hyprland.toplevels.values.filter(t => t.title === bar.windowTitle
+            && (t.lastIpcObject?.class ?? "org.quickshell") === "org.quickshell");
+        if (mine.length <= 1) return mine[0] ?? null;
+        const w = bar.Window.window;
+        return mine.find(t => {
+            const size = t.lastIpcObject?.size ?? [];
+            return w && Math.abs(size[0] - w.width) <= 2 && Math.abs(size[1] - w.height) <= 2;
+        }) ?? null;
+    }
     readonly property bool maximized: (toplevel?.lastIpcObject?.fullscreen ?? 0) > 0
 
     function toggleMaximize() {

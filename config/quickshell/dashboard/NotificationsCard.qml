@@ -60,7 +60,7 @@ DashCard {
             delegate: NotificationCard {
                 required property var modelData
                 notif: modelData
-                width: list.width
+                width: list.width - (list.contentHeight > list.height ? 12 : 0)
             }
 
             Column {

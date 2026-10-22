@@ -141,6 +141,7 @@ Singleton {
                 property bool sortReversed: false
                 property int iconSize: 72             // grid icon size, Ctrl+scroll to zoom
                 property bool thumbnails: true        // image / video previews
+                property string iconStyle: "system"   // system (icon theme, e.g. Papirus) or material
                 property var pinned: []               // folders pinned to the sidebar
             }
 

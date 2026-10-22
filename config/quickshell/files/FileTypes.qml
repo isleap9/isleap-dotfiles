@@ -2,6 +2,8 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
+import qs
 
 // File kinds by extension → Material Symbol, plus size / date formatting
 Singleton {
@@ -39,6 +41,87 @@ Singleton {
         for (const kind in groups)
             for (const e of groups[kind]) map[e] = kind;
         return map;
+    }
+
+    // ---------- system (icon theme) icons, e.g. Papirus ----------
+    // File type from the shared MIME database's file-name patterns, like Dolphin / Nautilus do
+    property var globExt: ({})         // "py" → "text/x-python", "tar.gz" → "application/x-compressed-tar"
+    property var globName: ({})        // exact names: "makefile" → "text/x-makefile"
+    property var genericIcons: ({})    // mime → fallback icon name
+    FileView {
+        path: "/usr/share/mime/globs2"
+        onLoaded: {
+            const ext = {}, names = {};
+            for (const line of text().split("\n")) {
+                if (!line || line[0] === "#") continue;
+                const parts = line.split(":");
+                if (parts.length < 3) continue;
+                const mime = parts[1], pat = parts[2].toLowerCase();
+                // Lines are sorted by weight, so the first match wins
+                if (/^\*\.[^*?\[]+$/.test(pat)) { const e = pat.slice(2); if (!(e in ext)) ext[e] = mime; }
+                else if (!/[*?\[]/.test(pat)) { if (!(pat in names)) names[pat] = mime; }
+            }
+            globExt = ext;
+            globName = names;
+        }
+    }
+    FileView {
+        path: "/usr/share/mime/generic-icons"
+        onLoaded: {
+            const map = {};
+            for (const line of text().split("\n")) {
+                const i = line.indexOf(":");
+                if (i > 0) map[line.slice(0, i)] = line.slice(i + 1).trim();
+            }
+            genericIcons = map;
+        }
+    }
+    function mime(name) {
+        const n = name.toLowerCase();
+        if (globName[n]) return globName[n];
+        // Longest suffix first: "a.tar.gz" tries "tar.gz" before "gz"
+        for (let i = n.indexOf("."); i >= 0; i = n.indexOf(".", i + 1)) {
+            const m = globExt[n.slice(i + 1)];
+            if (m) return m;
+        }
+        return "";
+    }
+    // Special folders by name (the theme decides which of these it has)
+    readonly property var folderNames: ({
+        Desktop: "user-desktop", Documents: "folder-documents", Downloads: "folder-download",
+        Music: "folder-music", Pictures: "folder-pictures", Videos: "folder-videos",
+        Templates: "folder-templates", Public: "folder-publicshare", Trash: "user-trash"
+    })
+    // Icon names to try, best first
+    function systemIconNames(name, isDir, path) {
+        if (isDir) {
+            if (path === Quickshell.env("HOME")) return ["user-home", "folder"];
+            const low = name.toLowerCase().replace(/[ _]+/g, "-");
+            return [folderNames[name] ?? "", "folder-" + low, "folder"].filter(n => n);
+        }
+        const m = mime(name);
+        const k = kind(name, false);
+        const byKind = { image: "image-x-generic", video: "video-x-generic", audio: "audio-x-generic",
+            archive: "package-x-generic", code: "text-x-script", script: "application-x-shellscript",
+            data: "text-x-generic", doc: "x-office-document", sheet: "x-office-spreadsheet",
+            slides: "x-office-presentation", pdf: "application-pdf", text: "text-x-generic",
+            font: "font-x-generic", exe: "application-x-executable" }[k];
+        return [m ? m.replace("/", "-") : "", m ? genericIcons[m] ?? "" : "", byKind ?? "", "text-x-generic", "unknown"]
+            .filter(n => n);
+    }
+    function systemIcon(name, isDir, path) {
+        // Folders come straight from Papirus-Accent (recolored to the theme), with a version so
+        // a theme change shows the new color immediately instead of a cached icon
+        if (isDir) {
+            for (const n of systemIconNames(name, true, path))
+                if (Theme.folderIcons[n])
+                    return "file://" + Theme.folderIconDir + "/64x64/places/" + n + ".svg?v=" + Theme.folderIconVersion;
+        }
+        for (const n of systemIconNames(name, isDir, path)) {
+            const p = Quickshell.iconPath(n, true);
+            if (p) return p;
+        }
+        return Quickshell.iconPath("unknown");
     }
 
     function ext(name) {

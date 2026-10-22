@@ -119,7 +119,7 @@ LazyLoader {
                         required property var modelData
                         required property int index
 
-                        width: ListView.view.width
+                        width: ListView.view.width - (ListView.view.contentHeight > ListView.view.height ? 12 : 0)
                         height: card.implicitHeight
 
                         property real enter: 1

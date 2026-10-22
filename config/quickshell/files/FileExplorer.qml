@@ -8,11 +8,14 @@ import qs.components
 
 // The Files app: a Material 3 file explorer (qs ipc call files toggle, or "Files" in the launcher).
 // Browsing uses Qt's FolderListModel (updates live); file operations run cp / mv / gio in the background.
-LazyLoader {
-    active: Globals.filesOpen
+// One window per entry in Globals.filesWindows (SUPER+E opens another).
+Variants {
+    model: Globals.filesWindows
 
     FloatingWindow {
         id: win
+        required property var modelData
+        function closeWindow() { Globals.closeFiles(modelData.id); }
 
         title: "Files"
         implicitWidth: 1120
@@ -20,7 +23,7 @@ LazyLoader {
         // Same see-through background as the bar and panels (Settings → Bar → Background opacity);
         // Hyprland blurs what's behind. Each region is painted once so the transparency doesn't stack.
         color: "transparent"
-        onVisibleChanged: if (!visible) Globals.filesOpen = false
+        onVisibleChanged: if (!visible) closeWindow()
 
         readonly property string home: Quickshell.env("HOME")
         readonly property string trashDir: home + "/.local/share/Trash/files"
@@ -222,7 +225,7 @@ LazyLoader {
                 return;
             }
             if (button === Qt.MiddleButton) {
-                if (isDir) go(p);
+                if (isDir) Globals.openFiles(p);
                 return;
             }
             if (mods & Qt.ShiftModifier) { selectRange(index); return; }
@@ -463,6 +466,7 @@ LazyLoader {
                 { icon: "open_in_new", text: "Open", hint: "Enter", action: () => openSelected() },
                 { icon: "apps", text: "Open with…", action: () => openWith.ask(paths) },
                 one && searching ? { icon: "folder_open", text: "Show in folder", action: () => { const f = one; go(parentOf(f)); selectOnly(f); } } : null,
+                dir ? { icon: "open_in_new_down", text: "Open in new window", action: () => Globals.openFiles(one) } : null,
                 dir ? { icon: "terminal", text: "Open terminal here", action: () => terminalHere(one) } : null,
                 dir ? (isPinned(one) ? { icon: "keep_off", text: "Unpin from sidebar", action: () => unpin(one) }
                                      : { icon: "keep", text: "Pin to sidebar", action: () => pin(one) }) : null,
@@ -523,11 +527,7 @@ LazyLoader {
         function currentView() { return listMode ? list : grid; }
         function focusView() { currentView().forceActiveFocus(); }
 
-        Component.onCompleted: go(Globals.filesPath || home)
-        Connections {
-            target: Globals
-            function onFilesNavigate(p) { win.go(p); }
-        }
+        Component.onCompleted: go(modelData.path || home)
 
         // ---------- models ----------
         FolderListModel {
@@ -743,7 +743,8 @@ LazyLoader {
         Shortcut { sequence: "Ctrl+2"; onActivated: Config.files.view = "list" }
         Shortcut { sequences: ["Ctrl+=", "Ctrl++"]; onActivated: win.zoom(1) }
         Shortcut { sequence: "Ctrl+-"; onActivated: win.zoom(-1) }
-        Shortcut { sequences: ["Ctrl+W", "Ctrl+Q"]; onActivated: Globals.filesOpen = false }
+        Shortcut { sequences: ["Ctrl+W", "Ctrl+Q"]; onActivated: win.closeWindow() }
+        Shortcut { sequence: "Ctrl+N"; onActivated: Globals.openFiles(win.path) }
         Shortcut {
             sequence: "Escape"
             onActivated: {
@@ -784,7 +785,7 @@ LazyLoader {
             sidebarWidth: 236
             sidebarColor: BarConfig.surface(Theme.bg1)
             color: "transparent"
-            onCloseRequested: Globals.filesOpen = false
+            onCloseRequested: win.closeWindow()
         }
 
         RowLayout {
@@ -884,7 +885,8 @@ LazyLoader {
 
                         Item {
                             id: nav
-                            width: parent.width
+                            // Leave a lane for the scrollbar so it never sits on the selected pill
+                            width: sideFlick.width - (sideFlick.contentHeight > sideFlick.height ? 12 : 0)
                             implicitHeight: navCol.implicitHeight
                             property Item activeItem: null
 
@@ -1439,14 +1441,6 @@ LazyLoader {
                                 iconSize: Config.files.iconSize
                             }
 
-                            WheelHandler {
-                                acceptedModifiers: Qt.ControlModifier
-                                onWheel: event => win.zoom(event.angleDelta.y > 0 ? 1 : -1)
-                            }
-                            WheelHandler {
-                                acceptedModifiers: Qt.NoModifier
-                                onWheel: event => win.scrollBy(grid, event)
-                            }
                             MScrollBar { flick: grid }
                         }
 
@@ -1472,18 +1466,29 @@ LazyLoader {
                             Keys.onPressed: event => win.viewKey(event)
 
                             delegate: FileItem {
-                                width: list.width
+                                width: list.width - (list.contentHeight > list.height ? 12 : 0)
                                 height: win.listRowHeight
                                 explorer: win
                                 listMode: true
                                 showFolder: win.searching
                             }
 
-                            WheelHandler {
-                                acceptedModifiers: Qt.NoModifier
-                                onWheel: event => win.scrollBy(list, event)
-                            }
                             MScrollBar { flick: list }
+                        }
+
+                        // Mouse wheel over the files: scroll (Ctrl: zoom the grid). A MouseArea, not a
+                        // WheelHandler, so every mouse works; buttons pass through to the files.
+                        MouseArea {
+                            anchors.fill: parent
+                            z: 50
+                            acceptedButtons: Qt.NoButton
+                            onWheel: wheel => {
+                                if (wheel.modifiers & Qt.ControlModifier) {
+                                    if (!win.listMode) win.zoom(wheel.angleDelta.y > 0 ? 1 : -1);
+                                    return;
+                                }
+                                win.scrollBy(win.currentView(), wheel);
+                            }
                         }
 
                         // Selection rectangle
@@ -1634,8 +1639,11 @@ LazyLoader {
                     action: () => Config.files.showHidden = !Config.files.showHidden },
                 { icon: "photo", text: "Show previews", checked: Config.files.thumbnails,
                     action: () => Config.files.thumbnails = !Config.files.thumbnails },
+                { icon: "interests", text: "Use icon theme (Papirus)", checked: Config.files.iconStyle !== "material",
+                    action: () => Config.files.iconStyle = Config.files.iconStyle === "material" ? "system" : "material" },
                 { separator: true },
                 { icon: "note_add", text: "New file", enabled: !searching, action: () => newFile() },
+                { icon: "add_to_queue", text: "New window", hint: "Ctrl+N", action: () => Globals.openFiles(path) },
                 { icon: "terminal", text: "Open terminal here", hint: "F4", action: () => terminalHere() },
                 { icon: "open_in_new", text: "Open in default app", action: () => Quickshell.execDetached(["xdg-open", path]) }
             ]);

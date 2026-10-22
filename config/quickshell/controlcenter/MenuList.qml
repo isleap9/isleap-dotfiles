@@ -120,7 +120,7 @@ ColumnLayout {
             id: row
             required property var modelData
             required property int index
-            width: ListView.view.width
+            width: ListView.view.width - (ListView.view.contentHeight > ListView.view.height ? 12 : 0)
             height: modelData.image ? 96 : root.rowHeight
 
             MouseArea {

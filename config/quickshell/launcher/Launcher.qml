@@ -261,7 +261,7 @@ LazyLoader {
                     // Selection pill glides between rows (Material emphasized easing)
                     highlightFollowsCurrentItem: false
                     highlight: Rectangle {
-                        width: list.width
+                        width: list.width - (list.contentHeight > list.height ? 12 : 0)
                         height: 56
                         y: list.currentItem?.y ?? 0
                         radius: 18

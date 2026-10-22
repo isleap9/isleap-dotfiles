@@ -84,6 +84,44 @@ Singleton {
         onLoaded: root.parse(text())
     }
 
+    // ---------- Papirus folders in the accent color ----------
+    // scripts/papirus-accent.sh builds the "Papirus-Accent" icon theme (Papirus-Dark with recolored
+    // folders). Rerun whenever the accent changes; folderIcons / folderIconVersion let the shell
+    // show the new folders right away (other apps pick them up when they next load icons).
+    readonly property string folderIconDir: Quickshell.env("HOME") + "/.local/share/icons/Papirus-Accent"
+    property int folderIconVersion: 0
+    property var folderIcons: ({})          // names that exist in Papirus-Accent/64x64/places
+    onAccentChanged: recolor.restart()
+    Timer {
+        id: recolor
+        interval: 600                       // themes change several colors at once
+        onTriggered: {
+            const a = root.accent;
+            const lum = 0.2126 * a.r + 0.7152 * a.g + 0.0722 * a.b;
+            const hex = c => "#" + [c.r, c.g, c.b].map(v => Math.round(v * 255).toString(16).padStart(2, "0")).join("");
+            folderRecolor.command = ["sh", Quickshell.shellDir + "/scripts/papirus-accent.sh",
+                hex(a), hex(Qt.darker(a, 1.18)), hex(lum > 0.35 ? Qt.darker(a, 3.2) : Qt.lighter(a, 2.6))];
+            folderRecolor.running = true;
+        }
+    }
+    Process {
+        id: folderRecolor
+        onExited: code => { if (code === 0) folderList.running = true; }
+    }
+    Process {
+        id: folderList
+        running: true
+        command: ["ls", root.folderIconDir + "/64x64/places"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const names = {};
+                for (const f of text.split("\n")) if (f.endsWith(".svg")) names[f.slice(0, -4)] = true;
+                root.folderIcons = names;
+                root.folderIconVersion++;
+            }
+        }
+    }
+
     // `qs ipc call theme reload` — called by the theme switcher
     IpcHandler {
         target: "theme"

@@ -220,7 +220,7 @@ Item {
                     required property int index
                     readonly property bool isDefault: modelData.id === dlg.defaultId
                     readonly property bool current: ListView.isCurrentItem && search.activeFocus
-                    width: appList.width
+                    width: appList.width - (appList.contentHeight > appList.height ? 12 : 0)
                     height: 52
                     radius: 26
                     color: current ? Qt.rgba(Theme.accent.r, Theme.accent.g, Theme.accent.b, 0.16) : "transparent"
@@ -291,7 +291,7 @@ Item {
 
                 // "All apps" at the end of the recommended list
                 footer: Item {
-                    width: appList.width
+                    width: appList.width - (appList.contentHeight > appList.height ? 12 : 0)
                     height: !dlg.showAll && dlg.filter === "" ? 52 : 0
                     visible: height > 0
                     Rectangle {

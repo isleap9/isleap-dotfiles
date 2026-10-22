@@ -165,9 +165,10 @@
     },
     "files": {
         "iconSize": 72,
+        "iconStyle": "system",
         "pinned": [
         ],
-        "showHidden": false,
+        "showHidden": true,
         "sortBy": "name",
         "sortReversed": false,
         "thumbnails": true,

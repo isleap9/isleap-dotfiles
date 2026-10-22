@@ -227,7 +227,7 @@ Rectangle {
                     readonly property bool chosen: modelData.value === root.current
                     readonly property bool keyed: ListView.isCurrentItem && (search.activeFocus || list.activeFocus)
 
-                    width: list.width - 8
+                    width: list.width - (list.contentHeight > list.height ? 12 : 0)
                     height: Math.max(44, rowContent.implicitHeight + 16)
                     radius: 12
                     color: chosen ? Qt.rgba(Theme.accent.r, Theme.accent.g, Theme.accent.b, 0.16) : "transparent"

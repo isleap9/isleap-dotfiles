@@ -454,7 +454,7 @@ ColumnLayout {
                 delegate: Item {
                     id: slot
                     required property var modelData
-                    width: ListView.view.width
+                    width: ListView.view.width - (ListView.view.contentHeight > ListView.view.height ? 12 : 0)
                     height: ncard.implicitHeight
 
                     property real enter: 1

@@ -1,5 +1,5 @@
 //@ pragma UseQApplication
-//@ pragma IconTheme Papirus-Dark
+//@ pragma IconTheme Papirus-Accent
 
 import QtQuick
 import Quickshell

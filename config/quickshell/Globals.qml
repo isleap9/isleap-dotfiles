@@ -42,10 +42,10 @@ Singleton {
     property string barJoin: ""
     property bool settingsOpen: false
     property string settingsPage: "appearance"
-    // File explorer window
-    property bool filesOpen: false
-    property string filesPath: ""                // folder to open (empty = home)
-    signal filesNavigate(string path)
+    // File explorer windows: one entry per open window ({ id, path }), so several can be open
+    property var filesWindows: []
+    property int nextFilesId: 1
+    readonly property bool filesOpen: filesWindows.length > 0
 
     // The screen the user is working on (where popups should appear)
     readonly property ShellScreen focusedScreen: {
@@ -190,22 +190,27 @@ Singleton {
         settingsOpen = true;
     }
 
-    // Files is a normal window too
+    // Files is a normal window too. Every call opens another window (empty path = home).
     function openFiles(path) {
-        filesPath = path || "";
         controlCenterOpen = false;
-        if (filesOpen && path) filesNavigate(path);
-        filesOpen = true;
+        filesWindows = filesWindows.concat([{ id: nextFilesId++, path: path || "" }]);
+    }
+    function closeFiles(id) {
+        filesWindows = filesWindows.filter(w => w.id !== id);
     }
 
-    // qs ipc call files toggle  /  qs ipc call files open ~/Downloads
+    // qs ipc call files launch  /  qs ipc call files open ~/Downloads  (both open a new window)
+    // qs ipc call files toggle — open one if none is open, otherwise close them all
+    // qs ipc call files closeAll
     IpcHandler {
         target: "files"
+        function launch(): void { root.openFiles(""); }
+        function open(path: string): void { root.openFiles(path); }
         function toggle(): void {
-            if (root.filesOpen) root.filesOpen = false;
+            if (root.filesOpen) root.filesWindows = [];
             else root.openFiles("");
         }
-        function open(path: string): void { root.openFiles(path); }
+        function closeAll(): void { root.filesWindows = []; }
     }
 
     IpcHandler {
