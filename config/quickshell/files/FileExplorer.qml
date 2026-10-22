@@ -17,7 +17,9 @@ LazyLoader {
         title: "Files"
         implicitWidth: 1120
         implicitHeight: 740
-        color: Theme.bg0
+        // Same see-through background as the bar and panels (Settings → Bar → Background opacity);
+        // Hyprland blurs what's behind. Each region is painted once so the transparency doesn't stack.
+        color: "transparent"
         onVisibleChanged: if (!visible) Globals.filesOpen = false
 
         readonly property string home: Quickshell.env("HOME")
@@ -766,6 +768,13 @@ LazyLoader {
         }
 
         // ================= layout =================
+        // Main area background (right of the sidebar, full height)
+        Rectangle {
+            anchors.fill: parent
+            anchors.leftMargin: 236
+            color: BarConfig.surface(Theme.bg0)
+        }
+
         WindowTitleBar {
             id: titleBar
             anchors.top: parent.top
@@ -773,7 +782,8 @@ LazyLoader {
             anchors.right: parent.right
             windowTitle: win.title
             sidebarWidth: 236
-            sidebarColor: Theme.bg1
+            sidebarColor: BarConfig.surface(Theme.bg1)
+            color: "transparent"
             onCloseRequested: Globals.filesOpen = false
         }
 
@@ -788,7 +798,7 @@ LazyLoader {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 236
-                color: Theme.bg1
+                color: BarConfig.surface(Theme.bg1)
 
                 ColumnLayout {
                     anchors.fill: parent

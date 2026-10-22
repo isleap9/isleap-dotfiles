@@ -31,7 +31,9 @@ LazyLoader {
         title: "Quickshell Settings"
         implicitWidth: 1000
         implicitHeight: 720
-        color: Theme.bg0
+        // Same see-through background as the bar and panels (Settings → Bar → Background opacity);
+        // Hyprland blurs what's behind. Each region is painted once so the transparency doesn't stack.
+        color: "transparent"
 
         onVisibleChanged: if (!visible) Globals.settingsOpen = false
 
@@ -43,6 +45,13 @@ LazyLoader {
             onCleared: Globals.settingsOpen = false
         }
 
+        // Main area background (right of the sidebar, full height)
+        Rectangle {
+            anchors.fill: parent
+            anchors.leftMargin: 240
+            color: BarConfig.surface(Theme.bg0)
+        }
+
         WindowTitleBar {
             id: titleBar
             anchors.top: parent.top
@@ -50,7 +59,8 @@ LazyLoader {
             anchors.right: parent.right
             windowTitle: win.title
             sidebarWidth: 240
-            sidebarColor: Theme.bg1
+            sidebarColor: BarConfig.surface(Theme.bg1)
+            color: "transparent"
             onCloseRequested: Globals.settingsOpen = false
         }
 
@@ -65,7 +75,7 @@ LazyLoader {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 240
-                color: Theme.bg1
+                color: BarConfig.surface(Theme.bg1)
 
                 ColumnLayout {
                     anchors.fill: parent
