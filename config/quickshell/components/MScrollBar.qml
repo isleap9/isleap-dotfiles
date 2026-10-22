@@ -20,12 +20,9 @@ Item {
     visible: needed
     z: 10
 
-    // Show while the view is hovered or moving
-    Item {
-        parent: bar.flick
-        anchors.fill: parent
-        HoverHandler { id: viewHover }
-    }
+    // Show while the view is hovered or moving. The hover detector sits on the view itself:
+    // an item laid over the view would steal hover from the rows (launcher highlight, etc.)
+    HoverHandler { id: viewHover; parent: bar.flick }
     property bool recent: false
     Timer { id: settle; interval: 900; onTriggered: bar.recent = false }
     Connections {

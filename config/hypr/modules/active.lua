@@ -1,1 +1,1 @@
-themes/dynamic.lua
+themes/tokyo-night.lua

@@ -26,7 +26,7 @@ LazyLoader {
         implicitWidth: Config.launcher.width + pad * 2
         readonly property int heroH: Config.launcher.hero ? Config.launcher.heroHeight + 12 : 0
         implicitHeight: Config.launcher.height + heroH + pad * 2
-        mask: Region { item: card }
+        mask: Region { item: hitBox }
         exclusionMode: ExclusionMode.Ignore
         color: "transparent"
         WlrLayershell.layer: WlrLayer.Overlay
@@ -89,6 +89,15 @@ LazyLoader {
             active: Globals.launcherOpen
             windows: [win]
             onCleared: Globals.launcherOpen = false
+        }
+
+        // What takes clicks: the card's resting place. Not the card itself, which zooms in on
+        // open; the click area was measured mid-zoom, so clicks near the card's edges (like
+        // on the scrollbar) counted as "outside" and closed the panel.
+        Item {
+            id: hitBox
+            anchors.fill: parent
+            anchors.margins: win.pad
         }
 
         Rectangle {

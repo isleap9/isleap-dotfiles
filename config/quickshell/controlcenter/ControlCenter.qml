@@ -45,7 +45,7 @@ LazyLoader {
         readonly property int pad: 60
         implicitWidth: 640 + pad * 2
         implicitHeight: 600 + pad * 2
-        mask: Region { item: card }
+        mask: Region { item: hitBox }
         exclusionMode: ExclusionMode.Ignore
         color: "transparent"
         WlrLayershell.layer: WlrLayer.Overlay
@@ -56,6 +56,15 @@ LazyLoader {
             active: Globals.controlCenterOpen
             windows: [win]
             onCleared: Globals.controlCenterOpen = false
+        }
+
+        // What takes clicks: the card's resting place. Not the card itself, which zooms in on
+        // open; the click area was measured mid-zoom, so clicks near the card's edges (like
+        // on the scrollbar) counted as "outside" and closed the panel.
+        Item {
+            id: hitBox
+            anchors.fill: parent
+            anchors.margins: win.pad
         }
 
         Rectangle {

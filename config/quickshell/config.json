@@ -168,7 +168,7 @@
         "iconStyle": "system",
         "pinned": [
         ],
-        "showHidden": true,
+        "showHidden": false,
         "sortBy": "name",
         "sortReversed": false,
         "thumbnails": true,
