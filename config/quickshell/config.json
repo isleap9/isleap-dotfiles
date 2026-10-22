@@ -5,7 +5,7 @@
         "dashboard": "slide",
         "launcher": "scale",
         "notifCenter": "slide",
-        "osd": "scale",
+        "osd": "fade",
         "overview": "scale",
         "popups": "bounce",
         "powerMenu": "fade",
@@ -22,9 +22,9 @@
         "clock24h": false,
         "customVersion": 1,
         "grouped": {
-            "center": true,
-            "left": true,
-            "right": true
+            "center": false,
+            "left": false,
+            "right": false
         },
         "height": 45,
         "lanes": {
@@ -85,14 +85,17 @@
         },
         "look": {
             "background": "",
-            "barRadius": 25,
+            "barRadius": 20,
+            "borderWidth": 0,
             "bubbles": true,
             "density": "default",
-            "opacity": 75,
+            "opacity": 65,
             "outerCorners": true,
             "roundness": 100,
-            "solidGap": 18,
-            "solidWidth": "fit"
+            "solidGap": 10,
+            "solidWidth": "fit",
+            "textColor": "surface",
+            "textWeight": "bold"
         },
         "minWorkspaces": 4,
         "modules": {
@@ -166,11 +169,14 @@
     },
     "launcher": {
         "height": 520,
+        "hero": true,
+        "heroHeight": 180,
         "showDescriptions": true,
         "width": 620
     },
     "monitors": {
         "barHidden": [
+            "DP-2"
         ],
         "main": "DP-3",
         "popups": "main"
@@ -200,7 +206,7 @@
         "hoverCards": true,
         "hoverDelay": 350,
         "joint": 24,
-        "radius": 28
+        "radius": 26
     },
     "powerMenu": {
         "confirm": true

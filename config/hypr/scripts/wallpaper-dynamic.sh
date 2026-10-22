@@ -41,4 +41,3 @@ open(path, 'w').write(content)
 # Apply KDE colors (Dolphin etc.) without Plasma
 "$HOME/.config/hypr/scripts/apply-kde-colors.sh" Dynamic
 
-notify-send "Dynamic Theme" "Colors from $(basename "$WALLPAPER")" --icon=preferences-desktop-theme --hint=int:transient:1

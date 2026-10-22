@@ -405,5 +405,3 @@ if [ -f "$BTOP_THEMES/$BTOP_FILE" ]; then
     pkill -SIGUSR2 btop 2>/dev/null || true
 fi
 
-# Notify
-notify-send "Theme Switcher" "Switched to $CHOICE" --icon=preferences-desktop-theme

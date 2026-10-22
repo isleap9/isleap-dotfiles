@@ -27,8 +27,7 @@ Singleton {
         [ -f "$WALL" ] && SKIP_WALLPAPER=1 ~/.config/hypr/scripts/wallpaper-dynamic.sh "$WALL"`
 
     function run(cmd, message) {
-        Quickshell.execDetached(["sh", "-c", cmd + (message
-            ? `; notify-send "Dynamic Theme" "${message}" --icon=preferences-desktop-theme --hint=int:transient:1` : "")]);
+        Quickshell.execDetached(["sh", "-c", cmd]);
         refreshTimer.restart();
     }
 

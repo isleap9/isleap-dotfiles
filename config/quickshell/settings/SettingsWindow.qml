@@ -34,15 +34,12 @@ LazyLoader {
 
         onVisibleChanged: if (!visible) Globals.settingsOpen = false
 
-        // Click outside to close: once Settings has had focus, focusing any other window closes it
-        property bool hadFocus: false
-        Connections {
-            target: Hyprland
-            function onActiveToplevelChanged() {
-                const mine = Hyprland.activeToplevel?.title === win.title;
-                if (mine) win.hadFocus = true;
-                else if (win.hadFocus) Globals.settingsOpen = false;
-            }
+        // Click outside to close. A focus grab (not focus tracking) so that with
+        // follow_mouse the window doesn't close just because the pointer left it.
+        HyprlandFocusGrab {
+            windows: [win]
+            active: win.visible
+            onCleared: Globals.settingsOpen = false
         }
 
         RowLayout {
