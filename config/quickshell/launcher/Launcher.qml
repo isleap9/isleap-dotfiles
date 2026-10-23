@@ -33,13 +33,85 @@ LazyLoader {
         WlrLayershell.keyboardFocus: Globals.launcherOpen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
         WlrLayershell.namespace: "quickshell-launcher"
 
+        // ── Usage store: launch counts, used only to order app rows ──
+        // ~/.cache/launch-counts.json → {"<app name>": {"count": 3, "ts": 1700000000}}
+        readonly property string usagePath: Quickshell.env("HOME") + "/.cache/launch-counts.json"
+        // Adapter-backed map, same shape as the file (alias mirrors Config.qml's pattern)
+        property alias usage: usageAdapter.usage
+        // Snapshot read once per open, so ranking never changes under the user mid-session
+        property var usageMap: ({})
+
+        FileView {
+            id: usageFile
+            path: win.usagePath
+            onAdapterUpdated: usageSave.restart()
+            onLoaded: win.usageMap = win.readUsage()
+            onLoadFailed: error => {
+                if (error === FileViewError.FileNotFound) writeAdapter();
+            }
+
+            JsonAdapter {
+                id: usageAdapter
+                property var usage: ({})
+            }
+        }
+        Timer { id: usageSave; interval: 150; onTriggered: usageFile.writeAdapter() }
+
+        // File contents → plain JS map with defensive numbers
+        function readUsage() {
+            const out = {};
+            const src = win.usage;
+            if (!src) return out;
+            for (const k in src) {
+                const rec = src[k];
+                if (!rec) continue;
+                out[k] = { count: Number(rec["count"]) || 0, ts: Number(rec["ts"]) || 0 };
+            }
+            return out;
+        }
+
+        // Missing record → 0 (and never a NaN from a hand-edited file)
+        function usageCount(name) {
+            const rec = win.usageMap ? win.usageMap[name] : null;
+            return rec ? (Number(rec["count"]) || 0) : 0;
+        }
+        function usageTs(name) {
+            const rec = win.usageMap ? win.usageMap[name] : null;
+            return rec ? (Number(rec["ts"]) || 0) : 0;
+        }
+
+        // count + 1 and now, as a fresh object so the adapter notices and saves
+        function bumpUsage(name) {
+            if (!name) return;
+            // Fall back to the adapter if the snapshot was read before the file loaded
+            const cur = (win.usageMap && Object.keys(win.usageMap).length) ? win.usageMap : win.readUsage();
+            const prev = cur[name];
+            const next = {};
+            for (const k in cur) next[k] = cur[k];
+            next[name] = {
+                count: (prev ? (Number(prev["count"]) || 0) : 0) + 1,
+                ts: Math.round(Date.now() / 1000)
+            };
+            win.usageMap = next;
+            win.usage = next;
+            // The launcher closes right after a launch, so don't leave it to the debounce
+            usageSave.stop();
+            usageFile.writeAdapter();
+        }
+
+        Component.onCompleted: win.usageMap = win.readUsage()
+
         // ── Results ──
         // Every row is a plain object: { kind: "app" | "calc" | "web" | "file", ... }
         readonly property var appRows: {
             const q = search.text.trim().toLowerCase();
             const all = DesktopEntries.applications.values.filter(a => !a.noDisplay);
             if (q === "")
-                return all.sort((a, b) => a.name.localeCompare(b.name)).map(a => ({ kind: "app", app: a }));
+                return all.slice().sort((a, b) =>
+                    win.usageCount(b.name) - win.usageCount(a.name)
+                    || win.usageTs(b.name) - win.usageTs(a.name)
+                    || a.name.localeCompare(b.name)
+                ).map(a => ({ kind: "app", app: a }));
 
             // Score: name starts with > word in name starts with > name contains > other fields contain
             const score = a => {
@@ -53,7 +125,11 @@ LazyLoader {
             };
             return all.map(a => ({ a, s: score(a) }))
                 .filter(x => x.s >= 0)
-                .sort((x, y) => x.s - y.s || x.a.name.localeCompare(y.a.name))
+                .sort((x, y) =>
+                    x.s - y.s
+                    || win.usageCount(y.a.name) - win.usageCount(x.a.name)
+                    || win.usageTs(y.a.name) - win.usageTs(x.a.name)
+                    || x.a.name.localeCompare(y.a.name))
                 .map(x => ({ kind: "app", app: x.a }));
         }
 
@@ -222,7 +298,11 @@ LazyLoader {
         // Run the row's action, then close
         function activate(row) {
             if (!row) return;
-            if (row.kind === "app") row.app.execute();
+            if (row.kind === "app") {
+                // Only app launches feed the ranking store
+                if (row.app && row.app.name) win.bumpUsage(row.app.name);
+                row.app.execute();
+            }
             else if (row.kind === "calc") Quickshell.execDetached(["wl-copy", String(row.value)]);
             else if (row.kind === "web") Quickshell.execDetached(["xdg-open", "https://duckduckgo.com/?q=" + encodeURIComponent(row.q)]);
             else if (row.kind === "file") Quickshell.execDetached(["xdg-open", row.path]);

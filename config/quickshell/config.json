@@ -89,7 +89,7 @@
             "borderWidth": 0,
             "bubbles": true,
             "density": "default",
-            "opacity": 65,
+            "opacity": 70,
             "outerCorners": true,
             "roundness": 100,
             "solidGap": 18,
@@ -192,10 +192,9 @@
     },
     "monitors": {
         "barHidden": [
-            "DP-2"
         ],
         "main": "DP-3",
-        "popups": "main"
+        "popups": "focused"
     },
     "nightLight": {
         "enabled": false,

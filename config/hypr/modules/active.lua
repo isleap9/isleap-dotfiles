@@ -1,1 +1,1 @@
-themes/crimson.lua
+themes/dynamic.lua

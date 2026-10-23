@@ -159,37 +159,47 @@ google-chrome firefox visual-studio-code-bin github-desktop-bin discord
 
 ## ⌨️ Keybinds
 
+The cheatsheet in the control center (and in Settings → Keybinds) is generated from these actual binds.
+
 | Keys | Action |
 |---|---|
 | `Super + Space` | App launcher |
 | `Super + T` | Terminal (kitty) |
-| `Super + E` | Files (Dolphin) |
+| `Super + E` | Files (Quickshell) |
+| `Super + Alt + E` | File manager (Dolphin) |
 | `Super + B` | Browser (Chrome) |
 | `Super + C` | VS Code |
 | `Super + Q` | Close window |
-| `Super + M` | Power menu |
-| `Super + Shift + L` | Lock screen |
+| `Super + P` | Power menu |
+| `Super + M` | Spotify |
+| `Super + D` | Discord |
 | `Super + N` | Notification center |
 | `Super + A` | Dashboard |
 | `Super + X` | Quick settings |
 | `Super + Tab` | Workspace overview |
 | `Super + ,` | Settings |
 | `Super + .` | Emoji picker |
-| `Super + Shift + E` | Control center |
+| `Super + Alt + Space` | Control center |
 | `Super + Shift + T` | Theme switcher |
 | `Super + Shift + W` | Wallpaper picker |
 | `Super + Shift + C` | Clipboard history |
 | `Super + Shift + V` | Capture menu (region / screen / window / record / color) |
 | `Super + Shift + S` | Screenshot a region |
 | `Super + Shift + P` | Color picker |
+| `Super + Shift + L` | Lock screen |
 | `Super + R` | Restart Quickshell |
 | `Super + W` | Toggle floating |
 | `Super + F` / `Super + Shift + F` | Maximize / true fullscreen |
 | `Super + S` | Scratchpad |
 | `Super + J / L / I / K` | Move focus left / right / up / down |
-| `Super + 1–0` | Switch workspace |
-| `Super + Shift + 1–0` | Move window to workspace |
+| `Super + 1–9`, `Super + 0` | Switch workspace (`0` = workspace 10) |
+| `Super + Shift + 1–9`, `Super + Shift + 0` | Move window to workspace (`0` = workspace 10) |
 | `Super + scroll` | Cycle workspaces |
+| `Super + LMB drag` / `Super + RMB drag` | Move / resize window |
+| `XF86AudioRaiseVolume` / `XF86AudioLowerVolume` | Volume up / down |
+| `XF86AudioMute` / `XF86AudioMicMute` | Mute output / microphone |
+| `XF86MonBrightnessUp` / `XF86MonBrightnessDown` | Brightness up / down |
+| `XF86AudioNext` / `XF86AudioPrev` / `XF86AudioPlay` / `XF86AudioPause` | Media next / previous / play-pause |
 
 Also: right-click the Arch logo on the bar for the control center, and right-click the bell for Do Not Disturb.
 
