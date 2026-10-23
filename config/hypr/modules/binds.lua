@@ -61,8 +61,8 @@ hl.bind("XF86AudioMute",             hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AU
 hl.bind("XF86AudioMicMute",          hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),    { locked = true })
 
 -- Brightness (repeating + works on lockscreen)
-hl.bind("XF86MonBrightnessUp",       hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { repeating = true, locked = true })
-hl.bind("XF86MonBrightnessDown",     hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { repeating = true, locked = true })
+hl.bind("XF86MonBrightnessUp",       hl.dsp.exec_cmd("qs ipc call brightness raise"), { repeating = true, locked = true })
+hl.bind("XF86MonBrightnessDown",     hl.dsp.exec_cmd("qs ipc call brightness lower"), { repeating = true, locked = true })
 
 -- Media (works on lockscreen)
 hl.bind("XF86AudioNext",             hl.dsp.exec_cmd("playerctl next"),        { locked = true })

@@ -20,6 +20,7 @@ Singleton {
     property alias dashboard: adapter.dashboard
     property alias osd: adapter.osd
     property alias nightLight: adapter.nightLight
+    property alias brightness: adapter.brightness
     property alias desktop: adapter.desktop
     property alias session: adapter.session
     property alias icons: adapter.icons
@@ -108,6 +109,8 @@ Singleton {
                 property bool showDescriptions: true
                 property bool hero: true              // current wallpaper banner on top
                 property int heroHeight: 180          // added on top of `height`
+                property bool webSearch: true         // "Search the web for …" row (DuckDuckGo)
+                property bool fileSearch: true        // find files in $HOME while typing
             }
 
             property JsonObject powerMenu: JsonObject {
@@ -168,6 +171,10 @@ Singleton {
                 property string to: "07:00"
             }
 
+            property JsonObject brightness: JsonObject {
+                property int level: 100               // 5–100 (100 = normal)
+            }
+
             // How each panel opens: slide, bounce, scale, fade or none (see Motion.qml)
             property JsonObject animations: JsonObject {
                 property bool closing: true           // play a reverse animation when closing
@@ -184,11 +191,12 @@ Singleton {
             }
 
             property JsonObject osd: JsonObject {
-                property bool enabled: true           // volume / mic / caps lock / layout popups
+                property bool enabled: true           // volume / mic / brightness / caps lock / layout popups
                 property string position: "bottom"    // bottom, top, center
                 property int duration: 1600           // ms
                 property bool volume: true
                 property bool mic: true
+                property bool brightness: true
                 property bool caps: true
                 property bool layout: true
             }

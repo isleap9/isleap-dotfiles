@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>graphify - graphify-out/graph.html</title>
+<script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"
+        integrity="sha384-Ux6phic9PEHJ38YtrijhkzyJ8yQlH8i/+buBR8s3mAZOJrP1gwyvAcIYl3GWtpX1"
+        crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg: #0f0f1a; --panel: #1a1a2e; --border: #2a2a4e; --input-border: #3a3a5e;
+    --text: #e0e0e0; --text-2: #aaa; --text-3: #ccc; --muted: #555; --count: #666;
+    --neighbor-border: #333; --node-label: #ffffff;
+  }
+  [data-theme="light"] {
+    --bg: #ffffff; --panel: #f8f9fa; --border: #d9dee5; --input-border: #c3cad4;
+    --text: #222222; --text-2: #666666; --text-3: #333333; --muted: #888888; --count: #777777;
+    --neighbor-border: #ccc; --node-label: #222222;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display: flex; height: 100vh; overflow: hidden; }
+  #graph { flex: 1; }
+  #sidebar { width: 280px; background: var(--panel); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  #search-wrap { padding: 12px; border-bottom: 1px solid var(--border); }
+  #search { width: 100%; background: var(--bg); border: 1px solid var(--input-border); color: var(--text); padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
+  #search:focus { border-color: #4E79A7; }
+  #search-results { max-height: 140px; overflow-y: auto; padding: 4px 12px; border-bottom: 1px solid var(--border); display: none; }
+  .search-item { padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .search-item:hover { background: var(--border); }
+  #info-panel { padding: 14px; border-bottom: 1px solid var(--border); min-height: 140px; }
+  #info-panel h3 { font-size: 13px; color: var(--text-2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  #info-content { font-size: 13px; color: var(--text-3); line-height: 1.6; }
+  #info-content .field { margin-bottom: 5px; }
+  #info-content .field b { color: var(--text); }
+  #info-content .empty { color: var(--muted); font-style: italic; }
+  .neighbor-link { display: block; padding: 2px 6px; margin: 2px 0; border-radius: 3px; cursor: pointer; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid var(--neighbor-border); }
+  .neighbor-link:hover { background: var(--border); }
+  #neighbors-list { max-height: 160px; overflow-y: auto; margin-top: 4px; }
+  #legend-wrap { flex: 1; overflow-y: auto; padding: 12px; }
+  #legend-wrap h3 { font-size: 13px; color: var(--text-2); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; border-radius: 4px; font-size: 12px; }
+  .legend-item:hover { background: var(--border); padding-left: 4px; }
+  .legend-item.dimmed { opacity: 0.35; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .legend-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .legend-count { color: var(--count); font-size: 11px; }
+  #stats { padding: 10px 14px; border-top: 1px solid var(--border); font-size: 11px; color: var(--muted); }
+  #legend-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 4px 0; }
+  #legend-controls label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; color: var(--text-2); user-select: none; }
+  #legend-controls label:hover { color: var(--text); }
+  .legend-cb, #select-all-cb { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; border: 1.5px solid var(--input-border); border-radius: 3px; background: var(--bg); cursor: pointer; position: relative; flex-shrink: 0; }
+  .legend-cb:checked, #select-all-cb:checked { background: #4E79A7; border-color: #4E79A7; }
+  .legend-cb:checked::after, #select-all-cb:checked::after { content: ''; position: absolute; left: 3.5px; top: 1px; width: 4px; height: 7px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  #select-all-cb:indeterminate { background: #4E79A7; border-color: #4E79A7; }
+  #select-all-cb:indeterminate::after { content: ''; position: absolute; left: 2px; top: 5px; width: 8px; height: 2px; background: #fff; border: none; transform: none; }
+  #theme-wrap { display: flex; gap: 4px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  #theme-wrap button { flex: 1; background: var(--bg); color: var(--text-2); border: 1px solid var(--input-border); border-radius: 4px; padding: 3px 0; font-size: 11px; cursor: pointer; }
+  #theme-wrap button:hover { color: var(--text); }
+  #theme-wrap button[aria-pressed="true"] { background: #4E79A7; border-color: #4E79A7; color: #fff; }
+</style>
+<script id="graphify-theme-init">
+// Apply the saved theme before first paint (#3894). No saved choice keeps the
+// historical dark look; "system" follows prefers-color-scheme.
+(function () {
+  var pref = null;
+  try { pref = localStorage.getItem('graphify-theme'); } catch (e) {}
+  var t = pref === 'light' ? 'light'
+    : pref === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light'
+    : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
+</head>
+<body>
+<div id="graph"></div>
+<div id="sidebar">
+  <div id="theme-wrap" role="group" aria-label="Theme">
+    <button type="button" data-theme-choice="light">Light</button>
+    <button type="button" data-theme-choice="dark">Dark</button>
+    <button type="button" data-theme-choice="system">System</button>
+  </div>
+  <div id="search-wrap">
+    <input id="search" type="text" placeholder="Search nodes..." autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+  <div id="info-panel">
+    <h3>Node Info</h3>
+    <div id="info-content"><span class="empty">Click a node to inspect it</span></div>
+  </div>
+  <div id="legend-wrap">
+    <h3>Communities</h3>
+    <div id="legend-controls">
+      <label><input type="checkbox" id="select-all-cb" checked onchange="toggleAllCommunities(!this.checked)">Select All</label>
+    </div>
+    <div id="legend"></div>
+  </div>
+  <div id="stats">104 nodes &middot; 73 edges &middot; 45 communities</div>
+</div>
+<script>
+const RAW_NODES = [{"id": "waybar_scripts_weather_get_icon", "label": "get_icon()", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "get_icon()", "community": 3, "community_name": "Weather Script", "source_file": "waybar/scripts/weather.py", "file_type": "code", "degree": 1}, {"id": "hypr_hyprland", "label": "hyprland.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "hyprland.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/hyprland.lua", "file_type": "code", "degree": 12}, {"id": "hypr_modules_active", "label": "modules/active.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "modules/active.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/active.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_animation", "label": "animation.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "animation.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/animation.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_autostart", "label": "autostart.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "autostart.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/autostart.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_binds", "label": "binds.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "binds.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/binds.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_decoration", "label": "decoration.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "decoration.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/decoration.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_env", "label": "env.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "env.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/env.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_input", "label": "input.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "input.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/input.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_layout", "label": "layout.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "layout.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/layout.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_misc", "label": "misc.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "misc.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/misc.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_monitors", "label": "monitors.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "monitors.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/monitors.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_programs", "label": "programs.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "programs.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/programs.lua", "file_type": "code", "degree": 1}, {"id": "hypr_modules_windowrules", "label": "windowrules.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "windowrules.lua", "community": 0, "community_name": "Hyprland Config Modules", "source_file": "hypr/modules/windowrules.lua", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher", "label": "theme-switcher.sh", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "theme-switcher.sh", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 12}, {"id": "waybar_scripts_theme_switcher_btop_theme", "label": "BTOP_THEME", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "BTOP_THEME", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_cal_days", "label": "CAL_DAYS", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "CAL_DAYS", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_cal_months", "label": "CAL_MONTHS", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "CAL_MONTHS", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_cal_weekdays", "label": "CAL_WEEKDAYS", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "CAL_WEEKDAYS", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_cava_color", "label": "CAVA_COLOR", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "CAVA_COLOR", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_hypr_active_border", "label": "HYPR_ACTIVE_BORDER", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "HYPR_ACTIVE_BORDER", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_hypr_inactive_border", "label": "HYPR_INACTIVE_BORDER", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "HYPR_INACTIVE_BORDER", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_hypr_theme", "label": "HYPR_THEME", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "HYPR_THEME", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_kde_theme", "label": "KDE_THEME", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "KDE_THEME", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_kitty_theme", "label": "KITTY_THEME", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "KITTY_THEME", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_sh__entry", "label": "theme-switcher.sh script", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "theme-switcher.sh script", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "waybar_scripts_theme_switcher_waybar_theme", "label": "WAYBAR_THEME", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "WAYBAR_THEME", "community": 1, "community_name": "Theme Switcher", "source_file": "waybar/scripts/theme-switcher.sh", "file_type": "code", "degree": 1}, {"id": "hypr_scripts_color_picker", "label": "color-picker.sh", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "color-picker.sh", "community": 10, "community_name": "Color Picker", "source_file": "hypr/scripts/color-picker.sh", "file_type": "code", "degree": 1}, {"id": "hypr_scripts_color_picker_sh__entry", "label": "color-picker.sh script", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "color-picker.sh script", "community": 10, "community_name": "Color Picker", "source_file": "hypr/scripts/color-picker.sh", "file_type": "code", "degree": 1}, {"id": "hypr_scripts_spotify_notify", "label": "spotify-notify.sh", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "spotify-notify.sh", "community": 11, "community_name": "Spotify Notify", "source_file": "hypr/scripts/spotify-notify.sh", "file_type": "code", "degree": 1}, {"id": "hypr_scripts_spotify_notify_sh__entry", "label": "spotify-notify.sh script", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "spotify-notify.sh script", "community": 11, "community_name": "Spotify Notify", "source_file": "hypr/scripts/spotify-notify.sh", "file_type": "code", "degree": 1}, {"id": "hypr_scripts_wallpaper_dynamic", "label": "wallpaper-dynamic.sh", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "wallpaper-dynamic.sh", "community": 12, "community_name": "Wallpaper Dynamic", "source_file": "hypr/scripts/wallpaper-dynamic.sh", "file_type": "code", "degree": 1}, {"id": "hypr_scripts_wallpaper_dynamic_sh__entry", "label": "wallpaper-dynamic.sh script", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "wallpaper-dynamic.sh script", "community": 12, "community_name": "Wallpaper Dynamic", "source_file": "hypr/scripts/wallpaper-dynamic.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_files_openwith", "label": "files-openwith.sh", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "files-openwith.sh", "community": 13, "community_name": "Files Open-With", "source_file": "quickshell/scripts/files-openwith.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_files_openwith_sh__entry", "label": "files-openwith.sh script", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "files-openwith.sh script", "community": 13, "community_name": "Files Open-With", "source_file": "quickshell/scripts/files-openwith.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_files_paste", "label": "files-paste.sh", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "files-paste.sh", "community": 14, "community_name": "Files Paste", "source_file": "quickshell/scripts/files-paste.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_files_paste_sh__entry", "label": "files-paste.sh script", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "files-paste.sh script", "community": 14, "community_name": "Files Paste", "source_file": "quickshell/scripts/files-paste.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_lock", "label": "lock.sh", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "lock.sh", "community": 15, "community_name": "Screen Lock", "source_file": "quickshell/scripts/lock.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_lock_sh__entry", "label": "lock.sh script", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "lock.sh script", "community": 15, "community_name": "Screen Lock", "source_file": "quickshell/scripts/lock.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_papirus_accent", "label": "papirus-accent.sh", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "papirus-accent.sh", "community": 16, "community_name": "Papirus Accent", "source_file": "quickshell/scripts/papirus-accent.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_papirus_accent_sh__entry", "label": "papirus-accent.sh script", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "papirus-accent.sh script", "community": 16, "community_name": "Papirus Accent", "source_file": "quickshell/scripts/papirus-accent.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_set_wallpaper", "label": "set-wallpaper.sh", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "set-wallpaper.sh", "community": 17, "community_name": "Wallpaper Setter", "source_file": "quickshell/scripts/set-wallpaper.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_set_wallpaper_sh__entry", "label": "set-wallpaper.sh script", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "set-wallpaper.sh script", "community": 17, "community_name": "Wallpaper Setter", "source_file": "quickshell/scripts/set-wallpaper.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_wallpaper_hook", "label": "wallpaper-hook.sh", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "wallpaper-hook.sh", "community": 18, "community_name": "Wallpaper Hook", "source_file": "quickshell/scripts/wallpaper-hook.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_wallpaper_hook_sh__entry", "label": "wallpaper-hook.sh script", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "wallpaper-hook.sh script", "community": 18, "community_name": "Wallpaper Hook", "source_file": "quickshell/scripts/wallpaper-hook.sh", "file_type": "code", "degree": 1}, {"id": "hypr_modules_themes_catppuccin_frappe", "label": "catppuccin-frappe.lua", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "catppuccin-frappe.lua", "community": 19, "community_name": "Theme: Catppuccin Frappe", "source_file": "hypr/modules/themes/catppuccin-frappe.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_catppuccin_latte", "label": "catppuccin-latte.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "catppuccin-latte.lua", "community": 20, "community_name": "Theme: Catppuccin Latte", "source_file": "hypr/modules/themes/catppuccin-latte.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_catppuccin_mocha", "label": "catppuccin-mocha.lua", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "catppuccin-mocha.lua", "community": 21, "community_name": "Theme: Catppuccin Mocha", "source_file": "hypr/modules/themes/catppuccin-mocha.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_crimson", "label": "crimson.lua", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "crimson.lua", "community": 22, "community_name": "Theme: Crimson", "source_file": "hypr/modules/themes/crimson.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_cyberdream", "label": "cyberdream.lua", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "cyberdream.lua", "community": 23, "community_name": "Theme: Cyberdream", "source_file": "hypr/modules/themes/cyberdream.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_dracula", "label": "dracula.lua", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "dracula.lua", "community": 24, "community_name": "Theme: Dracula", "source_file": "hypr/modules/themes/dracula.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_dracula_light", "label": "dracula-light.lua", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "dracula-light.lua", "community": 25, "community_name": "Theme: Dracula Light", "source_file": "hypr/modules/themes/dracula-light.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_dynamic", "label": "dynamic.lua", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "dynamic.lua", "community": 26, "community_name": "Theme: Dynamic", "source_file": "hypr/modules/themes/dynamic.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_eink", "label": "eink.lua", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "eink.lua", "community": 27, "community_name": "Theme: Eink", "source_file": "hypr/modules/themes/eink.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_eink_dark", "label": "eink-dark.lua", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "eink-dark.lua", "community": 28, "community_name": "Theme: Eink Dark", "source_file": "hypr/modules/themes/eink-dark.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_everforest_dark", "label": "everforest-dark.lua", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "everforest-dark.lua", "community": 29, "community_name": "Theme: Everforest Dark", "source_file": "hypr/modules/themes/everforest-dark.lua", "file_type": "code", "degree": 0}, {"id": "waybar_scripts_weather", "label": "weather.py", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 22.5, "font": {"size": 12, "color": "#ffffff"}, "title": "weather.py", "community": 3, "community_name": "Weather Script", "source_file": "waybar/scripts/weather.py", "file_type": "code", "degree": 5}, {"id": "hypr_modules_themes_everforest_light", "label": "everforest-light.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "everforest-light.lua", "community": 30, "community_name": "Theme: Everforest Light", "source_file": "hypr/modules/themes/everforest-light.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_gruvbox", "label": "gruvbox.lua", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "gruvbox.lua", "community": 31, "community_name": "Theme: Gruvbox", "source_file": "hypr/modules/themes/gruvbox.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_kanagawa_dark", "label": "kanagawa-dark.lua", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "kanagawa-dark.lua", "community": 32, "community_name": "Theme: Kanagawa Dark", "source_file": "hypr/modules/themes/kanagawa-dark.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_kanagawa_light", "label": "kanagawa-light.lua", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "kanagawa-light.lua", "community": 33, "community_name": "Theme: Kanagawa Light", "source_file": "hypr/modules/themes/kanagawa-light.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_monokai_pro", "label": "monokai-pro.lua", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "monokai-pro.lua", "community": 34, "community_name": "Theme: Monokai Pro", "source_file": "hypr/modules/themes/monokai-pro.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_onedark", "label": "onedark.lua", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "onedark.lua", "community": 35, "community_name": "Theme: OneDark", "source_file": "hypr/modules/themes/onedark.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_oxocarbon", "label": "oxocarbon.lua", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "oxocarbon.lua", "community": 36, "community_name": "Theme: Oxocarbon", "source_file": "hypr/modules/themes/oxocarbon.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_papercolor", "label": "papercolor.lua", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "papercolor.lua", "community": 37, "community_name": "Theme: Papercolor", "source_file": "hypr/modules/themes/papercolor.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_rosepine_dawn", "label": "rosepine-dawn.lua", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "rosepine-dawn.lua", "community": 38, "community_name": "Theme: Ros\u00e9 Pine Dawn", "source_file": "hypr/modules/themes/rosepine-dawn.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_rosepine_moon", "label": "rosepine-moon.lua", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "rosepine-moon.lua", "community": 39, "community_name": "Theme: Ros\u00e9 Pine Moon", "source_file": "hypr/modules/themes/rosepine-moon.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_sakura", "label": "sakura.lua", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "sakura.lua", "community": 40, "community_name": "Theme: Sakura", "source_file": "hypr/modules/themes/sakura.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_sleepy", "label": "sleepy.lua", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "sleepy.lua", "community": 41, "community_name": "Theme: Sleepy", "source_file": "hypr/modules/themes/sleepy.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_tokyo_day", "label": "tokyo-day.lua", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "tokyo-day.lua", "community": 42, "community_name": "Theme: Tokyo Day", "source_file": "hypr/modules/themes/tokyo-day.lua", "file_type": "code", "degree": 0}, {"id": "hypr_modules_themes_tokyo_night", "label": "tokyo-night.lua", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "tokyo-night.lua", "community": 43, "community_name": "Theme: Tokyo Night", "source_file": "hypr/modules/themes/tokyo-night.lua", "file_type": "code", "degree": 0}, {"id": "kitty_themes_active", "label": "themes/active.lua", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "themes/active.lua", "community": 44, "community_name": "Active Theme Pointer", "source_file": "kitty/themes/active.lua", "file_type": "code", "degree": 0}, {"id": "hypr_hyprlock_blazinscripts", "label": "blazinscripts.sh", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "blazinscripts.sh", "community": 6, "community_name": "Blazin Music Scripts", "source_file": "hypr/hyprlock/blazinscripts.sh", "file_type": "code", "degree": 3}, {"id": "hypr_hyprlock_blazinscripts_get_metadata", "label": "get_metadata()", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "get_metadata()", "community": 6, "community_name": "Blazin Music Scripts", "source_file": "hypr/hyprlock/blazinscripts.sh", "file_type": "code", "degree": 3}, {"id": "hypr_hyprlock_blazinscripts_get_source_info", "label": "get_source_info()", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "get_source_info()", "community": 6, "community_name": "Blazin Music Scripts", "source_file": "hypr/hyprlock/blazinscripts.sh", "file_type": "code", "degree": 3}, {"id": "hypr_hyprlock_blazinscripts_sh__entry", "label": "blazinscripts.sh script", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "blazinscripts.sh script", "community": 6, "community_name": "Blazin Music Scripts", "source_file": "hypr/hyprlock/blazinscripts.sh", "file_type": "code", "degree": 3}, {"id": "quickshell_scripts_launch", "label": "launch.sh", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "launch.sh", "community": 7, "community_name": "Quickshell Launch", "source_file": "quickshell/scripts/launch.sh", "file_type": "code", "degree": 2}, {"id": "quickshell_scripts_launch_sh__entry", "label": "launch.sh script", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "launch.sh script", "community": 7, "community_name": "Quickshell Launch", "source_file": "quickshell/scripts/launch.sh", "file_type": "code", "degree": 2}, {"id": "quickshell_scripts_launch_shell_pids", "label": "shell_pids()", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "shell_pids()", "community": 7, "community_name": "Quickshell Launch", "source_file": "quickshell/scripts/launch.sh", "file_type": "code", "degree": 2}, {"id": "quickshell_scripts_wallpaper_picker", "label": "wallpaper-picker.sh", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "wallpaper-picker.sh", "community": 8, "community_name": "Wallpaper Picker", "source_file": "quickshell/scripts/wallpaper-picker.sh", "file_type": "code", "degree": 2}, {"id": "quickshell_scripts_wallpaper_picker_qs_wallpaper_dir", "label": "QS_WALLPAPER_DIR", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "QS_WALLPAPER_DIR", "community": 8, "community_name": "Wallpaper Picker", "source_file": "quickshell/scripts/wallpaper-picker.sh", "file_type": "code", "degree": 1}, {"id": "quickshell_scripts_wallpaper_picker_sh__entry", "label": "wallpaper-picker.sh script", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "wallpaper-picker.sh script", "community": 8, "community_name": "Wallpaper Picker", "source_file": "quickshell/scripts/wallpaper-picker.sh", "file_type": "code", "degree": 1}, {"id": "hypr_scripts_apply_kde_colors", "label": "apply-kde-colors.sh", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "apply-kde-colors.sh", "community": 9, "community_name": "KDE Color Apply", "source_file": "hypr/scripts/apply-kde-colors.sh", "file_type": "code", "degree": 1}, {"id": "hypr_scripts_apply_kde_colors_sh__entry", "label": "apply-kde-colors.sh script", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "apply-kde-colors.sh script", "community": 9, "community_name": "KDE Color Apply", "source_file": "hypr/scripts/apply-kde-colors.sh", "file_type": "code", "degree": 1}, {"id": "config_fastfetch_ascii_directory", "label": "fastfetch ASCII art assets directory", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 22.5, "font": {"size": 12, "color": "#ffffff"}, "title": "fastfetch ASCII art assets directory", "community": 2, "community_name": "Fastfetch ASCII Logos", "source_file": "fastfetch/ascii/arch.txt", "file_type": "code", "degree": 5}, {"id": "config_fastfetch_ascii_arch_linux_distribution", "label": "Arch Linux (distribution represented by Arch logo)", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "Arch Linux (distribution represented by Arch logo)", "community": 2, "community_name": "Fastfetch ASCII Logos", "source_file": "fastfetch/ascii/arch.txt", "file_type": "concept", "degree": 1}, {"id": "config_fastfetch_ascii_ascii_art_medium", "label": "ASCII art as text-based image medium", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "ASCII art as text-based image medium", "community": 2, "community_name": "Fastfetch ASCII Logos", "source_file": "fastfetch/ascii/cat.txt", "file_type": "concept", "degree": 4}, {"id": "config_fastfetch_ascii_fastfetch_tool", "label": "fastfetch (system-info CLI tool)", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "fastfetch (system-info CLI tool)", "community": 2, "community_name": "Fastfetch ASCII Logos", "source_file": "fastfetch/ascii/arch.txt", "file_type": "concept", "degree": 2}, {"id": "config_fastfetch_ascii_arch_ascii_art", "label": "Arch ASCII art (fastfetch logo)", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 27.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Arch ASCII art (fastfetch logo)", "community": 2, "community_name": "Fastfetch ASCII Logos", "source_file": "fastfetch/ascii/arch.txt", "file_type": "image", "degree": 7}, {"id": "config_fastfetch_ascii_cat_ascii_art", "label": "Cat ASCII art (fastfetch logo)", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Cat ASCII art (fastfetch logo)", "community": 2, "community_name": "Fastfetch ASCII Logos", "source_file": "fastfetch/ascii/cat.txt", "file_type": "image", "degree": 3}, {"id": "config_fastfetch_ascii_rose_ascii_art", "label": "Rose ASCII art (fastfetch logo)", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Rose ASCII art (fastfetch logo)", "community": 2, "community_name": "Fastfetch ASCII Logos", "source_file": "fastfetch/ascii/rose.txt", "file_type": "image", "degree": 3}, {"id": "config_fastfetch_ascii_triangle_ascii_art", "label": "Triangle ASCII art (fastfetch logo)", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Triangle ASCII art (fastfetch logo)", "community": 2, "community_name": "Fastfetch ASCII Logos", "source_file": "fastfetch/ascii/triangle.txt", "file_type": "image", "degree": 3}, {"id": "concept_hyprlock_lock_screen", "label": "Hyprlock Lock Screen", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Hyprlock Lock Screen", "community": 4, "community_name": "Hyprlock Media Icon", "source_file": "hypr/hyprlock/music.webp", "file_type": "concept", "degree": 2}, {"id": "concept_media_playback_indicator_ui", "label": "Media Playback Indicator UI Element", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Media Playback Indicator UI Element", "community": 4, "community_name": "Hyprlock Media Icon", "source_file": "hypr/hyprlock/music.webp", "file_type": "concept", "degree": 3}, {"id": "config_hypr_hyprlock_music", "label": "Music Icon Asset (music.webp)", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 17.5, "font": {"size": 12, "color": "#ffffff"}, "title": "Music Icon Asset (music.webp)", "community": 4, "community_name": "Hyprlock Media Icon", "source_file": "hypr/hyprlock/music.webp", "file_type": "image", "degree": 3}, {"id": "config_hypr_hyprlock_music_eighth_note_glyph", "label": "White Eighth-Note (Beamed) Glyph", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "White Eighth-Note (Beamed) Glyph", "community": 4, "community_name": "Hyprlock Media Icon", "source_file": "hypr/hyprlock/music.webp", "file_type": "image", "degree": 2}, {"id": "config_hypr_hyprlock_pfp_jpg_hyprlock_avatar_display", "label": "Hyprlock lock-screen avatar display element", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Hyprlock lock-screen avatar display element", "community": 5, "community_name": "Hyprlock Avatar", "source_file": "hypr/hyprlock/pfp.jpg", "file_type": "concept", "degree": 2}, {"id": "config_hypr_hyprlock_pfp_jpg_pink_purple_theme", "label": "Pink/purple color theme", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Pink/purple color theme", "community": 5, "community_name": "Hyprlock Avatar", "source_file": "hypr/hyprlock/pfp.jpg", "file_type": "concept", "degree": 2}, {"id": "config_hypr_hyprlock_pfp_jpg", "label": "hyprlock profile picture asset (pfp.jpg)", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "hyprlock profile picture asset (pfp.jpg)", "community": 5, "community_name": "Hyprlock Avatar", "source_file": "hypr/hyprlock/pfp.jpg", "file_type": "image", "degree": 2}, {"id": "config_hypr_hyprlock_pfp_jpg_anime_avatar_artwork", "label": "Anime-style avatar artwork (pink-purple female character portrait)", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Anime-style avatar artwork (pink-purple female character portrait)", "community": 5, "community_name": "Hyprlock Avatar", "source_file": "hypr/hyprlock/pfp.jpg", "file_type": "image", "degree": 2}, {"id": "json", "label": "json", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "json", "community": 3, "community_name": "Weather Script", "source_file": "", "file_type": "concept", "degree": 1}, {"id": "sys", "label": "sys", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "sys", "community": 3, "community_name": "Weather Script", "source_file": "", "file_type": "concept", "degree": 1}, {"id": "urllib_parse", "label": "urllib_parse", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "urllib_parse", "community": 3, "community_name": "Weather Script", "source_file": "", "file_type": "concept", "degree": 1}, {"id": "urllib_request", "label": "urllib_request", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 12.5, "font": {"size": 0, "color": "#ffffff"}, "title": "urllib_request", "community": 3, "community_name": "Weather Script", "source_file": "", "file_type": "concept", "degree": 1}];
+const RAW_EDGES = [{"from": "waybar_scripts_weather", "to": "waybar_scripts_weather_get_icon", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_misc", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_input", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_binds", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_active", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_monitors", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_programs", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_env", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_autostart", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_decoration", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_animation", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_windowrules", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprland", "to": "hypr_modules_layout", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_hypr_active_border", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_hypr_inactive_border", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_waybar_theme", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_cal_months", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_cal_days", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_cal_weekdays", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_cava_color", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_btop_theme", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_kitty_theme", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_kde_theme", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_theme_switcher", "to": "waybar_scripts_theme_switcher_hypr_theme", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_scripts_color_picker", "to": "hypr_scripts_color_picker_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_scripts_spotify_notify", "to": "hypr_scripts_spotify_notify_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_scripts_wallpaper_dynamic", "to": "hypr_scripts_wallpaper_dynamic_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_files_openwith", "to": "quickshell_scripts_files_openwith_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_files_paste", "to": "quickshell_scripts_files_paste_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_lock", "to": "quickshell_scripts_lock_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_papirus_accent", "to": "quickshell_scripts_papirus_accent_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_set_wallpaper", "to": "quickshell_scripts_set_wallpaper_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_wallpaper_hook", "to": "quickshell_scripts_wallpaper_hook_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_weather", "to": "json", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_weather", "to": "sys", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_weather", "to": "urllib_parse", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "waybar_scripts_weather", "to": "urllib_request", "label": "imports", "title": "imports [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprlock_blazinscripts", "to": "hypr_hyprlock_blazinscripts_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprlock_blazinscripts", "to": "hypr_hyprlock_blazinscripts_get_metadata", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprlock_blazinscripts", "to": "hypr_hyprlock_blazinscripts_get_source_info", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprlock_blazinscripts_get_source_info", "to": "hypr_hyprlock_blazinscripts_get_metadata", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprlock_blazinscripts_sh__entry", "to": "hypr_hyprlock_blazinscripts_get_metadata", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_hyprlock_blazinscripts_sh__entry", "to": "hypr_hyprlock_blazinscripts_get_source_info", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_launch", "to": "quickshell_scripts_launch_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_launch", "to": "quickshell_scripts_launch_shell_pids", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_launch_sh__entry", "to": "quickshell_scripts_launch_shell_pids", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_wallpaper_picker", "to": "quickshell_scripts_wallpaper_picker_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "quickshell_scripts_wallpaper_picker", "to": "quickshell_scripts_wallpaper_picker_qs_wallpaper_dir", "label": "defines", "title": "defines [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "hypr_scripts_apply_kde_colors", "to": "hypr_scripts_apply_kde_colors_sh__entry", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "config_fastfetch_ascii_arch_ascii_art", "to": "config_fastfetch_ascii_directory", "label": "conceptually_related_to", "title": "conceptually_related_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "config_fastfetch_ascii_cat_ascii_art", "to": "config_fastfetch_ascii_directory", "label": "conceptually_related_to", "title": "conceptually_related_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "config_fastfetch_ascii_rose_ascii_art", "to": "config_fastfetch_ascii_directory", "label": "conceptually_related_to", "title": "conceptually_related_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "config_fastfetch_ascii_triangle_ascii_art", "to": "config_fastfetch_ascii_directory", "label": "conceptually_related_to", "title": "conceptually_related_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "config_fastfetch_ascii_directory", "to": "config_fastfetch_ascii_fastfetch_tool", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "config_fastfetch_ascii_arch_ascii_art", "to": "config_fastfetch_ascii_arch_linux_distribution", "label": "references", "title": "references [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_fastfetch_ascii_arch_ascii_art", "to": "config_fastfetch_ascii_ascii_art_medium", "label": "implements", "title": "implements [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_fastfetch_ascii_cat_ascii_art", "to": "config_fastfetch_ascii_ascii_art_medium", "label": "implements", "title": "implements [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_fastfetch_ascii_rose_ascii_art", "to": "config_fastfetch_ascii_ascii_art_medium", "label": "implements", "title": "implements [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_fastfetch_ascii_triangle_ascii_art", "to": "config_fastfetch_ascii_ascii_art_medium", "label": "implements", "title": "implements [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_fastfetch_ascii_arch_ascii_art", "to": "config_fastfetch_ascii_fastfetch_tool", "label": "rationale_for", "title": "rationale_for [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_fastfetch_ascii_cat_ascii_art", "to": "config_fastfetch_ascii_arch_ascii_art", "label": "semantically_similar_to", "title": "semantically_similar_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "config_fastfetch_ascii_rose_ascii_art", "to": "config_fastfetch_ascii_arch_ascii_art", "label": "semantically_similar_to", "title": "semantically_similar_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "config_fastfetch_ascii_triangle_ascii_art", "to": "config_fastfetch_ascii_arch_ascii_art", "label": "semantically_similar_to", "title": "semantically_similar_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "concept_media_playback_indicator_ui", "to": "concept_hyprlock_lock_screen", "label": "rationale_for", "title": "rationale_for [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_hypr_hyprlock_music", "to": "concept_hyprlock_lock_screen", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_hypr_hyprlock_music_eighth_note_glyph", "to": "concept_media_playback_indicator_ui", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_hypr_hyprlock_music", "to": "concept_media_playback_indicator_ui", "label": "implements", "title": "implements [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_hypr_hyprlock_music", "to": "config_hypr_hyprlock_music_eighth_note_glyph", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "config_hypr_hyprlock_pfp_jpg_hyprlock_avatar_display", "to": "config_hypr_hyprlock_pfp_jpg_pink_purple_theme", "label": "conceptually_related_to", "title": "conceptually_related_to [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_hypr_hyprlock_pfp_jpg", "to": "config_hypr_hyprlock_pfp_jpg_hyprlock_avatar_display", "label": "rationale_for", "title": "rationale_for [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_hypr_hyprlock_pfp_jpg_anime_avatar_artwork", "to": "config_hypr_hyprlock_pfp_jpg_pink_purple_theme", "label": "shares_data_with", "title": "shares_data_with [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "config_hypr_hyprlock_pfp_jpg", "to": "config_hypr_hyprlock_pfp_jpg_anime_avatar_artwork", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}];
+const LEGEND = [{"cid": 0, "color": "#4E79A7", "label": "Hyprland Config Modules", "count": 13}, {"cid": 1, "color": "#F28E2B", "label": "Theme Switcher", "count": 13}, {"cid": 2, "color": "#E15759", "label": "Fastfetch ASCII Logos", "count": 8}, {"cid": 3, "color": "#76B7B2", "label": "Weather Script", "count": 6}, {"cid": 4, "color": "#59A14F", "label": "Hyprlock Media Icon", "count": 4}, {"cid": 5, "color": "#EDC948", "label": "Hyprlock Avatar", "count": 4}, {"cid": 6, "color": "#B07AA1", "label": "Blazin Music Scripts", "count": 4}, {"cid": 7, "color": "#FF9DA7", "label": "Quickshell Launch", "count": 3}, {"cid": 8, "color": "#9C755F", "label": "Wallpaper Picker", "count": 3}, {"cid": 9, "color": "#BAB0AC", "label": "KDE Color Apply", "count": 2}, {"cid": 10, "color": "#4E79A7", "label": "Color Picker", "count": 2}, {"cid": 11, "color": "#F28E2B", "label": "Spotify Notify", "count": 2}, {"cid": 12, "color": "#E15759", "label": "Wallpaper Dynamic", "count": 2}, {"cid": 13, "color": "#76B7B2", "label": "Files Open-With", "count": 2}, {"cid": 14, "color": "#59A14F", "label": "Files Paste", "count": 2}, {"cid": 15, "color": "#EDC948", "label": "Screen Lock", "count": 2}, {"cid": 16, "color": "#B07AA1", "label": "Papirus Accent", "count": 2}, {"cid": 17, "color": "#FF9DA7", "label": "Wallpaper Setter", "count": 2}, {"cid": 18, "color": "#9C755F", "label": "Wallpaper Hook", "count": 2}, {"cid": 19, "color": "#BAB0AC", "label": "Theme: Catppuccin Frappe", "count": 1}, {"cid": 20, "color": "#4E79A7", "label": "Theme: Catppuccin Latte", "count": 1}, {"cid": 21, "color": "#F28E2B", "label": "Theme: Catppuccin Mocha", "count": 1}, {"cid": 22, "color": "#E15759", "label": "Theme: Crimson", "count": 1}, {"cid": 23, "color": "#76B7B2", "label": "Theme: Cyberdream", "count": 1}, {"cid": 24, "color": "#59A14F", "label": "Theme: Dracula", "count": 1}, {"cid": 25, "color": "#EDC948", "label": "Theme: Dracula Light", "count": 1}, {"cid": 26, "color": "#B07AA1", "label": "Theme: Dynamic", "count": 1}, {"cid": 27, "color": "#FF9DA7", "label": "Theme: Eink", "count": 1}, {"cid": 28, "color": "#9C755F", "label": "Theme: Eink Dark", "count": 1}, {"cid": 29, "color": "#BAB0AC", "label": "Theme: Everforest Dark", "count": 1}, {"cid": 30, "color": "#4E79A7", "label": "Theme: Everforest Light", "count": 1}, {"cid": 31, "color": "#F28E2B", "label": "Theme: Gruvbox", "count": 1}, {"cid": 32, "color": "#E15759", "label": "Theme: Kanagawa Dark", "count": 1}, {"cid": 33, "color": "#76B7B2", "label": "Theme: Kanagawa Light", "count": 1}, {"cid": 34, "color": "#59A14F", "label": "Theme: Monokai Pro", "count": 1}, {"cid": 35, "color": "#EDC948", "label": "Theme: OneDark", "count": 1}, {"cid": 36, "color": "#B07AA1", "label": "Theme: Oxocarbon", "count": 1}, {"cid": 37, "color": "#FF9DA7", "label": "Theme: Papercolor", "count": 1}, {"cid": 38, "color": "#9C755F", "label": "Theme: Ros\u00e9 Pine Dawn", "count": 1}, {"cid": 39, "color": "#BAB0AC", "label": "Theme: Ros\u00e9 Pine Moon", "count": 1}, {"cid": 40, "color": "#4E79A7", "label": "Theme: Sakura", "count": 1}, {"cid": 41, "color": "#F28E2B", "label": "Theme: Sleepy", "count": 1}, {"cid": 42, "color": "#E15759", "label": "Theme: Tokyo Day", "count": 1}, {"cid": 43, "color": "#76B7B2", "label": "Theme: Tokyo Night", "count": 1}, {"cid": 44, "color": "#59A14F", "label": "Active Theme Pointer", "count": 1}];
+
+// HTML-escape helper — prevents XSS when injecting graph data into innerHTML
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Build vis datasets
+const nodesDS = new vis.DataSet(RAW_NODES.map((n, i) => ({
+  id: n.id, label: n.label, color: n.color, size: n.size,
+  font: n.font, title: n.title,
+  // Fermat/golden-angle spiral seed positions (#3699): spreading nodes out
+  // before physics runs keeps avoidOverlap from computing near-zero-distance
+  // repulsion that blows the BarnesHut recursion into a stack overflow on large
+  // graphs. `i` is the map index — physics still settles small graphs identically.
+  x: 30 * Math.sqrt(i) * Math.cos(i * 2.4),
+  y: 30 * Math.sqrt(i) * Math.sin(i * 2.4),
+  community: n.community, community_name: n.community_name,
+  source_file: n.source_file, file_type: n.file_type, degree: n.degree,
+  member_count: n.member_count,
+})));
+
+const edgesDS = new vis.DataSet(RAW_EDGES.map((e, i) => ({
+  id: i, from: e.from, to: e.to,
+  label: '',
+  title: e.title,
+  dashes: e.dashes,
+  width: e.width,
+  color: e.color,
+  arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+})));
+
+const container = document.getElementById('graph');
+const network = new vis.Network(container, { nodes: nodesDS, edges: edgesDS }, {
+  physics: {
+    enabled: true,
+    solver: 'forceAtlas2Based',
+    forceAtlas2Based: {
+      gravitationalConstant: -60,
+      centralGravity: 0.005,
+      springLength: 120,
+      springConstant: 0.08,
+      damping: 0.4,
+      avoidOverlap: 0.8,
+    },
+    stabilization: { iterations: 200, fit: true },
+  },
+  interaction: {
+    hover: true,
+    tooltipDelay: 100,
+    hideEdgesOnDrag: true,
+    navigationButtons: false,
+    keyboard: false,
+  },
+  nodes: { shape: 'dot', borderWidth: 1.5 },
+  edges: { smooth: { type: 'continuous', roundness: 0.2 }, selectionWidth: 3 },
+});
+
+// Theme toggle (#3894): Light / Dark / System, persisted in localStorage.
+const THEME_KEY = 'graphify-theme';
+const themeMQ = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
+let themeLabelColor = '#ffffff';  // matches the per-node font color set in Python
+function themePref() {
+  let p = null;
+  try { p = localStorage.getItem(THEME_KEY); } catch (e) {}
+  return (p === 'light' || p === 'dark' || p === 'system') ? p : null;
+}
+function applyTheme(pref) {
+  const t = pref === 'light' ? 'light' : (pref === 'system' && themeMQ && themeMQ.matches) ? 'light' : 'dark';
+  const root = document.documentElement;
+  if (!root) return;
+  root.setAttribute('data-theme', t);
+  document.querySelectorAll('[data-theme-choice]').forEach(b => {
+    b.setAttribute('aria-pressed', String(b.dataset.themeChoice === (pref || 'dark')));
+  });
+  const labelColor = getComputedStyle(root).getPropertyValue('--node-label').trim();
+  if (labelColor && labelColor !== themeLabelColor) {
+    themeLabelColor = labelColor;
+    nodesDS.update(nodesDS.get().map(n => ({ id: n.id, font: Object.assign({}, n.font, { color: labelColor }) })));
+  }
+}
+document.querySelectorAll('[data-theme-choice]').forEach(b => {
+  b.addEventListener('click', () => {
+    const pref = b.dataset.themeChoice;
+    try { localStorage.setItem(THEME_KEY, pref); } catch (e) {}
+    applyTheme(pref);
+  });
+});
+if (themeMQ) {
+  const onSchemeChange = () => { if (themePref() === 'system') applyTheme('system'); };
+  if (themeMQ.addEventListener) themeMQ.addEventListener('change', onSchemeChange);
+  else if (themeMQ.addListener) themeMQ.addListener(onSchemeChange);
+}
+applyTheme(themePref());
+
+network.once('stabilizationIterationsDone', () => {
+  network.setOptions({ physics: { enabled: false } });
+});
+
+function showInfo(nodeId) {
+  const n = nodesDS.get(nodeId);
+  if (!n) return;
+  const neighborIds = network.getConnectedNodes(nodeId);
+  const neighborItems = neighborIds.map(nid => {
+    const nb = nodesDS.get(nid);
+    const color = nb ? nb.color.background : '#555';
+    return `<span class="neighbor-link" style="border-left-color:${esc(color)}" data-nid="${esc(nid)}">${esc(nb ? nb.label : nid)}</span>`;
+  }).join('');
+  const isMetaNode = !n.file_type && !n.source_file;
+  let html = `<div class="field"><b>${esc(n.label)}</b></div>`;
+  if (!isMetaNode) {
+    html += `<div class="field">Type: ${esc(n.file_type || 'unknown')}</div>`;
+  }
+  html += `<div class="field">Community: ${esc(n.community_name || '')}</div>`;
+  if (!isMetaNode) {
+    html += `<div class="field">Source: ${esc(n.source_file || '-')}</div>`;
+  } else if (n.member_count !== undefined && n.member_count !== null) {
+    html += `<div class="field">Members: ${esc(n.member_count)}</div>`;
+  }
+  html += `<div class="field">Degree: ${n.degree}</div>`;
+  if (neighborIds.length) {
+    html += `<div class="field" style="margin-top:8px;color:var(--text-2);font-size:11px">Neighbors (${neighborIds.length})</div><div id="neighbors-list">${neighborItems}</div>`;
+  }
+  document.getElementById('info-content').innerHTML = html;
+}
+
+function focusNode(nodeId) {
+  network.focus(nodeId, { scale: 1.4, animation: true });
+  network.selectNodes([nodeId]);
+  showInfo(nodeId);
+}
+
+// Neighbor links use a data attribute + one delegated listener rather than an
+// inline onclick. A node id/label sourced from a document or a scraped URL
+// (graphify add) can contain a double-quote; dropping the stringified id
+// unescaped into a quoted onclick both broke every link and allowed a hostile
+// source to inject an event handler into the local report (stored XSS, #1838).
+// esc() on data-nid keeps the value inside the attribute; the listener reads it
+// back verbatim. Bound to document so it survives the innerHTML rebuild that
+// recreates #neighbors-list on each showInfo().
+document.addEventListener('click', e => {
+  const el = e.target.closest('.neighbor-link');
+  if (el && el.dataset.nid !== undefined) focusNode(el.dataset.nid);
+});
+
+// Sidebar tooltips reuse vis-network's .vis-tooltip style and 100ms tooltipDelay.
+// Names get one only when CSS ellipsis truncates them (the full text is still in
+// the DOM); counts always get one, to say what the number is. Text is set with
+// textContent only (labels are untrusted). Delegated on document so rows rebuilt
+// later (search results, showInfo()) are covered.
+const sidebarTip = document.createElement('div');
+sidebarTip.className = 'vis-tooltip';
+sidebarTip.style.cssText = 'white-space: normal; max-width: 360px; overflow-wrap: break-word;';
+document.body.appendChild(sidebarTip);
+let sidebarTipTimer = null;
+let sidebarTipEl = null;    // element whose text the tooltip shows
+let sidebarTipZone = null;  // element the pointer must leave to hide it
+function hideSidebarTip() {
+  clearTimeout(sidebarTipTimer);
+  sidebarTip.style.visibility = 'hidden';
+  sidebarTip.textContent = '';
+  sidebarTipEl = sidebarTipZone = null;
+}
+document.addEventListener('mouseover', e => {
+  const zone = e.target.closest && e.target.closest('.legend-count, .legend-item, .search-item, .neighbor-link');
+  // Anywhere on a legend row except its count (dot, checkbox, gaps, padding)
+  // stands for the row's name, so moving within the row never re-triggers it.
+  const el = zone && zone.classList.contains('legend-item') ? zone.querySelector('.legend-label') : zone;
+  if (!el || el === sidebarTipEl) return;
+  hideSidebarTip();
+  const isCount = el.classList.contains('legend-count');
+  if (!isCount && el.scrollWidth <= el.clientWidth) return;
+  const text = isCount ? `${el.textContent} ${el.textContent === '1' ? 'node' : 'nodes'}` : el.textContent;
+  sidebarTipEl = el;
+  sidebarTipZone = zone;
+  const x = e.clientX, y = e.clientY;
+  sidebarTipTimer = setTimeout(() => {
+    sidebarTip.textContent = text;
+    sidebarTip.style.left = sidebarTip.style.top = '0px';  // measure at full max-width
+    sidebarTip.style.visibility = 'visible';
+    const w = sidebarTip.offsetWidth, h = sidebarTip.offsetHeight;
+    sidebarTip.style.left = Math.max(4, Math.min(x + 12, window.innerWidth - w - 4)) + 'px';
+    sidebarTip.style.top = (y + 16 + h > window.innerHeight ? Math.max(4, y - h - 8) : y + 16) + 'px';
+  }, 100);
+});
+document.addEventListener('mouseout', e => {
+  if (sidebarTipZone && !sidebarTipZone.contains(e.relatedTarget)) hideSidebarTip();
+});
+// A click rebuilds or hides the row (showInfo(), search pick) without a mouseout.
+document.addEventListener('mousedown', hideSidebarTip);
+
+// Track hovered node — hover detection is more reliable than click params
+let hoveredNodeId = null;
+network.on('hoverNode', params => {
+  hoveredNodeId = params.node;
+  container.style.cursor = 'pointer';
+});
+network.on('blurNode', () => {
+  hoveredNodeId = null;
+  container.style.cursor = 'default';
+});
+container.addEventListener('click', () => {
+  if (hoveredNodeId !== null) {
+    showInfo(hoveredNodeId);
+    network.selectNodes([hoveredNodeId]);
+  }
+});
+network.on('click', params => {
+  if (params.nodes.length > 0) {
+    showInfo(params.nodes[0]);
+  } else if (hoveredNodeId === null) {
+    document.getElementById('info-content').innerHTML = '<span class="empty">Click a node to inspect it</span>';
+  }
+});
+
+const searchInput = document.getElementById('search');
+const searchResults = document.getElementById('search-results');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  searchResults.innerHTML = '';
+  if (!q) { searchResults.style.display = 'none'; return; }
+  const matches = RAW_NODES.filter(n => n.label.toLowerCase().includes(q)).slice(0, 20);
+  if (!matches.length) { searchResults.style.display = 'none'; return; }
+  searchResults.style.display = 'block';
+  matches.forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'search-item';
+    el.textContent = n.label;
+    el.style.borderLeft = `3px solid ${n.color.background}`;
+    el.style.paddingLeft = '8px';
+    el.onclick = () => {
+      network.focus(n.id, { scale: 1.5, animation: true });
+      network.selectNodes([n.id]);
+      showInfo(n.id);
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    };
+    searchResults.appendChild(el);
+  });
+});
+document.addEventListener('click', e => {
+  if (!searchResults.contains(e.target) && e.target !== searchInput)
+    searchResults.style.display = 'none';
+});
+
+const hiddenCommunities = new Set();
+
+const selectAllCb = document.getElementById('select-all-cb');
+
+function updateSelectAllState() {
+  const total = LEGEND.length;
+  const hidden = hiddenCommunities.size;
+  selectAllCb.checked = hidden === 0;
+  selectAllCb.indeterminate = hidden > 0 && hidden < total;
+}
+
+function toggleAllCommunities(hide) {
+  document.querySelectorAll('.legend-item').forEach(item => {
+    hide ? item.classList.add('dimmed') : item.classList.remove('dimmed');
+  });
+  document.querySelectorAll('.legend-cb').forEach(cb => {
+    cb.checked = !hide;
+  });
+  LEGEND.forEach(c => {
+    if (hide) hiddenCommunities.add(c.cid); else hiddenCommunities.delete(c.cid);
+  });
+  const updates = RAW_NODES.map(n => ({ id: n.id, hidden: hide }));
+  nodesDS.update(updates);
+  updateSelectAllState();
+}
+
+const legendEl = document.getElementById('legend');
+LEGEND.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.className = 'legend-cb';
+  cb.checked = true;
+  cb.addEventListener('change', (e) => {
+    e.stopPropagation();
+    if (cb.checked) {
+      hiddenCommunities.delete(c.cid);
+      item.classList.remove('dimmed');
+    } else {
+      hiddenCommunities.add(c.cid);
+      item.classList.add('dimmed');
+    }
+    const updates = RAW_NODES
+      .filter(n => n.community === c.cid)
+      .map(n => ({ id: n.id, hidden: !cb.checked }));
+    nodesDS.update(updates);
+    updateSelectAllState();
+  });
+  item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>
+    <span class="legend-label">${c.label}</span>
+    <span class="legend-count">${c.count}</span>`;
+  item.prepend(cb);
+  item.onclick = (e) => {
+    if (e.target === cb) return;
+    cb.checked = !cb.checked;
+    cb.dispatchEvent(new Event('change'));
+  };
+  legendEl.appendChild(item);
+});
+</script>
+<script>
+// Render hyperedges as shaded regions
+const hyperedges = [{"id": "config_fastfetch_ascii_interchangeable_logo_choices", "label": "Interchangeable fastfetch logo choices", "nodes": ["config_fastfetch_ascii_arch_ascii_art", "config_fastfetch_ascii_cat_ascii_art", "config_fastfetch_ascii_rose_ascii_art", "config_fastfetch_ascii_triangle_ascii_art"], "relation": "participate_in", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "fastfetch/ascii/arch.txt"}];
+// afterDrawing passes ctx already transformed to network coordinate space.
+// Draw node positions raw — no manual pan/zoom/DPR math needed.
+
+// Andrew's monotone chain. Returns the hull in counter-clockwise order, which
+// is what the perimeter must be traced in. Collinear and duplicate points
+// collapse to the extremes, so degenerate member sets render as a segment
+// rather than a zero-area crossed path.
+function convexHull(pts) {
+    const p = pts.slice().sort((a, b) => (a.x - b.x) || (a.y - b.y));
+    if (p.length < 3) return p;
+    const cross = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+    const build = seq => {
+        const out = [];
+        for (const q of seq) {
+            while (out.length >= 2 && cross(out[out.length - 2], out[out.length - 1], q) <= 0) out.pop();
+            out.push(q);
+        }
+        out.pop();
+        return out;
+    };
+    const hull = build(p).concat(build(p.slice().reverse()));
+    return hull.length >= 3 ? hull : p;
+}
+network.on('afterDrawing', function(ctx) {
+    hyperedges.forEach(h => {
+        const positions = h.nodes
+            .map(nid => network.getPositions([nid])[nid])
+            .filter(p => p !== undefined);
+        if (positions.length < 2) return;
+        ctx.save();
+        ctx.globalAlpha = 0.12;
+        ctx.fillStyle = '#6366f1';
+        ctx.strokeStyle = '#6366f1';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        // Centroid and expanded hull in network coordinates.
+        // The perimeter must follow hull order, not h.nodes order: tracing the
+        // raw member order self-intersects whenever the layout does not happen
+        // to place members in angular order, filling as crossed wedges.
+        const cx = positions.reduce((s, p) => s + p.x, 0) / positions.length;
+        const cy = positions.reduce((s, p) => s + p.y, 0) / positions.length;
+        const hull = convexHull(positions);
+        const expanded = hull.map(p => ({
+            x: cx + (p.x - cx) * 1.15,
+            y: cy + (p.y - cy) * 1.15
+        }));
+        ctx.moveTo(expanded[0].x, expanded[0].y);
+        expanded.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 0.4;
+        ctx.stroke();
+        // Label
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = '#4f46e5';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(h.label, cx, cy - 5);
+        ctx.restore();
+    });
+});
+</script>
+</body>
+</html>

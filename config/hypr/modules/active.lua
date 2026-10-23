@@ -1,1 +1,1 @@
-themes/tokyo-night.lua
+themes/crimson.lua

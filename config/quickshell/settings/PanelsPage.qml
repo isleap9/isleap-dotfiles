@@ -99,6 +99,7 @@ Page {
         }
         Option { visible: Config.osd.enabled; label: "Volume"; MSwitch { checked: Config.osd.volume; onToggled: Config.osd.volume = !checked } }
         Option { visible: Config.osd.enabled; label: "Microphone mute"; MSwitch { checked: Config.osd.mic; onToggled: Config.osd.mic = !checked } }
+        Option { visible: Config.osd.enabled; label: "Brightness"; MSwitch { checked: Config.osd.brightness; onToggled: Config.osd.brightness = !checked } }
         Option { visible: Config.osd.enabled; label: "Caps Lock"; MSwitch { checked: Config.osd.caps; onToggled: Config.osd.caps = !checked } }
         Option { visible: Config.osd.enabled; label: "Keyboard layout"; MSwitch { checked: Config.osd.layout; onToggled: Config.osd.layout = !checked } }
     }

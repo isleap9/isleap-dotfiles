@@ -150,6 +150,22 @@ Singleton {
         Quickshell.execDetached(["sh", "-c", cmd]);
     }
 
+    // Screen recording (wf-recorder, from the control center's Capture page)
+    property bool recording: false
+
+    function startRecording(cmd) {
+        recording = true;
+        run(cmd);
+    }
+
+    // SIGINT makes wf-recorder finalize (close) the mp4 before it exits;
+    // SIGTERM/SIGKILL would leave a broken file.
+    function stopRecording() {
+        if (!recording) return;
+        recording = false;
+        run(`pkill -INT -x wf-recorder; sleep 1; notify-send -i video-camera "Recording stopped" "Saved to ~/Videos"`);
+    }
+
     IpcHandler {
         target: "launcher"
         function toggle(): void {

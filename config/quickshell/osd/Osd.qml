@@ -6,12 +6,12 @@ import qs
 import qs.components
 
 // On-screen display (Material 3): a pill near the bottom of the screen that shows
-// volume, microphone mute, caps lock and keyboard layout changes for a moment.
+// volume, microphone mute, brightness, caps lock and keyboard layout changes for a moment.
 // Clicks go through it.
 Scope {
     id: root
 
-    property string kind: ""            // volume, mic, caps, layout
+    property string kind: ""            // volume, mic, brightness, caps, layout
     property bool showing: false
     property bool ready: false           // ignore the values reported at startup
 
@@ -34,6 +34,10 @@ Scope {
         function onSinkChanged() { root.ready = false; readyAgain.restart(); }
     }
     Timer { id: readyAgain; interval: 600; onTriggered: root.ready = true }
+    Connections {
+        target: Brightness
+        function onLevelChanged() { root.show("brightness"); }
+    }
     Connections {
         target: Keyboard
         function onCapsLockChanged() { root.show("caps"); }
@@ -83,20 +87,23 @@ Scope {
                 transform: Translate { y: motion.offset }
 
                 readonly property bool isVolume: root.kind === "volume"
+                readonly property bool isBrightness: root.kind === "brightness"
                 readonly property string icon: ({
                     volume: Audio.volumeIcon(Audio.volume, Audio.muted),
                     mic: Audio.micMuted ? "mic_off" : "mic",
+                    brightness: Brightness.level >= 67 ? "brightness_high" : Brightness.level >= 34 ? "brightness_6" : "brightness_4",
                     caps: Keyboard.capsLock ? "keyboard_capslock" : "keyboard_capslock",
                     layout: "keyboard"
                 })[root.kind] ?? ""
                 readonly property string label: ({
                     volume: Audio.muted ? "Muted" : Math.round(Audio.volume * 100) + "%",
                     mic: Audio.micMuted ? "Microphone off" : "Microphone on",
+                    brightness: Brightness.level + "%",
                     caps: Keyboard.capsLock ? "Caps Lock on" : "Caps Lock off",
                     layout: Keyboard.layout
                 })[root.kind] ?? ""
                 readonly property bool active: ({
-                    volume: !Audio.muted, mic: !Audio.micMuted, caps: Keyboard.capsLock, layout: true
+                    volume: !Audio.muted, mic: !Audio.micMuted, brightness: true, caps: Keyboard.capsLock, layout: true
                 })[root.kind] ?? true
 
                 RowLayout {
@@ -120,14 +127,16 @@ Scope {
                         }
                     }
                     MSlider {
-                        visible: pill.isVolume
+                        visible: pill.isVolume || pill.isBrightness
                         implicitWidth: 220
                         interactive: false
-                        value: Audio.muted ? 0 : Math.min(1, Audio.volume)
-                        color: Audio.muted ? Theme.fg2 : Theme.accent
+                        value: pill.isBrightness ? Brightness.level / 100
+                            : Audio.muted ? 0 : Math.min(1, Audio.volume)
+                        color: pill.isBrightness ? Theme.accent
+                            : Audio.muted ? Theme.fg2 : Theme.accent
                     }
                     Text {
-                        Layout.minimumWidth: pill.isVolume ? 48 : 0
+                        Layout.minimumWidth: pill.isVolume || pill.isBrightness ? 48 : 0
                         Layout.rightMargin: 8
                         text: pill.label
                         color: Theme.fg1

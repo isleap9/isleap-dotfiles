@@ -114,7 +114,7 @@ No NVIDIA card? The installer comments out the NVIDIA variables in `~/.config/hy
 
 ```
 # Hyprland and Wayland basics
-hyprland hypridle hyprpicker hyprshot grim slurp uwsm
+hyprland hypridle hyprpicker hyprshot grim slurp wf-recorder uwsm
 qt6-5compat qt6-svg   # for the qylock lock screen
 xdg-desktop-portal-hyprland xdg-desktop-portal-kde xdg-desktop-portal-gtk
 polkit hyprsunset qt5-wayland qt6-wayland
@@ -179,7 +179,7 @@ google-chrome firefox visual-studio-code-bin github-desktop-bin discord
 | `Super + Shift + T` | Theme switcher |
 | `Super + Shift + W` | Wallpaper picker |
 | `Super + Shift + C` | Clipboard history |
-| `Super + Shift + V` | Capture menu (region / screen / window / color) |
+| `Super + Shift + V` | Capture menu (region / screen / window / record / color) |
 | `Super + Shift + S` | Screenshot a region |
 | `Super + Shift + P` | Color picker |
 | `Super + R` | Restart Quickshell |
@@ -200,20 +200,20 @@ Also: right-click the Arch logo on the bar for the control center, and right-cli
 Everything lives in `~/.config/quickshell`. It reloads by itself when you save a file.
 
 - **Bar** — five bars to choose from: the four fixed layouts from my old Waybar setup (Default, Default 2, Minimal, Sleek) and a **Custom** bar that's fully editable in Settings, Noctalia-style: left / center / right lanes of widgets you can add, remove, reorder and configure, top or bottom, floating pills or a solid bar. Custom starts as a copy of Default, and "Start over from…" resets it to any of the Waybar layouts. The Custom bar's look is editable too: background color and opacity, border, pill roundness, density, text/icon/accent colors, text and icon size, text weight, and per-widget color overrides. Three styles: separate pills, one floating bar (with an adjustable gap), or one bar attached to the screen edge (with optional curved outer corners); the one-piece bars can fit the widgets or span the full width. Widgets: app launcher, workspaces, clock (with calendar), weather, now playing (cover, title, artist, progress and buttons, like the dashboard), cava visualizer, tray, keyboard layout, volume, network, notifications, power, control center, settings, screenshot, spacer.
-- **App launcher** — type to search, arrows + Enter to launch.
+- **App launcher** — type to search, arrows + Enter to launch. Type a sum for a calculator row (Enter copies the result), and anything else also offers web search and a file search (both toggleable in Settings).
 - **Notifications** — popups with action buttons, a notification center, Do Not Disturb.
 - **Power menu** — lock, suspend, logout, reboot, shutdown (asks before acting).
 - **Dashboard** (`Super + A`, or click the clock; click the weather for the forecast) — inspired by [DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell)'s. **Overview**: cards on a 6-column grid (clock, weather, calendar, now playing, notifications, user — click the picture to change it —, CPU, memory, GPU, disk, network) that you can reorder, resize, add and remove with Edit. **Media**: big player over a blurred cover, seek bar, shuffle/repeat, player and audio-output pickers, volume. **Wallpapers**: your wallpapers as a searchable grid, click to apply. **Weather**: now, a 24-hour chart, 7 days and details (humidity, wind, pressure, UV, visibility, clouds, sunrise/sunset), °C/°F. Weather comes from Open-Meteo, the same data the bar's weather widget uses. With a one-piece bar (Floating or Attached), the dashboard grows out of the bar itself: same color, no gap, curved corners where they meet.
-- **Quick settings** (`Super + X`, or click the network / volume widget) — drops out of the right end of the bar: volume and mic sliders, tiles for network, Bluetooth, Do not disturb, night light, keep awake and microphone, plus a Wi-Fi menu (scan, connect with password, forget), a Bluetooth menu (pair, connect, battery) and a sound mixer (per-app volume, output and input device).
+- **Quick settings** (`Super + X`, or click the network / volume widget) — drops out of the right end of the bar: volume, microphone and brightness sliders, tiles for network, Bluetooth, Do not disturb, night light, keep awake and microphone, plus a Wi-Fi menu (scan, connect with password, forget), a Bluetooth menu (pair, connect, battery) and a sound mixer (per-app volume, output and input device).
 - **Material 3 everywhere** — Google's Material Symbols (Rounded) for every icon (filled or outlined, adjustable weight), tonal widget bubbles on the bar (widgets can share one), frosted blur behind the bar and its panels. Everything is adjustable in Settings → Panels & Icons and Settings → Bar.
-- **On-screen popups** — volume, microphone mute, caps lock and keyboard layout changes show a Material pill near the bottom of the screen.
+- **On-screen popups** — volume, microphone mute, brightness, caps lock and keyboard layout changes show a Material pill near the bottom of the screen.
 - **Workspace overview** (`Super + Tab`) — every workspace with live window previews; click to focus, drag a window to another workspace to move it, middle-click to close.
 - **Tray menus and hover cards** — right-clicking a tray icon opens a Material menu, and hovering the clock (calendar) or weather (forecast) shows a Material card; both drop out of the bar under the widget.
 - **Password prompts** — a Material polkit dialog (Quickshell's own agent replaces the KDE one).
 - **Desktop widgets** — a big clock, now playing (with a spinning cover) and weather on the wallpaper; position and monitors in Settings → Desktop & Night light.
 - **Night light** — warmer colors via hyprsunset: always, sunset to sunrise (from the weather data) or custom hours.
 - **Bar widgets** — besides the ones above: CPU, memory, CPU temperature and GPU (with optional mini graphs), window title, taskbar, keep awake, microphone, quick settings and a custom command widget.
-- **Control center** (`Super + Shift + E`) — bar layout, theme switcher, dynamic colors, wallpaper, clipboard (history + favorites + image previews), capture, emoji, cheatsheet.
+- **Control center** (`Super + Shift + E`) — bar layout, theme switcher, dynamic colors, wallpaper, clipboard (history + favorites + image previews), capture (screenshots, color and **screen recording** with audio), emoji, cheatsheet.
 - **Settings app** (`Super + ,`, or search "Quickshell Settings") — theme, fonts, the bar editor, **monitors** (main monitor, bar per monitor, popups on the main or focused monitor), notifications, launcher, power menu, wallpaper colors. Saved to `~/.config/quickshell/config.json`, applied instantly.
 
 Everything can also be scripted:

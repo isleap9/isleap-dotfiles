@@ -8,6 +8,7 @@ import Quickshell.Io
 //   Config.nightLight.enabled  — on/off (with a schedule: allowed to turn on)
 //   schedule: "always" (whenever enabled), "sun" (sunset → sunrise, from the weather data),
 //             "custom" (from → to)
+// The hyprsunset process itself lives in Brightness.qml, which shares it with screen dimming.
 Singleton {
     id: root
 
@@ -49,13 +50,4 @@ Singleton {
         command: ["sh", "-c", "command -v hyprsunset"]
         onExited: code => root.installed = code === 0
     }
-
-    // hyprsunset runs while active; changing the temperature restarts it
-    Process {
-        id: sunset
-        running: root.active
-        command: ["hyprsunset", "-t", String(root.temperature)]
-    }
-    onTemperatureChanged: if (sunset.running) { sunset.running = false; restart.restart(); }
-    Timer { id: restart; interval: 300; onTriggered: sunset.running = root.active }
 }

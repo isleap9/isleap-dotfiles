@@ -1,0 +1,398 @@
+{
+  "config/hypr/hyprland.lua": {
+    "mtime": 1792502859.203026,
+    "seen": 1792720462.4417458,
+    "ast_hash": "516149542778305250019435561eb880",
+    "semantic_hash": "516149542778305250019435561eb880"
+  },
+  "config/hypr/hyprlock/blazinscripts.sh": {
+    "mtime": 1792502859.2080262,
+    "seen": 1792720462.4417493,
+    "ast_hash": "27f09d1309c8d6981cce4c270f4cbcdf",
+    "semantic_hash": "27f09d1309c8d6981cce4c270f4cbcdf"
+  },
+  "config/hypr/modules/active.lua": {
+    "mtime": 1792502859.2109413,
+    "seen": 1792722199.0624456,
+    "ast_hash": "4534258a89d61dd165c96f8e9cfa1a63",
+    "semantic_hash": "4534258a89d61dd165c96f8e9cfa1a63"
+  },
+  "config/hypr/modules/animation.lua": {
+    "mtime": 1792502859.2099626,
+    "seen": 1792720462.4417527,
+    "ast_hash": "43bfe22a59edd60ee0534e9b6a33e361",
+    "semantic_hash": "43bfe22a59edd60ee0534e9b6a33e361"
+  },
+  "config/hypr/modules/autostart.lua": {
+    "mtime": 1792522657.7520337,
+    "seen": 1792720462.4417536,
+    "ast_hash": "01f2a83f31c7d1fe941af4147d04abfc",
+    "semantic_hash": "01f2a83f31c7d1fe941af4147d04abfc"
+  },
+  "config/hypr/modules/binds.lua": {
+    "mtime": 1792720938.7687647,
+    "seen": 1792722199.062451,
+    "ast_hash": "3da1f708ee3075149d8a9f1c0d652684",
+    "semantic_hash": "3da1f708ee3075149d8a9f1c0d652684"
+  },
+  "config/hypr/modules/decoration.lua": {
+    "mtime": 1792667410.3983667,
+    "seen": 1792720462.441755,
+    "ast_hash": "15873980d39795ee4c80f50e3bc8d902",
+    "semantic_hash": "15873980d39795ee4c80f50e3bc8d902"
+  },
+  "config/hypr/modules/env.lua": {
+    "mtime": 1792506522.0614488,
+    "seen": 1792720462.441756,
+    "ast_hash": "43e68d9d10854eb7d0b48adc4380460c",
+    "semantic_hash": "43e68d9d10854eb7d0b48adc4380460c"
+  },
+  "config/hypr/modules/input.lua": {
+    "mtime": 1792502859.2099626,
+    "seen": 1792720462.4417565,
+    "ast_hash": "b572464b20ecd7afbfdf224d51b725e2",
+    "semantic_hash": "b572464b20ecd7afbfdf224d51b725e2"
+  },
+  "config/hypr/modules/layout.lua": {
+    "mtime": 1792502859.2100263,
+    "seen": 1792720462.4417572,
+    "ast_hash": "d95eb02b8d36bbf257fb10a84d8f4e6f",
+    "semantic_hash": "d95eb02b8d36bbf257fb10a84d8f4e6f"
+  },
+  "config/hypr/modules/misc.lua": {
+    "mtime": 1792507892.9139793,
+    "seen": 1792720462.441758,
+    "ast_hash": "6628f520013f4803da391fb78b99893b",
+    "semantic_hash": "6628f520013f4803da391fb78b99893b"
+  },
+  "config/hypr/modules/monitors.lua": {
+    "mtime": 1792502859.2100263,
+    "seen": 1792720462.4417589,
+    "ast_hash": "189604c18ecdef641b493eea9b80b879",
+    "semantic_hash": "189604c18ecdef641b493eea9b80b879"
+  },
+  "config/hypr/modules/programs.lua": {
+    "mtime": 1792502859.2100263,
+    "seen": 1792720462.4417598,
+    "ast_hash": "5422f80c5baaa17fd7aea8b5612177f1",
+    "semantic_hash": "5422f80c5baaa17fd7aea8b5612177f1"
+  },
+  "config/hypr/modules/themes/catppuccin-frappe.lua": {
+    "mtime": 1792502859.2109413,
+    "seen": 1792720462.4417605,
+    "ast_hash": "e48a74f742f35a30c86a1d4deac694d6",
+    "semantic_hash": "e48a74f742f35a30c86a1d4deac694d6"
+  },
+  "config/hypr/modules/themes/catppuccin-latte.lua": {
+    "mtime": 1792502859.2109413,
+    "seen": 1792720462.441761,
+    "ast_hash": "5e2abb89104fc96d5fab4ede576ed80b",
+    "semantic_hash": "5e2abb89104fc96d5fab4ede576ed80b"
+  },
+  "config/hypr/modules/themes/catppuccin-mocha.lua": {
+    "mtime": 1792502859.2109413,
+    "seen": 1792720462.4417617,
+    "ast_hash": "6689e678f3fed342eda63be051cca3f5",
+    "semantic_hash": "6689e678f3fed342eda63be051cca3f5"
+  },
+  "config/hypr/modules/themes/crimson.lua": {
+    "mtime": 1792502859.2109413,
+    "seen": 1792720462.4417624,
+    "ast_hash": "4534258a89d61dd165c96f8e9cfa1a63",
+    "semantic_hash": "4534258a89d61dd165c96f8e9cfa1a63"
+  },
+  "config/hypr/modules/themes/cyberdream.lua": {
+    "mtime": 1792502859.2109413,
+    "seen": 1792720462.4417634,
+    "ast_hash": "73e5f9f3e04e83827aef1f2f4176107c",
+    "semantic_hash": "73e5f9f3e04e83827aef1f2f4176107c"
+  },
+  "config/hypr/modules/themes/dracula-light.lua": {
+    "mtime": 1792502859.2109413,
+    "seen": 1792720462.4417639,
+    "ast_hash": "706ea3571d4df9858c725ee444f1b266",
+    "semantic_hash": "706ea3571d4df9858c725ee444f1b266"
+  },
+  "config/hypr/modules/themes/dracula.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417646,
+    "ast_hash": "7551f8d67d88cff9f80a348bbf5aa787",
+    "semantic_hash": "7551f8d67d88cff9f80a348bbf5aa787"
+  },
+  "config/hypr/modules/themes/dynamic.lua": {
+    "mtime": 1792667227.24792,
+    "seen": 1792720462.441765,
+    "ast_hash": "ff68648f9079ce1a1e9b29b6afbc1cc7",
+    "semantic_hash": "ff68648f9079ce1a1e9b29b6afbc1cc7"
+  },
+  "config/hypr/modules/themes/eink-dark.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417658,
+    "ast_hash": "48fc9adc15d3396933695afbdd8a2170",
+    "semantic_hash": "48fc9adc15d3396933695afbdd8a2170"
+  },
+  "config/hypr/modules/themes/eink.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.441767,
+    "ast_hash": "67a76a14f6d99e7f1e9c7e3c78a73dd3",
+    "semantic_hash": "67a76a14f6d99e7f1e9c7e3c78a73dd3"
+  },
+  "config/hypr/modules/themes/everforest-dark.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417675,
+    "ast_hash": "90d31fa024768b0fe7c2c6b8825a97a1",
+    "semantic_hash": "90d31fa024768b0fe7c2c6b8825a97a1"
+  },
+  "config/hypr/modules/themes/everforest-light.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417682,
+    "ast_hash": "c1ca6b66a4c9739733fe02203afbba47",
+    "semantic_hash": "c1ca6b66a4c9739733fe02203afbba47"
+  },
+  "config/hypr/modules/themes/gruvbox.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.441769,
+    "ast_hash": "3e9e68b854b46cf3f0b39030b1848ba8",
+    "semantic_hash": "3e9e68b854b46cf3f0b39030b1848ba8"
+  },
+  "config/hypr/modules/themes/kanagawa-dark.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417698,
+    "ast_hash": "7cdfa3998c8ed5a71c4049136fa9fff2",
+    "semantic_hash": "7cdfa3998c8ed5a71c4049136fa9fff2"
+  },
+  "config/hypr/modules/themes/kanagawa-light.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417706,
+    "ast_hash": "fe64021582cec061373dfd4297e28874",
+    "semantic_hash": "fe64021582cec061373dfd4297e28874"
+  },
+  "config/hypr/modules/themes/monokai-pro.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417713,
+    "ast_hash": "9caaf5231ba105c685149ed74175acab",
+    "semantic_hash": "9caaf5231ba105c685149ed74175acab"
+  },
+  "config/hypr/modules/themes/onedark.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417717,
+    "ast_hash": "f75e9a3a6cfe07cdea9387a7e0fefff4",
+    "semantic_hash": "f75e9a3a6cfe07cdea9387a7e0fefff4"
+  },
+  "config/hypr/modules/themes/oxocarbon.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417725,
+    "ast_hash": "aea5cfc4dc85ff7633cb7976b14ef2a5",
+    "semantic_hash": "aea5cfc4dc85ff7633cb7976b14ef2a5"
+  },
+  "config/hypr/modules/themes/papercolor.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417734,
+    "ast_hash": "11959c9f4e17212a8501743d792d3ef7",
+    "semantic_hash": "11959c9f4e17212a8501743d792d3ef7"
+  },
+  "config/hypr/modules/themes/rosepine-dawn.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.441774,
+    "ast_hash": "40bd7e66a274f3d7137a019fa5993c9f",
+    "semantic_hash": "40bd7e66a274f3d7137a019fa5993c9f"
+  },
+  "config/hypr/modules/themes/rosepine-moon.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417746,
+    "ast_hash": "37a0e6a31a242f380c4fb4ef5f0e8d73",
+    "semantic_hash": "37a0e6a31a242f380c4fb4ef5f0e8d73"
+  },
+  "config/hypr/modules/themes/sakura.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417753,
+    "ast_hash": "21ebb8f612ac51493c17f735daa78e9a",
+    "semantic_hash": "21ebb8f612ac51493c17f735daa78e9a"
+  },
+  "config/hypr/modules/themes/sleepy.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417758,
+    "ast_hash": "c6beb1172ff4166f79118a06081e3a12",
+    "semantic_hash": "c6beb1172ff4166f79118a06081e3a12"
+  },
+  "config/hypr/modules/themes/tokyo-day.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417768,
+    "ast_hash": "1bef5294ca4ad1aaef8fe14989e1513a",
+    "semantic_hash": "1bef5294ca4ad1aaef8fe14989e1513a"
+  },
+  "config/hypr/modules/themes/tokyo-night.lua": {
+    "mtime": 1792502859.2113302,
+    "seen": 1792720462.4417775,
+    "ast_hash": "4caa4d512e595f007dc73b56b4d08501",
+    "semantic_hash": "4caa4d512e595f007dc73b56b4d08501"
+  },
+  "config/hypr/modules/windowrules.lua": {
+    "mtime": 1792664619.5777645,
+    "seen": 1792720462.441778,
+    "ast_hash": "ff9a844ec8fc3c7ce7536bce8c032fc6",
+    "semantic_hash": "ff9a844ec8fc3c7ce7536bce8c032fc6"
+  },
+  "config/hypr/scripts/apply-kde-colors.sh": {
+    "mtime": 1792503458.6514056,
+    "seen": 1792720462.4417787,
+    "ast_hash": "fa2b2a7de19310d03985b4f68abe555f",
+    "semantic_hash": "fa2b2a7de19310d03985b4f68abe555f"
+  },
+  "config/hypr/scripts/color-picker.sh": {
+    "mtime": 1792502859.212817,
+    "seen": 1792720462.4417791,
+    "ast_hash": "aa8d94ae69cd9d1914eb0d65d5684b6c",
+    "semantic_hash": "aa8d94ae69cd9d1914eb0d65d5684b6c"
+  },
+  "config/hypr/scripts/spotify-notify.sh": {
+    "mtime": 1792520003.0347004,
+    "seen": 1792720462.4417799,
+    "ast_hash": "37487e147f2c432fc2053a94923450cf",
+    "semantic_hash": "37487e147f2c432fc2053a94923450cf"
+  },
+  "config/hypr/scripts/wallpaper-dynamic.sh": {
+    "mtime": 1792540336.0704856,
+    "seen": 1792720462.4417808,
+    "ast_hash": "d7abf77ce731b7dbdf55094d25413c82",
+    "semantic_hash": "d7abf77ce731b7dbdf55094d25413c82"
+  },
+  "config/kitty/themes/active.lua": {
+    "mtime": 1792502859.2292078,
+    "seen": 1792720462.4417818,
+    "ast_hash": "62b1a39672b129cde888978d74f087fd",
+    "semantic_hash": "62b1a39672b129cde888978d74f087fd"
+  },
+  "config/quickshell/config.json": {
+    "mtime": 1792721521.8150344,
+    "seen": 1792722199.0624976,
+    "ast_hash": "c15e50d65dcd9a7b26acbdaefcec065e",
+    "semantic_hash": "c15e50d65dcd9a7b26acbdaefcec065e"
+  },
+  "config/quickshell/scripts/files-openwith.sh": {
+    "mtime": 1792665076.2367551,
+    "seen": 1792720462.441783,
+    "ast_hash": "a4dcc178719c24ab218d1281f243b963",
+    "semantic_hash": "a4dcc178719c24ab218d1281f243b963"
+  },
+  "config/quickshell/scripts/files-paste.sh": {
+    "mtime": 1792664298.0275927,
+    "seen": 1792720462.441784,
+    "ast_hash": "fbfeb990853b4275e189be1f34735a26",
+    "semantic_hash": "fbfeb990853b4275e189be1f34735a26"
+  },
+  "config/quickshell/scripts/launch.sh": {
+    "mtime": 1792509583.9021902,
+    "seen": 1792720462.4417846,
+    "ast_hash": "659c962238d3c29ef3ea908555fafb3a",
+    "semantic_hash": "659c962238d3c29ef3ea908555fafb3a"
+  },
+  "config/quickshell/scripts/lock.sh": {
+    "mtime": 1792508134.2586136,
+    "seen": 1792720462.441785,
+    "ast_hash": "92de4ed646baf0f39e8310e67608a5c2",
+    "semantic_hash": "92de4ed646baf0f39e8310e67608a5c2"
+  },
+  "config/quickshell/scripts/papirus-accent.sh": {
+    "mtime": 1792666457.7745638,
+    "seen": 1792720462.4417858,
+    "ast_hash": "88c3dac8bb1d37076f54ab52b1fb0544",
+    "semantic_hash": "88c3dac8bb1d37076f54ab52b1fb0544"
+  },
+  "config/quickshell/scripts/set-wallpaper.sh": {
+    "mtime": 1792506381.3891199,
+    "seen": 1792720462.4417863,
+    "ast_hash": "b59f09a8cd8a18336a40564d70357d29",
+    "semantic_hash": "b59f09a8cd8a18336a40564d70357d29"
+  },
+  "config/quickshell/scripts/wallpaper-hook.sh": {
+    "mtime": 1792504738.245393,
+    "seen": 1792720462.4417872,
+    "ast_hash": "490fc0192558e6bfff08977c6ead52eb",
+    "semantic_hash": "490fc0192558e6bfff08977c6ead52eb"
+  },
+  "config/quickshell/scripts/wallpaper-picker.sh": {
+    "mtime": 1792504738.246393,
+    "seen": 1792720462.441788,
+    "ast_hash": "c315d3a70c6724b2166b8543b6b6c516",
+    "semantic_hash": "c315d3a70c6724b2166b8543b6b6c516"
+  },
+  "config/waybar/scripts/theme-switcher.sh": {
+    "mtime": 1792540336.0689523,
+    "seen": 1792720462.4417887,
+    "ast_hash": "70c9a920be4a618a6ea091dd3d861969",
+    "semantic_hash": "70c9a920be4a618a6ea091dd3d861969"
+  },
+  "config/waybar/scripts/weather.py": {
+    "mtime": 1792505901.863576,
+    "seen": 1792720462.4417894,
+    "ast_hash": "2ea952123301fd0741a1afe55f49e829",
+    "semantic_hash": "2ea952123301fd0741a1afe55f49e829"
+  },
+  "config/fastfetch/ascii/arch.txt": {
+    "mtime": 1792507169.881244,
+    "seen": 1792720462.4417899,
+    "ast_hash": "b4014c91444fbcdb05433901ee583a97",
+    "semantic_hash": "b4014c91444fbcdb05433901ee583a97"
+  },
+  "config/fastfetch/ascii/cat.txt": {
+    "mtime": 1792507169.8832438,
+    "seen": 1792720462.4417934,
+    "ast_hash": "5d9c27e3ae8f82dcc687ce4273a0322f",
+    "semantic_hash": "5d9c27e3ae8f82dcc687ce4273a0322f"
+  },
+  "config/fastfetch/ascii/rose.txt": {
+    "mtime": 1792507169.884244,
+    "seen": 1792720462.4417942,
+    "ast_hash": "c37aef58c035c0d4d888f101e5bea5d1",
+    "semantic_hash": "c37aef58c035c0d4d888f101e5bea5d1"
+  },
+  "config/fastfetch/ascii/triangle.txt": {
+    "mtime": 1792507169.8862438,
+    "seen": 1792720462.4417949,
+    "ast_hash": "759e4e464c6c7a155c0ea3d6083a3634",
+    "semantic_hash": "759e4e464c6c7a155c0ea3d6083a3634"
+  },
+  "config/hypr/hyprlock/music.webp": {
+    "mtime": 1792502859.2080262,
+    "seen": 1792720462.4417956,
+    "ast_hash": "9ad046a4afe7377becd7592fc9d8aa11",
+    "semantic_hash": "9ad046a4afe7377becd7592fc9d8aa11"
+  },
+  "config/hypr/hyprlock/pfp.jpg": {
+    "mtime": 1792502859.2090263,
+    "seen": 1792720462.4417963,
+    "ast_hash": "c98cb26d72f41a6979952d890b97f45f",
+    "semantic_hash": "c98cb26d72f41a6979952d890b97f45f"
+  },
+  "install.sh": {
+    "mtime": 1792720875.892936,
+    "seen": 1792722199.0625107,
+    "ast_hash": "472ab36c17de3459969b8592fab1c802",
+    "semantic_hash": "472ab36c17de3459969b8592fab1c802"
+  },
+  "setup/dolphin-places.py": {
+    "mtime": 1792507215.808817,
+    "seen": 1792722199.0625124,
+    "ast_hash": "28f43c65cbc26558bf58200fb71a62d3",
+    "semantic_hash": "28f43c65cbc26558bf58200fb71a62d3"
+  },
+  "setup/sddm-theme.sh": {
+    "mtime": 1792508634.668137,
+    "seen": 1792722199.0625136,
+    "ast_hash": "31686cb517993b8a9965763f1effd9a3",
+    "semantic_hash": "31686cb517993b8a9965763f1effd9a3"
+  },
+  "sync.sh": {
+    "mtime": 1792507926.2401679,
+    "seen": 1792722199.062515,
+    "ast_hash": "9364f96cb22afb02ac14340839c557c2",
+    "semantic_hash": "9364f96cb22afb02ac14340839c557c2"
+  },
+  "README.md": {
+    "mtime": 1792721618.6469102,
+    "seen": 1792722199.062516,
+    "ast_hash": "ac25ec10bbab27d757f32802455b5251",
+    "semantic_hash": "ac25ec10bbab27d757f32802455b5251"
+  }
+}

@@ -14,7 +14,7 @@
     },
     "appearance": {
         "animationSpeed": 1,
-        "font": "Google Sans Display",
+        "font": "Google Sans",
         "fontSize": 15,
         "iconFont": "Material Symbols Rounded"
     },
@@ -92,7 +92,7 @@
             "opacity": 65,
             "outerCorners": true,
             "roundness": 100,
-            "solidGap": 10,
+            "solidGap": 18,
             "solidWidth": "fit",
             "textColor": "surface",
             "textWeight": "bold"
@@ -117,6 +117,9 @@
         "style": "solid",
         "topMargin": 18,
         "weatherCity": "Bari"
+    },
+    "brightness": {
+        "level": 100
     },
     "dashboard": {
         "cards": [
@@ -168,7 +171,7 @@
         "iconStyle": "system",
         "pinned": [
         ],
-        "showHidden": false,
+        "showHidden": true,
         "sortBy": "name",
         "sortReversed": false,
         "thumbnails": true,
@@ -179,10 +182,12 @@
         "weight": 400
     },
     "launcher": {
+        "fileSearch": true,
         "height": 520,
         "hero": true,
         "heroHeight": 180,
         "showDescriptions": true,
+        "webSearch": true,
         "width": 620
     },
     "monitors": {
@@ -205,6 +210,7 @@
         "timeout": 5
     },
     "osd": {
+        "brightness": true,
         "caps": true,
         "duration": 1600,
         "enabled": true,

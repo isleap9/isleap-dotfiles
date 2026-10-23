@@ -33,11 +33,13 @@ LazyLoader {
         WlrLayershell.keyboardFocus: Globals.launcherOpen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
         WlrLayershell.namespace: "quickshell-launcher"
 
-        readonly property var apps: {
+        // ── Results ──
+        // Every row is a plain object: { kind: "app" | "calc" | "web" | "file", ... }
+        readonly property var appRows: {
             const q = search.text.trim().toLowerCase();
             const all = DesktopEntries.applications.values.filter(a => !a.noDisplay);
             if (q === "")
-                return all.sort((a, b) => a.name.localeCompare(b.name));
+                return all.sort((a, b) => a.name.localeCompare(b.name)).map(a => ({ kind: "app", app: a }));
 
             // Score: name starts with > word in name starts with > name contains > other fields contain
             const score = a => {
@@ -52,12 +54,179 @@ LazyLoader {
             return all.map(a => ({ a, s: score(a) }))
                 .filter(x => x.s >= 0)
                 .sort((x, y) => x.s - y.s || x.a.name.localeCompare(y.a.name))
-                .map(x => x.a);
+                .map(x => ({ kind: "app", app: x.a }));
         }
 
-        function launch(app) {
-            if (!app) return;
-            app.execute();
+        // Arithmetic query → { expr, value }; null when the text isn't a sum.
+        // Accept only if the whole string is digits/operators/parens, has a digit and an operator,
+        // and the parser can read it (a lone number isn't worth a row).
+        readonly property var calcRow: {
+            const raw = search.text.trim();
+            if (!/^[0-9+\-*\/%^().\s]+$/.test(raw)) return null;
+            if (!/[0-9]/.test(raw) || !/[+\-*\/%^]/.test(raw)) return null;
+            try {
+                const n = win.parseArithmetic(raw);
+                if (!isFinite(n)) return null;
+                return { kind: "calc", expr: raw, value: win.formatNumber(n) };
+            } catch (e) {
+                return null;   // malformed: "1..2", "(1+2", "5%", "1 2"…
+            }
+        }
+
+        // calc (when it parses) → apps → web search → files
+        readonly property var results: {
+            const rows = [];
+            if (win.calcRow) rows.push(win.calcRow);
+            rows.push(...win.appRows);
+            const q = search.text.trim();
+            if (q !== "" && Config.launcher.webSearch) rows.push({ kind: "web", q });
+            if (Config.launcher.fileSearch && win.fileResults.length) rows.push(...win.fileResults);
+            return rows;
+        }
+
+        // ── Calculator: recursive-descent parser (no eval / Function constructor; hoisted declarations) ──
+        // expr    := term (('+'|'-') term)*
+        // term    := unary (('*'|'/'|'%') unary)*
+        // unary   := '-' unary | power
+        // power   := primary ('^' unary)?        ^ is right-associative
+        // primary := number | '(' expr ')'
+        function parseArithmetic(src) {
+            let i = 0;
+            function fail() { throw new Error("bad expression"); }
+            function skip() { while (i < src.length && /\s/.test(src.charAt(i))) i++; }
+            function number() {
+                skip();
+                const m = /^(?:\d+(?:\.\d*)?|\.\d+)/.exec(src.slice(i));
+                if (!m) fail();
+                i += m[0].length;
+                return parseFloat(m[0]);
+            }
+            function primary() {
+                skip();
+                if (src.charAt(i) === "(") {
+                    i++;
+                    const v = expr();
+                    skip();
+                    if (src.charAt(i) !== ")") fail();
+                    i++;
+                    return v;
+                }
+                return number();
+            }
+            function power() {
+                const base = primary();
+                skip();
+                if (src.charAt(i) === "^") { i++; return Math.pow(base, unary()); }
+                return base;
+            }
+            function unary() {
+                skip();
+                if (src.charAt(i) === "-") { i++; return -unary(); }
+                return power();
+            }
+            function term() {
+                let v = unary();
+                for (;;) {
+                    skip();
+                    const c = src.charAt(i);
+                    if (c !== "*" && c !== "/" && c !== "%") return v;
+                    i++;
+                    const r = unary();
+                    v = c === "*" ? v * r : c === "/" ? v / r : v % r;
+                }
+            }
+            function expr() {
+                let v = term();
+                for (;;) {
+                    skip();
+                    const c = src.charAt(i);
+                    if (c !== "+" && c !== "-") return v;
+                    i++;
+                    const r = term();
+                    v = c === "+" ? v + r : v - r;
+                }
+            }
+            const v = expr();
+            skip();
+            if (i !== src.length) fail();   // trailing junk, e.g. "1 2"
+            return v;
+        }
+
+        // 46, 0.5, 3.141593 — up to 6 decimals, trailing zeros trimmed
+        function formatNumber(n) {
+            const s = n.toFixed(6).replace(/\.?0+$/, "");
+            return s === "-0" || s === "" ? "0" : s;
+        }
+
+        function baseName(p) {
+            return p.substring(p.lastIndexOf("/") + 1) || p;
+        }
+        function dirName(p) {
+            const i = p.lastIndexOf("/");
+            return i <= 0 ? "/" : p.slice(0, i);
+        }
+
+        // ── File search: debounced `find` over $HOME, at most 8 matches ──
+        property var fileResults: []
+
+        function startFind() {
+            const q = search.text.trim();
+            if (!Config.launcher.fileSearch || q.length < 3) {
+                findProc.running = false;
+                win.fileResults = [];
+                return;
+            }
+            // find glob: letters, digits, underscore, dot, space and dash only (no quotes reach the shell)
+            const safe = q.replace(/[^a-zA-Z0-9_. -]/g, "");
+            if (safe === "") { win.fileResults = []; return; }
+            if (findProc.running) {              // let the old find stop before starting another
+                findProc.running = false;
+                findDebounce.restart();
+                return;
+            }
+            const pattern = "*" + safe + "*";
+            findProc.forQuery = q;
+            findProc.command = ["sh", "-c",
+                "find \"$HOME\" -maxdepth 4 \\( -path '*/.*' -prune \\) -o -type f -iname '"
+                + pattern + "' -printf 'f %p\\n' -o -type d -iname '" + pattern
+                + "' -printf 'd %p\\n' 2>/dev/null | head -8"];
+            findProc.running = true;
+        }
+
+        Timer {
+            id: findDebounce
+            interval: 250
+            onTriggered: win.startFind()
+        }
+
+        Process {
+            id: findProc
+            property string forQuery: ""
+            stdout: StdioCollector {
+                onStreamFinished: {
+                    // Drop results that arrived after the query moved on
+                    if (!Config.launcher.fileSearch || findProc.forQuery !== search.text.trim()) return;
+                    const rows = [];
+                    for (const line of text.split("\n")) {
+                        const t = line.charAt(0);          // "f" file, "d" directory
+                        if ((t !== "f" && t !== "d") || line.charAt(1) !== " ") continue;
+                        const path = line.slice(2);
+                        if (!path || path.indexOf('"') >= 0 || path.indexOf("\n") >= 0) continue;
+                        rows.push({ kind: "file", path, isDir: t === "d" });
+                    }
+                    win.fileResults = rows;
+                }
+            }
+        }
+
+        // Run the row's action, then close
+        function activate(row) {
+            if (!row) return;
+            if (row.kind === "app") row.app.execute();
+            else if (row.kind === "calc") Quickshell.execDetached(["wl-copy", String(row.value)]);
+            else if (row.kind === "web") Quickshell.execDetached(["xdg-open", "https://duckduckgo.com/?q=" + encodeURIComponent(row.q)]);
+            else if (row.kind === "file") Quickshell.execDetached(["xdg-open", row.path]);
+            else return;
             Globals.launcherOpen = false;
         }
 
@@ -73,7 +242,7 @@ LazyLoader {
                         const r = line.match(/^:?\s*([^:]+):.*image: (.+)$/);
                         if (!r) continue;
                         if (!first) first = r[2].trim();
-                        if (r[1].trim() === win.screen?.name) { win.wall = r[2].trim(); return; }
+                        if (r[1].trim() === (win.screen ? win.screen.name : "")) { win.wall = r[2].trim(); return; }
                     }
                     win.wall = first;
                 }
@@ -180,7 +349,7 @@ LazyLoader {
                         Text {
                             id: chip
                             anchors.centerIn: parent
-                            text: win.apps.length + (win.apps.length === 1 ? " app" : " apps")
+                            text: win.appRows.length + (win.appRows.length === 1 ? " app" : " apps")
                             color: "white"
                             font.family: Theme.font
                             font.pixelSize: Theme.fontSize - 3
@@ -224,7 +393,11 @@ LazyLoader {
                             font.family: Theme.font
                             font.pixelSize: Theme.fontSize + 3
                             font.weight: Font.Medium
-                            onTextChanged: list.currentIndex = 0
+                            onTextChanged: {
+                                list.currentIndex = 0;
+                                win.fileResults = [];      // no stale file rows while the new search runs
+                                if (Config.launcher.fileSearch) findDebounce.restart();
+                            }
 
                             Text {
                                 anchors.verticalCenter: parent.verticalCenter
@@ -235,8 +408,8 @@ LazyLoader {
                             }
 
                             Keys.onEscapePressed: search.text !== "" ? search.text = "" : Globals.launcherOpen = false
-                            Keys.onReturnPressed: win.launch(win.apps[list.currentIndex])
-                            Keys.onEnterPressed: win.launch(win.apps[list.currentIndex])
+                            Keys.onReturnPressed: win.activate(win.results[list.currentIndex])
+                            Keys.onEnterPressed: win.activate(win.results[list.currentIndex])
                             Keys.onUpPressed: list.decrementCurrentIndex()
                             Keys.onDownPressed: list.incrementCurrentIndex()
                             Keys.onTabPressed: list.incrementCurrentIndex()
@@ -263,7 +436,7 @@ LazyLoader {
                     Layout.fillHeight: true
                     clip: true
                     spacing: 2
-                    model: win.apps
+                    model: win.results
                     keyNavigationWraps: true
                     boundsBehavior: Flickable.StopAtBounds
 
@@ -272,7 +445,7 @@ LazyLoader {
                     highlight: Rectangle {
                         width: list.width - (list.contentHeight > list.height ? 12 : 0)
                         height: 56
-                        y: list.currentItem?.y ?? 0
+                        y: list.currentItem ? list.currentItem.y : 0
                         radius: 18
                         color: Qt.rgba(Theme.accent.r, Theme.accent.g, Theme.accent.b, 0.16)
                         visible: list.count > 0
@@ -292,9 +465,34 @@ LazyLoader {
 
                     delegate: Item {
                         id: entry
-                        required property DesktopEntry modelData
+                        required property var modelData
                         required property int index
                         readonly property bool current: ListView.isCurrentItem
+                        readonly property bool isApp: modelData.kind === "app"
+                        readonly property string title: {
+                            const d = entry.modelData;
+                            if (d.kind === "app") return d.app.name;
+                            if (d.kind === "calc") return d.expr + " = " + d.value;
+                            if (d.kind === "web") return "Search the web for '" + d.q + "'";
+                            if (d.kind === "file") return win.baseName(d.path);
+                            return "";
+                        }
+                        readonly property string subtitle: {
+                            const d = entry.modelData;
+                            if (d.kind === "app") return d.app.comment || d.app.genericName || "";
+                            if (d.kind === "calc") return "Copy result";
+                            if (d.kind === "web") return "DuckDuckGo";
+                            if (d.kind === "file") return win.dirName(d.path);
+                            return "";
+                        }
+                        // Material Symbols glyph for the non-app rows
+                        readonly property string glyph: {
+                            const d = entry.modelData;
+                            if (d.kind === "calc") return "calculate";
+                            if (d.kind === "web") return "travel_explore";
+                            if (d.kind === "file") return d.isDir ? "folder" : "draft";
+                            return "search";
+                        }
                         width: ListView.view.width
                         height: 56
 
@@ -323,10 +521,22 @@ LazyLoader {
                                 Behavior on color { ColorAnimation { duration: 180 } }
                                 IconImage {
                                     anchors.centerIn: parent
+                                    visible: entry.isApp
                                     implicitSize: 26
                                     scale: entry.current ? 1.08 : 1
                                     Behavior on scale { NumberAnimation { duration: 260; easing.type: Easing.OutBack } }
-                                    source: Quickshell.iconPath(entry.modelData.icon, "application-x-executable")
+                                    source: entry.isApp ? Quickshell.iconPath(entry.modelData.app.icon, "application-x-executable") : ""
+                                }
+                                // Calculator, web and file rows use a Material Symbols glyph
+                                Text {
+                                    anchors.centerIn: parent
+                                    visible: !entry.isApp
+                                    text: entry.glyph
+                                    color: entry.current ? Theme.accent : Theme.fg1
+                                    Behavior on color { ColorAnimation { duration: 150 } }
+                                    font.family: Theme.iconFont
+                                    font.variableAxes: Theme.iconAxes
+                                    font.pixelSize: 26
                                 }
                             }
 
@@ -335,7 +545,7 @@ LazyLoader {
                                 spacing: 0
                                 Text {
                                     Layout.fillWidth: true
-                                    text: entry.modelData.name
+                                    text: entry.title
                                     color: entry.current ? Theme.accent : Theme.fg1
                                     Behavior on color { ColorAnimation { duration: 150 } }
                                     font.family: Theme.font
@@ -345,8 +555,8 @@ LazyLoader {
                                 }
                                 Text {
                                     Layout.fillWidth: true
-                                    visible: Config.launcher.showDescriptions && text !== ""
-                                    text: entry.modelData.comment || entry.modelData.genericName || ""
+                                    visible: text !== "" && (entry.isApp ? Config.launcher.showDescriptions : true)
+                                    text: entry.subtitle
                                     color: Theme.fg2
                                     font.family: Theme.font
                                     font.pixelSize: Theme.fontSize - 2
@@ -373,7 +583,7 @@ LazyLoader {
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
                             onEntered: list.currentIndex = entry.index
-                            onClicked: win.launch(entry.modelData)
+                            onClicked: win.activate(entry.modelData)
                         }
                     }
 
@@ -383,7 +593,7 @@ LazyLoader {
                         visible: list.count === 0
                         spacing: 8
                         Text { anchors.horizontalCenter: parent.horizontalCenter; text: "search_off"; color: Theme.fg2; font.family: Theme.iconFont; font.variableAxes: Theme.iconAxes; font.pixelSize: 36 }
-                        Text { anchors.horizontalCenter: parent.horizontalCenter; text: `No apps match "${search.text}"`; color: Theme.fg2; font.family: Theme.font; font.pixelSize: Theme.fontSize }
+                        Text { anchors.horizontalCenter: parent.horizontalCenter; text: `Nothing found for "${search.text}"`; color: Theme.fg2; font.family: Theme.font; font.pixelSize: Theme.fontSize }
                     }
                 }
             }

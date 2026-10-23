@@ -23,6 +23,16 @@ Page {
             Toggle { checked: Config.launcher.showDescriptions; onToggled: Config.launcher.showDescriptions = !checked }
         }
         Option {
+            label: "Web search"
+            description: "Type anything to get a DuckDuckGo row in the results"
+            Toggle { checked: Config.launcher.webSearch; onToggled: Config.launcher.webSearch = !checked }
+        }
+        Option {
+            label: "File search"
+            description: "Find files and folders in your home folder as you type"
+            Toggle { checked: Config.launcher.fileSearch; onToggled: Config.launcher.fileSearch = !checked }
+        }
+        Option {
             label: "Wallpaper banner"
             description: "Your current wallpaper on top, with the time and a greeting"
             MSwitch { checked: Config.launcher.hero; onToggled: Config.launcher.hero = !checked }

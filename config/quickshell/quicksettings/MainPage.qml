@@ -135,7 +135,7 @@ ColumnLayout {
         }
     }
 
-    // ── Volume / mic ──
+    // ── Volume / mic / brightness ──
     Rectangle {
         Layout.fillWidth: true
         implicitHeight: sliders.implicitHeight + 24
@@ -197,6 +197,28 @@ ColumnLayout {
                     font.features: ({ tnum: 1 })
                 }
                 MIconButton { icon: "chevron_right"; size: 32; onClicked: Globals.quickSettingsPage = "audio" }
+            }
+            RowLayout {
+                spacing: 6
+                MIconButton {
+                    icon: "brightness_6"
+                    onClicked: Brightness.set(100)
+                }
+                MSlider {
+                    Layout.fillWidth: true
+                    value: Brightness.level / 100
+                    color: Theme.accent
+                    onMoved: v => Brightness.set(v * 100)
+                }
+                Text {
+                    Layout.preferredWidth: 40
+                    horizontalAlignment: Text.AlignRight
+                    text: Brightness.level + "%"
+                    color: Theme.fg2
+                    font.family: Theme.font
+                    font.pixelSize: Theme.fontSize - 3
+                    font.features: ({ tnum: 1 })
+                }
             }
         }
     }

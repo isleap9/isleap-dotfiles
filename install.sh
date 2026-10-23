@@ -30,7 +30,7 @@ command -v pacman >/dev/null || die "this script is for Arch Linux"
 # ── Packages ─────────────────────────────────────────────────────────────────
 PKGS=(
     # Hyprland and Wayland basics
-    hyprland hypridle hyprpicker hyprshot grim slurp uwsm
+    hyprland hypridle hyprpicker hyprshot grim slurp wf-recorder uwsm
     qt6-5compat qt6-svg   # needed by the qylock lock screen
     xdg-desktop-portal-hyprland xdg-desktop-portal-kde xdg-desktop-portal-gtk
     polkit hyprsunset qt5-wayland qt6-wayland   # polkit prompts come from Quickshell; hyprsunset = night light
