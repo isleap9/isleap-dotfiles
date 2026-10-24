@@ -85,15 +85,15 @@
         },
         "look": {
             "background": "",
-            "barRadius": 20,
+            "barRadius": 26,
             "borderWidth": 0,
             "bubbles": true,
             "density": "default",
             "opacity": 70,
             "outerCorners": true,
             "roundness": 100,
-            "solidGap": 18,
-            "solidWidth": "fit",
+            "solidGap": 0,
+            "solidWidth": "full",
             "textColor": "surface",
             "textWeight": "bold"
         },
